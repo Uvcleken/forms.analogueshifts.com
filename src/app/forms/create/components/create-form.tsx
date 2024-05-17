@@ -3,9 +3,9 @@ import { useState, useEffect, FormEvent } from "react";
 import Cookies from "js-cookie";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "@/components/application/loading-spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import FormFallbackLoading from "../../components/fallback-loading";
 
 export default function CreateForm() {
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,7 @@ export default function CreateForm() {
       },
       data: {
         title: title,
-        timeout: timeout,
+        timeout: timeout.trim().length > 0 ? timeout : null,
         deadline: formattedDate,
         multi_response: multiResponseSwitch,
         description: description,
@@ -68,10 +68,6 @@ export default function CreateForm() {
           variant: "default",
           title: "Form created successfully",
           description: "Reirecting you...",
-          style: {
-            backgroundColor: "green",
-            color: "white",
-          },
         });
         router.push("/forms");
       }
@@ -86,10 +82,10 @@ export default function CreateForm() {
   };
 
   return (
-    <main className="max-w-dashboard mt-3 w-[90%] mx-auto ">
+    <main className="w-containerWidth max-w-desktop mx-auto mt-5 flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-3xl">
       {loading && (
         <>
-          <LoadingSpinner />
+          <FormFallbackLoading />
         </>
       )}
       <form
@@ -121,10 +117,9 @@ export default function CreateForm() {
         </div>
         <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">
-            TIME OUT
+            TIME OUT (In Minutes)
           </p>
           <input
-            required
             type="number"
             value={timeout}
             onChange={(e) => setTimeoutValue(e.target.value)}

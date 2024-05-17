@@ -50,22 +50,25 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="w-11 h-11 rounded-full flex items-center justify-center bg-transparent hover:bg-primary-boulder300/30 duration-150 cursor-pointer">
+        <div className="w-11 h-11 rounded-full flex items-center justify-center bg-transparent hover:bg-background-lightYellow/20 duration-150 cursor-pointer">
           <EllipsisVertical width={20} height={20} />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="text-primary-boulder950">
+      <DropdownMenuContent className="w-56 rounded-2xl">
+        <DropdownMenuLabel className="text-primary-boulder950 py-3">
           Actions
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="text-primary-boulder700 ">
+          <DropdownMenuItem
+            onClick={() => router.push("/forms/show/" + form.uuid)}
+            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
+          >
             <Eye className="mr-2 h-4 w-4" />
             <span>Preview</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="text-primary-boulder700 "
+            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
             onClick={async () => {
               if (navigator.share) {
                 try {
@@ -97,7 +100,7 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={deleteForm}
-            className="text-primary-boulder700 "
+            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
           >
             <Trash className="mr-2 h-4 w-4" />
             <span>Delete</span>

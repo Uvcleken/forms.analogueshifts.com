@@ -21,6 +21,8 @@ const config = {
       maxWidth: {
         desktop: "1200px",
         dashboard: "1050px",
+        showFormWidth: "800px",
+        responsesWidth: "950px",
       },
       width: {
         containerWidth: "90%",

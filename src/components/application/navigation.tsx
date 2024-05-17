@@ -1,12 +1,11 @@
 "use client";
 import ApplicationLogo from "./application-logo";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 const Navigation = () => {
   return (
     <div className="flex justify-center pt-3 pb-20 px-3">
-      <nav className="bg-white  backdrop-blur-lg w-full lg:rounded-full fixed z-30">
+      <nav className="backdrop-blur-lg   w-full lg:rounded-full fixed z-30">
         {/* Primary Navigation Menu */}
         <div className="w-full mx-auto px-4 lg:px-6 xl:px-8">
           <div className="flex justify-between h-16">

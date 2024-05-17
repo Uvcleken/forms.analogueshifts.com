@@ -30,7 +30,7 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
     questionData.options ? questionData.options : [{ value: "Option 1" }]
   );
   const [isRequired, setIsRequired] = useState(
-    questionData.required ? questionData.required : false
+    questionData.required === "1" ? true : false
   );
 
   // Update the value of an option
@@ -134,40 +134,35 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
           <p className="text-sm font-normal text-primary-boulder400 mb-1">
             OPTIONS
           </p>
-          <AnimatePresence mode={"sync"}>
-            {options.map((item: any, index: number) => {
-              return (
-                <motion.div
-                  layout
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.8, opacity: 0 }}
-                  transition={{ type: "spring" }}
-                  key={crypto.randomUUID()}
-                  className="w-full flex justify-between items-cenFter"
+
+          {options.map((item: any, index: number) => {
+            return (
+              <div
+                key={crypto.randomUUID()}
+                className="w-full flex justify-between items-cenFter"
+              >
+                <div className="w-11/12 flex items-center gap-2.5">
+                  <div
+                    className={`w-4 h-4 border border-primary-boulder200 ${
+                      type === "radio" ? "rounded-full" : "rounded"
+                    }`}
+                  ></div>
+                  <input
+                    onChange={(e) => updateOption(index, e)}
+                    value={item.value}
+                    className="w-[calc(100%-26px)] border-b focus:border-tremor-brand-boulder300/80 border-primary-boulder200/50 text-[13px] pb-1 px-1 font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none"
+                  />
+                </div>
+                <button
+                  onClick={() => deleteOption(index)}
+                  type="button"
+                  className="text-base hover:text-primary-boulder950 font-normal text-primary-boulder400"
                 >
-                  <div className="w-11/12 flex items-center gap-2.5">
-                    <div
-                      className={`w-4 h-4 border border-primary-boulder200 ${
-                        type === "radio" ? "rounded-full" : "rounded"
-                      }`}
-                    ></div>
-                    <input
-                      onChange={(e) => updateOption(index, e)}
-                      value={item.value}
-                      className="w-[calc(100%-26px)] border-b focus:border-tremor-brand-boulder300/80 border-primary-boulder200/50 text-[13px] pb-1 px-1 font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none"
-                    />
-                  </div>
-                  <button
-                    onClick={() => deleteOption(index)}
-                    type="button"
-                    className="text-base hover:text-primary-boulder950 font-normal text-primary-boulder400"
-                  >
-                    <i className="fas fa-xmark"></i>
-                  </button>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+                  <i className="fas fa-xmark"></i>
+                </button>
+              </div>
+            );
+          })}
 
           <button
             onClick={addOption}

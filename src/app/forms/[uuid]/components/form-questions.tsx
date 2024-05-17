@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { Reorder } from "framer-motion";
 import QuestionSection from "./question-section";
-import LoadingSpinner from "@/components/application/loading-spinner";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
@@ -12,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddQuestionForm from "./add-question-form";
+import FormFallbackLoading from "../../components/fallback-loading";
 
 interface FormQuestionsProps {
   uuid: string;
@@ -42,16 +42,12 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
 
     try {
       setLoading(true);
-
       // Delete Question
       await axios.request(config);
       toast({
         variant: "default",
-        title: "Question Deleted!",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-        },
+        title: "Question Deleted",
+        description: "Your question has been removed.",
       });
 
       // Reset The state that holds our Questions
@@ -79,10 +75,12 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     // Update the Questions Order
     if (vetQuestions[0]) {
       vetQuestions.forEach((item: any, index: number) => {
-        reOrderedQuestions.push({ ...item, number: String(index + 1) });
+        reOrderedQuestions.push({
+          ...item,
+          number: String(index + 1),
+        });
       });
     }
-    setVetQuestions(reOrderedQuestions);
 
     const config = {
       method: "POST",
@@ -97,25 +95,29 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     };
 
     setLoading(true);
+
     try {
-      const response = await axois.request(config);
+      await axois.request(config);
       setLoading(false);
       toast({
         variant: "default",
-        title: "Your Form questions has been Updated",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-        },
+        title: "Form Updated",
+        description: "Your Form questions has been Updated",
       });
-    } catch (error) {
+      setVetQuestions(reOrderedQuestions);
+    } catch (error: any) {
       setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "An error occured",
+        description: error.message,
+      });
     }
   };
 
   return (
     <main className="w-full">
-      {loading && <LoadingSpinner />}
+      {loading && <FormFallbackLoading />}
       <div className="w-full mt-6 flex-wrap gap-5 flex justify-center md:justify-between items-center h-max py-5 ">
         <span className="font-medium md:text-lg text-base text-primary-boulder950">
           Questions
@@ -156,7 +158,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
         </Reorder.Group>
       </div>
       {vetQuestions[0] && (
-        <div className="w-full mt-5 mb-12 flex justify-end">
+        <div className="w-full mt-5 pb-12 flex justify-end">
           <button
             onClick={uploadQuestions}
             className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}

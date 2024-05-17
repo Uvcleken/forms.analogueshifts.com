@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import Cookies from "js-cookie";
-import { fetchVetPosts } from "@/helper-functions/fetch-vets";
+import { fetchVetPosts } from "@/helper-functions/fetch-form";
 import { deletePost } from "@/helper-functions/delete-post";
 import {
   Pagination,
@@ -15,11 +15,11 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Plus } from "lucide-react";
-import LoadingSpinner from "@/components/application/loading-spinner";
 import FormGridTile from "./form-grid-tile";
 import IdiomProof from "@/components/application/idiom-proof";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import FormFallbackLoading from "./fallback-loading";
 
 export default function FormsDashboard() {
   const { toast } = useToast();
@@ -45,18 +45,16 @@ export default function FormsDashboard() {
       getVetsUrl,
       user.token,
       (response) => {
-        console.log(response);
-
         setCurrentPageInfo(response.data.data.forms);
         setData(response.data.data.forms.data);
         setLoading(false);
       },
-      (error) => {
+      (error: any) => {
         setLoading(false);
         toast({
           variant: "destructive",
           title: "Uh oh! Error fetching forms.",
-          description: "There was a problem with your request.",
+          description: error.message,
         });
       }
     );
@@ -72,11 +70,8 @@ export default function FormsDashboard() {
         fetchVets();
         toast({
           variant: "default",
-          title: "Form deleted successfully",
-          style: {
-            backgroundColor: "green",
-            color: "white",
-          },
+          title: "Form deleted",
+          description: "Your form has been deleted successfully",
         });
         setIdToBeDeleted(null);
       },
@@ -87,7 +82,6 @@ export default function FormsDashboard() {
           description: error.message,
         });
         setLoading(false);
-        console.log(error);
       }
     );
   };
@@ -113,11 +107,12 @@ export default function FormsDashboard() {
     <main className="max-w-dashboard mt-3 w-[90%] mx-auto ">
       {loading && (
         <>
-          <LoadingSpinner />
+          <FormFallbackLoading />
         </>
       )}
       <IdiomProof
-        title={"Delete Form"}
+        title={"Confirm Delete"}
+        label="Delete Form"
         action={() => {
           deleteVet();
           setIdiomModal(false);
@@ -178,11 +173,11 @@ export default function FormsDashboard() {
           </Pagination>
         </div>
         <div className="flex w-max gap-3">
-          <Input
+          {/* <Input
             type="search"
             placeholder="Filter forms..."
             className="max-w-sm"
-          />
+          /> */}
           <Button
             onClick={() => router.push("/forms/create")}
             type="submit"

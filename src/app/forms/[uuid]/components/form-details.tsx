@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, FormEvent } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import LoadingSpinner from "@/components/application/loading-spinner";
+import FormFallbackLoading from "../../components/fallback-loading";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -43,7 +43,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   const [multiResponseSwitch, setMultiResponseSwitch]: any = useState(
     multiResponse === "1" ? true : false
   );
-  const [timeoutValue, setTimeoutValue] = useState(parseInt(timeout));
+  const [timeoutValue, setTimeoutValue] = useState(parseInt(timeout) || "");
   const [deadlineValue, setDeadlineValue] = useState(
     deadline[0] ? convertDateFormat(deadline) : ""
   );
@@ -60,7 +60,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
       },
       data: {
         title: titleValue,
-        timeout: timeoutValue,
+        timeout: String(timeoutValue).trim().length > 0 ? timeoutValue : null,
         deadline: deadlineValue,
         multi_response: multiResponseSwitch ? "1" : "0",
         description: descriptionValue,
@@ -68,19 +68,14 @@ const FormDetails: React.FC<FormDetailsProps> = ({
     };
     setLoading(true);
     try {
-      const response = await axios.request(config);
-      console.log(response);
+      await axios.request(config);
       setLoading(false);
       toast({
         variant: "default",
-        title: "Your form has been updated successfully",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-        },
+        title: "Form updated",
+        description: "Your form has been updated successfully",
       });
     } catch (error: any) {
-      console.log(error);
       setLoading(false);
       toast({
         variant: "destructive",
@@ -93,11 +88,11 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   return (
     <form
       onSubmit={handleUpdateForm}
-      className="w-full flex flex-wrap gap-x-5 gap-y-5"
+      className="w-full flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-3xl"
     >
       {loading && (
         <>
-          <LoadingSpinner />
+          <FormFallbackLoading />
         </>
       )}
       <div className="w-full md:w-[calc(20%-10px)] flex flex-col gap-4">
@@ -123,9 +118,10 @@ const FormDetails: React.FC<FormDetailsProps> = ({
         />
       </div>
       <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-        <p className="text-sm font-normal text-primary-boulder400">TIME OUT</p>
+        <p className="text-sm font-normal text-primary-boulder400">
+          TIME OUT (In Minutes)
+        </p>
         <input
-          required
           type="number"
           value={timeoutValue}
           onChange={(e: any) => setTimeoutValue(e.target.value)}
@@ -156,7 +152,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
       </div>
       <div className=" flex w-full">
         <input
-          value="Update Form"
+          value="Save changes"
           type="submit"
           className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}
         />

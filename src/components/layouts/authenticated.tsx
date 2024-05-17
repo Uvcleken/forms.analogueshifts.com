@@ -22,7 +22,10 @@ export default function AuthenticatedLayout({
   }, []);
 
   return (
-    <section className="w-full ">
+    <section
+      style={{ background: "rgb(243 244 246/1)" }}
+      className="w-full min-h-screen"
+    >
       <AuthenticationNavigation user={user} />
       {children}
     </section>

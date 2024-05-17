@@ -6,8 +6,8 @@ import AppsDropdown from "./apps-dropdown";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useToast } from "../ui/use-toast";
-import LoadingSpinner from "./loading-spinner";
 import IdiomProof from "./idiom-proof";
+import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 
 function AuthenticatedNavigation({ user }: any) {
   const [logoutModal, setLogoutModal] = useState(false);
@@ -46,15 +46,16 @@ function AuthenticatedNavigation({ user }: any) {
         open={logoutModal}
         description="   Are you sure you want to sign out of your account? You can always
         sign in at anytime."
-        title="Log Out"
+        title="Confirm LogOut"
+        label="Log Out"
         action={() => {
           setLogoutModal(false);
           handleLogout();
         }}
         close={() => setLogoutModal(false)}
       />
-      {loading && <LoadingSpinner />}
-      <nav className="bg-white  backdrop-blur-lg w-full lg:rounded-full fixed z-30">
+      {loading && <FormFallbackLoading />}
+      <nav className="backdrop-blur-lg drop-shadow-lg border border-gray-100 w-full lg:rounded-full fixed z-30">
         <div className="w-full mx-auto px-4 lg:px-6 xl:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">

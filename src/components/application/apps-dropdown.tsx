@@ -31,7 +31,7 @@ export default function AppsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="w-11 h-11 rounded-full flex items-center justify-center bg-transparent hover:bg-primary-boulder300/30 duration-150 cursor-pointer">
+        <div className="w-11 h-11 rounded-full flex items-center justify-center bg-transparent hover:bg-background-lightYellow/20 duration-150 cursor-pointer">
           <LayoutGrid width={20} height={20} />
         </div>
       </DropdownMenuTrigger>
@@ -48,7 +48,7 @@ export default function AppsDropdown() {
                   window.location.href = item.url;
                 }}
                 key={item.title}
-                className="col-span-1 rounded-xl cursor-pointer h-max p-3 flex flex-col items-center gap-2.5"
+                className="col-span-1 rounded-xl cursor-pointer h-max p-3 flex flex-col items-center gap-2.5 focus:bg-background-lightYellow/20"
               >
                 <Image
                   src={"/logo.png"}

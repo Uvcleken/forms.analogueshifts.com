@@ -37,35 +37,35 @@ export default function ProfileDropdown({ user, logout }: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="w-14 h-14 rounded-full hover:opacity-70 duration-150 cursor-pointer">
+        <div className="w-10 overflow-hidden h-10 rounded-full hover:opacity-70 duration-150 cursor-pointer">
           <Image
             src={ProfileImage}
             alt="Profile Avatar"
-            className="w-full h-full rounded-full"
+            className="w-full h-full scale-150 rounded-full"
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="text-primary-boulder950">
+      <DropdownMenuContent className="w-60 rounded-2xl">
+        <DropdownMenuLabel className="text-primary-boulder950 py-3">
           My Account
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="text-primary-boulder700 ">
+          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2">
             <User className="mr-2 h-4 w-4" />
             <span>{user?.name}</span>
           </DropdownMenuItem>
           {user?.tel && (
-            <DropdownMenuItem className="text-primary-boulder700 ">
+            <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
               <Phone className="mr-2 h-4 w-4" />
               <span>{user.tel}</span>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem className="text-primary-boulder700 ">
+          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
             <Mail className="mr-2 h-4 w-4" />
             <span className="truncate">{user?.email}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-primary-boulder700 ">
+          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
             <CheckCircle className="mr-2 h-4 w-4" />
             <span>{user?.email_verified_at ? "Verified" : "Un-verified"}</span>
           </DropdownMenuItem>
@@ -73,14 +73,14 @@ export default function ProfileDropdown({ user, logout }: any) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-primary-boulder700 ">
+            <DropdownMenuSubTrigger className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
               <UserPlus className="mr-2 h-4 w-4" />
               <span>Invite users</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem
-                  className="text-primary-boulder700 "
+                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
                   onClick={async () => {
                     if (navigator.share) {
                       try {
@@ -113,14 +113,14 @@ export default function ProfileDropdown({ user, logout }: any) {
           </DropdownMenuSub>
           <DropdownMenuItem
             onClick={() => router.push("/forms/create")}
-            className="text-primary-boulder700 "
+            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
           >
             <Plus className="mr-2 h-4 w-4" />
             <span>New Form</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => router.push("/forms")}
-            className="text-primary-boulder700 "
+            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
           >
             <Table className="mr-2 h-4 w-4" />
             <span>My Forms</span>
@@ -129,7 +129,7 @@ export default function ProfileDropdown({ user, logout }: any) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="text-primary-boulder700 "
+          className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
           onClick={() => {
             window.location.href = "https://www.analogueshifts.com/contact";
           }}
@@ -141,7 +141,7 @@ export default function ProfileDropdown({ user, logout }: any) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={logout}
-          className="text-red-600 focus:text-red-600"
+          className="text-red-600 focus:text-red-600 py-2 focus:bg-background-lightYellow/20 "
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>

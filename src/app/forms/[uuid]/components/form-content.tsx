@@ -1,13 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
-import LoadingSpinner from "@/components/application/loading-spinner";
-import { fetchVetPosts } from "@/helper-functions/fetch-vets";
+import FormFallbackLoading from "../../components/fallback-loading";
 import Cookies from "js-cookie";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormDetails from "./form-details";
 import FormQuestions from "./form-questions";
 import { useToast } from "@/components/ui/use-toast";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
+import FormResponses from "./form-responses";
+import { RefreshCcw } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface FormContentProps {
   uuid: string;
@@ -18,7 +25,79 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const [user, setUser]: any = useState(null);
   const [form, setForm]: any = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [responses, setResponses] = useState([]);
   const { toast } = useToast();
+  const axios = require("axios");
+
+  // Fetch Form
+  const getForm = async () => {
+    let config = {
+      method: "GET",
+      url: process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/" + uuid,
+      headers: {
+        Authorization: "Bearer " + user.token,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      setForm(response.data.data.form);
+      setQuestions(
+        response.data.data.questions.sort(
+          (a: any, b: any) => parseInt(a.number) - parseInt(b.number)
+        )
+      );
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error fetching your form",
+        description: error.message,
+      });
+    }
+  };
+
+  // Fetch Responses
+  const getResponses = async () => {
+    let config = {
+      method: "GET",
+      url:
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/responses/" + uuid,
+      headers: {
+        Authorization: "Bearer " + user.token,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      setResponses(response.data.data.response);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error fetching your form Responses",
+        description: error.message,
+      });
+    }
+  };
+
+  const handleRefetchResponses = async () => {
+    try {
+      setLoading(true);
+      await getResponses();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  // Fetch Data Asynchronously
+  const getData = async () => {
+    try {
+      setLoading(true);
+      await getForm();
+      await getResponses();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   useEffect((): any => {
     const auth = Cookies.get("analogueshifts");
@@ -32,28 +111,7 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
 
   useEffect(() => {
     if (user) {
-      setLoading(true);
-      fetchVetPosts(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/${uuid}`,
-        user.token,
-        (response) => {
-          setForm(response.data.data.form);
-          setLoading(false);
-          setQuestions(
-            response.data.data.questions.sort(
-              (a: any, b: any) => parseInt(a.number) - parseInt(b.number)
-            )
-          );
-        },
-        (error) => {
-          setLoading(false);
-          toast({
-            variant: "destructive",
-            title: "Error fetching your form",
-            description: error.message,
-          });
-        }
-      );
+      getData();
     }
   }, [user]);
 
@@ -61,18 +119,37 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
     <main className="max-w-dashboard mt-1 w-[90%] mx-auto">
       {loading && (
         <>
-          <LoadingSpinner />
+          <FormFallbackLoading />
         </>
       )}
       <Tabs defaultValue="questions" className="w-full relative">
         <TabsList className="w-full flex justify-center bg-transparent">
           <TabsTrigger value="questions">Questions</TabsTrigger>
-          <TabsTrigger value="responses">Responses</TabsTrigger>
+          <TabsTrigger onClick={handleRefetchResponses} value="responses">
+            Responses
+          </TabsTrigger>
         </TabsList>
 
         {/* Action Menu */}
         {form && (
-          <div className="absolute right-0 top-0">
+          <div className="absolute h-11 right-0 top-0 flex items-center">
+            {/* <TabsContent value="responses">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <button
+                      onClick={handleRefetchResponses}
+                      className="w-6 -mb-1 rounded-full hover:rotate-180 flex text-primary-boulder700 items-center justify-center duration-300 cursor-pointer"
+                    >
+                      <RefreshCcw width={15} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Refresh Responses</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TabsContent> */}
             <FormDetailsDropdown
               user={user}
               form={form}
@@ -81,7 +158,7 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
           </div>
         )}
 
-        <TabsContent value="questions">
+        <TabsContent value="questions" className="pt-5">
           {/* Form Details */}
           {form && (
             <FormDetails
@@ -100,7 +177,9 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
             <FormQuestions uuid={uuid} user={user} questions={questions} />
           )}
         </TabsContent>
-        <TabsContent value="responses">Change your password here.</TabsContent>
+        <TabsContent value="responses">
+          <FormResponses responses={responses} formUUID={uuid} />
+        </TabsContent>
       </Tabs>
     </main>
   );

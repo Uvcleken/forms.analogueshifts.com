@@ -5,7 +5,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import LoadingSpinner from "@/components/application/loading-spinner";
+import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import FormInput from "@/components/application/form-input";
 
 export default function RegisterForm() {
@@ -86,7 +86,7 @@ export default function RegisterForm() {
 
   return (
     <main className="w-full h-max min-h-screen mx-auto flex justify-center items-center px-5 py-10">
-      {loading && <LoadingSpinner />}
+      {loading && <FormFallbackLoading />}
       <section className="max-w-full lg:w-[1000px] md:w-[800px]  flex justify-center items-center">
         <div className="lg:w-[450px] md:w-[350px] flex flex-col items-center">
           <ApplicationLogo />

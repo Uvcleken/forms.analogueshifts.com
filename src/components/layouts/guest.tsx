@@ -6,7 +6,7 @@ export default function GuestLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="w-full">
+    <section className="w-full min-h-screen">
       <Navigation />
       {children}
     </section>

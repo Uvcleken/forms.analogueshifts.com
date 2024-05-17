@@ -26,7 +26,7 @@ const FormInput: React.FC<FormInputProps> = ({
         ></i>
 
         <input
-          className={` w-full rounded-2xl border border-black/10 outline-1 outline-background-darkYellow h-full pl-12 pr-4  text-base font-normal text-gray-400`}
+          className={` w-full bg-transparent rounded-2xl border border-black/10 outline-1 outline-background-lightYellow h-full pl-12 pr-4  text-base font-normal text-gray-400`}
           placeholder={placeholder}
           value={value}
           type={type}

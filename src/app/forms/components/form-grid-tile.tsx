@@ -1,12 +1,19 @@
+"use client";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import FormTemplateImage from "@/assets/images/form-template.jpg";
+import { Share, Eye, EllipsisVertical, Trash, BookOpen } from "lucide-react";
+
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { EllipsisVertical } from "lucide-react";
-import Link from "next/link";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { useToast } from "@/components/ui/use-toast";
 
 interface FormGridTileProps {
@@ -16,6 +23,7 @@ interface FormGridTileProps {
 
 const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -23,7 +31,7 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
         await navigator.share({
           title: item.title,
           text: "",
-          url: "https://forms.analogueshifts.com/form/show/" + item.uuid,
+          url: "https://forms.analogueshifts.com/forms/show/" + item.uuid,
         });
       } catch (error) {
         toast({
@@ -42,7 +50,7 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
   };
 
   return (
-    <div className="col-span-1 h-64 rounded-lg border flex flex-col overflow-hidden hover:border-background-lightYellow">
+    <div className="col-span-1 bg-[#FEFEFE] h-64 rounded-lg border flex flex-col overflow-hidden hover:border-background-lightYellow">
       <Image
         src={FormTemplateImage}
         alt="Form Background"
@@ -58,49 +66,52 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
           </span>
         </div>
         <div className="w-max">
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="outline-none border-none hover:bg-primary-boulder300/10 py-2 px-1 rounded-full">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="outline-none cursor-pointer border-none hover:bg-background-lightYellow/20 py-2 px-1 rounded-full">
                 <EllipsisVertical
                   height={15}
                   className="text-primary-boulder500"
                 />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-48">
-              <div className="grid">
-                <div>
-                  <h4 className="font-medium leading-none text-primary-boulder950 text-[15px] pb-2">
-                    Actions
-                  </h4>
-                </div>
-                <Link
-                  href={`/forms/${item.uuid}`}
-                  className="text-sm p-2 text-muted-foreground hover:bg-primary-boulder300/10"
-                >
-                  Open
-                </Link>
-                <Link
-                  href=""
-                  className="text-sm p-2 text-muted-foreground hover:bg-primary-boulder300/10"
-                >
-                  Preview
-                </Link>
-                <button
-                  onClick={handleShare}
-                  className="text-sm p-2 text-muted-foreground hover:bg-primary-boulder300/10 text-start"
-                >
-                  Share
-                </button>
-                <button
-                  onClick={deleteForm}
-                  className="text-sm p-2 text-muted-foreground hover:bg-primary-boulder300/10 text-start"
-                >
-                  Delete
-                </button>
               </div>
-            </PopoverContent>
-          </Popover>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 rounded-2xl">
+              <DropdownMenuLabel className="text-primary-boulder950 py-3">
+                Actions
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onClick={() => router.push(`/forms/${item.uuid}`)}
+                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
+                >
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  <span>Open</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push(`/forms/show/${item.uuid}`)}
+                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
+                >
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>Preview</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleShare}
+                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
+                >
+                  <Share className="mr-2 h-4 w-4" />
+                  <span>Share</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={deleteForm}
+                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
+                >
+                  <Trash className="mr-2 h-4 w-4" />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

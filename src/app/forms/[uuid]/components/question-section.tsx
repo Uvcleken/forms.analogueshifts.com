@@ -18,7 +18,7 @@ import EditQuestionForm from "./edit-question-form";
 import FileInput from "@/components/application/file-input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/application/loading-spinner";
 
 interface QuestionSectionProps {
@@ -44,11 +44,8 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
       );
       toast({
         variant: "default",
-        title: "Question Removed Successfully!",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-        },
+        title: "Question Deleted",
+        description: "Your question has been removed.",
       });
     } else {
       handleDeleteQuestion(data.uuid);
@@ -251,12 +248,12 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
                 <DialogDescription>{data.question}</DialogDescription>
               </DialogHeader>
               <DialogTrigger className="w-max ml-auto">
-                <Button
+                <span
                   onClick={() => removeVetQuestion(data)}
-                  variant="destructive"
+                  className="bg-red-500 text-background-white300 px-5 py-2.5 rounded text-sm hover:bg-red-500/80"
                 >
                   Delete Question
-                </Button>
+                </span>
               </DialogTrigger>
             </DialogContent>
           </Dialog>
