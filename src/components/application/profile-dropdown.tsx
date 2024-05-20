@@ -87,7 +87,7 @@ export default function ProfileDropdown({ user, logout }: any) {
                         await navigator.share({
                           title: "AnalogueShifts Vetting System",
                           text: "Build forms and analyze results, with AnalogueShifts Form",
-                          url: "https://forms.analogueshifts.com",
+                          url: window.location.origin,
                         });
                       } catch (error) {
                         toast({

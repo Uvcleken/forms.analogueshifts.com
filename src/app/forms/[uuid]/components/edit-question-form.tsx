@@ -1,10 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import FileInput from "@/components/application/file-input";
 import { DialogClose } from "@/components/ui/dialog";
+
+// Select
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface EditQuestionFormProps {
   questionData: any;
@@ -85,21 +93,31 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
       </div>
       <div className="w-full md:w-[calc(35%-10px)] flex flex-col gap-3">
         <p className="text-sm font-normal text-primary-boulder400">TYPE</p>
-        <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none"
-        >
-          {["short_text", "long_text", "radio", "checkbox", "file"].map(
-            (option) => {
+        <Select value={type} onValueChange={(value: string) => setType(value)}>
+          <SelectTrigger className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none">
+            <SelectValue placeholder="TYPE" />
+          </SelectTrigger>
+          <SelectContent>
+            {[
+              "short_text",
+              "long_text",
+              "radio",
+              "checkbox",
+              "image",
+              "pdf",
+            ].map((option) => {
               return (
-                <option value={option} key={crypto.randomUUID()}>
-                  {option}
-                </option>
+                <SelectItem
+                  className="focus:bg-background-lightYellow/10 py-2 text-xs text-primary-boulder900"
+                  key={option}
+                  value={option}
+                >
+                  {option.toUpperCase()}
+                </SelectItem>
               );
-            }
-          )}
-        </select>
+            })}
+          </SelectContent>
+        </Select>
       </div>
 
       {(type === "short_text" || type === "long_text") && (
@@ -124,9 +142,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
           )}
         </div>
       )}
-      {type === "file" && (
+      {(type === "image" || type === "pdf") && (
         <div className="w-full flex flex-col gap-3 -z-10">
-          <FileInput />
+          <FileInput fileType={type} />
         </div>
       )}
       {(type === "radio" || type === "checkbox") && (

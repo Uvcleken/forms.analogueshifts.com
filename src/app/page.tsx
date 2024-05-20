@@ -9,7 +9,7 @@ export default function Home() {
         <h1 className="text-primary-boulder950 text-center text-3xl leading-[45px] md:leading-[75px] md:text-[50px] font-semibold">
           Build forms and analyze results, with AnalogueShifts Form
         </h1>
-        <p className="text-primary-boulder400 text-xl font-medium">
+        <p className="text-primary-boulder400 text-xl font-medium text-center">
           Easily create and share online forms and surveys, and analyze
           responses in real-time.
         </p>

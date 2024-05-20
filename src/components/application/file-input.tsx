@@ -5,9 +5,10 @@ import { useToast } from "../ui/use-toast";
 interface FileInputProps {
   value?: any;
   setValue?: any;
+  fileType?: string;
 }
 
-const FileInput: React.FC<FileInputProps> = ({ value, setValue }) => {
+const FileInput: React.FC<FileInputProps> = ({ value, setValue, fileType }) => {
   const [uploadState, setUploadState] = useState(value ? "Success" : "");
   const fileRef: any = useRef();
   const { toast } = useToast();
@@ -39,7 +40,9 @@ const FileInput: React.FC<FileInputProps> = ({ value, setValue }) => {
     <section>
       {/* The File Input */}
       <input
-        accept="image/jpeg,image/png,application/pdf"
+        accept={
+          fileType === "image" ? "image/jpeg,image/png" : "application/pdf"
+        }
         onChange={handleFileChange}
         ref={fileRef}
         type="file"
@@ -60,7 +63,7 @@ const FileInput: React.FC<FileInputProps> = ({ value, setValue }) => {
               <i className="fas fa-cloud-arrow-up text-sm"></i>
             </p>
             <p className="font-light text-[13px] text-primary-boulder500 mb-1">
-              Supports JPG, JPEG, PNG, PDF
+              Supports {fileType === "image" ? "JPG, JPEG, PNG" : "PDF"}
             </p>
             <p className="font-light text-[13px] text-primary-boulder500 mb-1">
               Maximum file size 5mb
