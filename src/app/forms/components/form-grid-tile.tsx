@@ -31,7 +31,7 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
         await navigator.share({
           title: item.title,
           text: "",
-          url: "https://forms.analogueshifts.com/forms/show/" + item.uuid,
+          url: window.location.href + "/" + item.uuid,
         });
       } catch (error) {
         toast({

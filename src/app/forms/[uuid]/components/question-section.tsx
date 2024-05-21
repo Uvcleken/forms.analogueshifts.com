@@ -16,9 +16,8 @@ import {
 import { Switch } from "@/components/ui/switch";
 import EditQuestionForm from "./edit-question-form";
 import FileInput from "@/components/application/file-input";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LoadingSpinner from "@/components/application/loading-spinner";
 
 interface QuestionSectionProps {
@@ -113,7 +112,14 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
             value={data.type}
             className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none"
           >
-            {["short_text", "long_text", "radio", "checkbox"].map((option) => {
+            {[
+              "short_text",
+              "long_text",
+              "radio",
+              "checkbox",
+              "image",
+              "pdf",
+            ].map((option) => {
               return (
                 <option value={option} key={crypto.randomUUID()}>
                   {option}
@@ -150,10 +156,10 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
         )}
 
         {/* IF TYPE IS A FILE */}
-        {data.type === "file" && (
+        {(data.type === "image" || data.type === "pdf") && (
           <div className="w-full flex flex-col gap-3 relative">
             <div className="absolute top-0 left-0 w-full h-full bg-transparent"></div>
-            <FileInput />
+            <FileInput fileType={data.type} />
           </div>
         )}
 
@@ -225,13 +231,13 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
           </Dialog>
 
           {/* DUPLICATE ACTION BUTTON */}
-          <button
+          {/* <button
             onClick={duplicateVetQuestion}
             type="button"
             className="text-xs font-normal hover:text-primary-boulder950 text-primary-boulder400 border-none bg-transparent outline-none flex items-center gap-1"
           >
             <i className="fa-regular fa-copy text-sm"></i> DUPLICATE
-          </button>
+          </button> */}
 
           {/* DELETE ACTION BUTTON */}
           <Dialog>

@@ -116,36 +116,49 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
   };
 
   return (
-    <main className="w-full">
+    <main className="w-full py-10">
       {loading && <FormFallbackLoading />}
-      <div className="w-full mt-6 flex-wrap gap-5 flex justify-center md:justify-between items-center h-max py-5 ">
+      <div
+        style={{ background: "rgb(243 244 246/1)" }}
+        className="w-full z-30 sticky top-[76px] backdrop-blur-lg mt-6 flex-wrap gap-5 flex justify-center md:justify-between items-center h-max py-5 "
+      >
         <span className="font-medium md:text-lg text-base text-primary-boulder950">
           Questions
         </span>
 
-        <Dialog>
-          <DialogTrigger>
-            <span className="h-10 cursor-pointer rounded-full px-8 flex justify-center items-center gap-3 border border-background-lightYellow font-normal md:text-base text-sm bg-transparent text-background-lightYellow">
-              Add question
-              <i className="fas fa-plus"></i>
-            </span>
-          </DialogTrigger>
-          <DialogContent className="w-[90%] duration-300 max-w-[1000px] h-max max-h-[80dvh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-primary-boulder950">
-                Create new question
-              </DialogTitle>
-            </DialogHeader>
-            <AddQuestionForm
-              questionNumber={String(vetQuestions.length + 1)}
-              submitQuestion={(data) => {
-                setVetQuestions((prev: any) => [data, ...prev]);
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center gap-3">
+          <Dialog>
+            <DialogTrigger>
+              <span className="py-2 min-h-10 h-max cursor-pointer rounded-full px-4 md:px-8 flex justify-center items-center gap-3 border border-background-lightYellow font-normal md:text-base text-sm bg-transparent text-background-lightYellow">
+                Add question
+                <i className="fas fa-plus"></i>
+              </span>
+            </DialogTrigger>
+            <DialogContent className="w-[90%] duration-300 max-w-[1000px] h-max max-h-[80dvh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-primary-boulder950">
+                  Create new question
+                </DialogTitle>
+              </DialogHeader>
+              <AddQuestionForm
+                questionNumber={String(vetQuestions.length + 1)}
+                submitQuestion={(data) => {
+                  setVetQuestions((prev: any) => [data, ...prev]);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+          {vetQuestions[0] && (
+            <button
+              onClick={uploadQuestions}
+              className={`px-4 md:px-8 text-[#FEFEFE] text-base  font-normal flex items-center gap-2 py-2 min-h-10 h-max bg-background-lightYellow rounded-full border-none cursor-pointer`}
+            >
+              Update Questions
+            </button>
+          )}
+        </div>
       </div>
-      <div className="w-full mt-5">
+      <div className="w-full mt-5 z-20">
         <Reorder.Group onReorder={setVetQuestions} values={vetQuestions}>
           {vetQuestions.map((item: any) => (
             <QuestionSection
@@ -157,16 +170,6 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
           ))}
         </Reorder.Group>
       </div>
-      {vetQuestions[0] && (
-        <div className="w-full mt-5 pb-12 flex justify-end">
-          <button
-            onClick={uploadQuestions}
-            className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}
-          >
-            Update Questions
-          </button>
-        </div>
-      )}
     </main>
   );
 };

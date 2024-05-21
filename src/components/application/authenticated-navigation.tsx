@@ -55,7 +55,7 @@ function AuthenticatedNavigation({ user }: any) {
         close={() => setLogoutModal(false)}
       />
       {loading && <FormFallbackLoading />}
-      <nav className="backdrop-blur-lg drop-shadow-lg border border-gray-100 w-full lg:rounded-full fixed z-30">
+      <nav className="backdrop-blur-lg z-40 drop-shadow-lg border border-gray-100 w-full lg:rounded-full fixed">
         <div className="w-full mx-auto px-4 lg:px-6 xl:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">

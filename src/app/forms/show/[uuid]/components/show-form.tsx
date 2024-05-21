@@ -8,6 +8,7 @@ import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { toggleArr } from "@/helper-functions/toggle-arr-value";
 import IdiomProof from "@/components/application/idiom-proof";
 import { checkAllQuestionFields } from "@/helper-functions/check-all-questions";
+import { checkValidEmail } from "@/helper-functions/check-valid-email";
 
 interface ShowFormProps {
   formUUID: string;
@@ -163,6 +164,20 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
       .padStart(2, "0")}`;
   };
 
+  const handleStartTimer = () => {
+    if (checkValidEmail(email)) {
+      let timeOutMinutes = parseInt(form.timeout);
+      setTimeOutModal(false);
+      setSeconds(60 * timeOutMinutes);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid Email",
+        description: "Must provide a valid email",
+      });
+    }
+  };
+
   return (
     <>
       {/* Time Out Modal */}
@@ -171,13 +186,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
         description={`You have ${form?.timeout} minutes to fill this form and submit it. Form will be submitted automatically if you fail to finish on time. Enter email in the field below to proceed. Note that the email will be used to submit your form, and It is required.`}
         title="Instruction"
         label="Proceed"
-        action={() => {
-          if (email.trim().length) {
-            let timeOutMinutes = parseInt(form.timeout);
-            setTimeOutModal(false);
-            setSeconds(60 * timeOutMinutes);
-          }
-        }}
+        action={handleStartTimer}
         close={() => {
           router.push("/");
         }}

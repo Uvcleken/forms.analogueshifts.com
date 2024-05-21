@@ -162,7 +162,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
             })}
           </RadioGroup>
         )}
-        {item.type === "file" && (
+        {(item.type === "image" || item.type === "pdf") && (
           <div className="relative w-full h-max overflow-hidden rounded-3xl">
             {fileUploading && (
               <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-primary-boulder200/10">
@@ -175,7 +175,11 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
                 </div>
               </div>
             )}
-            <FileInput value={fileValue} setValue={uploadFile} />
+            <FileInput
+              value={fileValue}
+              setValue={uploadFile}
+              fileType={item.type}
+            />
           </div>
         )}
       </div>

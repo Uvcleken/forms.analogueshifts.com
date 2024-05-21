@@ -75,9 +75,7 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
                   await navigator.share({
                     title: form.title,
                     text: "Analogueshifts Forms",
-                    url:
-                      "https://forms.analogueshifts.com/forms/show/" +
-                      form.uuid,
+                    url: window.location.origin + "/forms/show/" + form.uuid,
                   });
                 } catch (error) {
                   toast({
