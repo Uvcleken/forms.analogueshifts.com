@@ -26,6 +26,8 @@ export default function LoginForm() {
       data: JSON.stringify({
         email: email,
         password: password,
+        device_token: crypto.randomUUID(),
+        device_type: "web",
       }),
     };
 
@@ -52,6 +54,7 @@ export default function LoginForm() {
       window.location.href = "/forms";
     } catch (error) {
       setLoading(false);
+
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
