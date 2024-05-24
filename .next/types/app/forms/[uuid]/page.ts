@@ -1,4 +1,4 @@
-// File: C:\Users\tesli\Desktop\projects\web\ANALOGUESHIFTS\forms\src\app\forms\[uuid]\page.tsx
+// File: C:\Users\tesli\Desktop\projects\web\analogueshifts\forms\src\app\forms\[uuid]\page.tsx
 import * as entry from '../../../../../src/app/forms/[uuid]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
