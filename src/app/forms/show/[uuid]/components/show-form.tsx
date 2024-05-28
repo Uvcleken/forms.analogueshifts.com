@@ -9,6 +9,7 @@ import { toggleArr } from "@/helper-functions/toggle-arr-value";
 import IdiomProof from "@/components/application/idiom-proof";
 import { checkAllQuestionFields } from "@/helper-functions/check-all-questions";
 import { checkValidEmail } from "@/helper-functions/check-valid-email";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface ShowFormProps {
   formUUID: string;
@@ -71,6 +72,9 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
       } else {
         setFormClosed(true);
       }
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   }
 
@@ -118,6 +122,9 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
         description: error.message,
       });
       setLoading(false);
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

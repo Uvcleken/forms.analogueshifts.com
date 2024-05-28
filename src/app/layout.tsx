@@ -23,6 +23,17 @@ export default function RootLayout({
       <body className={cn(roboto.className)}>
         {children}
         <Toaster />
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-FTVY2HD14L"
+        />
+
+        <Script id="my-script">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-FTVY2HD14L');
+            `}</Script>
         <Script src="https://kit.fontawesome.com/39a80cd06c.js" />
       </body>
     </html>

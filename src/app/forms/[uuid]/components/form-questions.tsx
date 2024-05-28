@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import AddQuestionForm from "./add-question-form";
 import FormFallbackLoading from "../../components/fallback-loading";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface FormQuestionsProps {
   uuid: string;
@@ -64,6 +65,9 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
         title: "Error Deleting Question",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 
@@ -112,6 +116,9 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
         title: "An error occured",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 
@@ -143,7 +150,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
               <AddQuestionForm
                 questionNumber={String(vetQuestions.length + 1)}
                 submitQuestion={(data) => {
-                  setVetQuestions((prev: any) => [data, ...prev]);
+                  setVetQuestions((prev: any) => [...prev, data]);
                 }}
               />
             </DialogContent>

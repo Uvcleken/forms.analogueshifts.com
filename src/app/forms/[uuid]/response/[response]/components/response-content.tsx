@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useToast } from "@/components/ui/use-toast";
 import ResponseDetails from "./response-details";
 import AnswerSection from "./answer-section";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface ResponseContentProps {
   uuid: string;
@@ -41,6 +42,9 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
         title: "Error fetching your Response",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

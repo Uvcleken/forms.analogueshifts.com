@@ -5,6 +5,7 @@ import FormFallbackLoading from "../../components/fallback-loading";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface FormDetailsProps {
   title: string;
@@ -82,6 +83,9 @@ const FormDetails: React.FC<FormDetailsProps> = ({
         title: "Error updating your form",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

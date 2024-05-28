@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import FormFallbackLoading from "../../components/fallback-loading";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 export default function CreateForm() {
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ export default function CreateForm() {
           title: "Form created successfully",
           description: "Reirecting you...",
         });
-        router.push("/forms");
+        router.push("/forms/" + response.data.data.form.uuid);
       }
     } catch (error: any) {
       toast({
@@ -78,6 +79,9 @@ export default function CreateForm() {
         description: error?.message,
       });
       setLoading(false);
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

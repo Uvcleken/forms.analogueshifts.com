@@ -8,13 +8,7 @@ import FormQuestions from "./form-questions";
 import { useToast } from "@/components/ui/use-toast";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
 import FormResponses from "./form-responses";
-import { RefreshCcw } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface FormContentProps {
   uuid: string;
@@ -52,6 +46,9 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
         title: "Error fetching your form",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 
@@ -74,6 +71,9 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
         title: "Error fetching your form Responses",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

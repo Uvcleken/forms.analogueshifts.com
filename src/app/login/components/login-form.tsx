@@ -41,7 +41,7 @@ export default function LoginForm() {
         ...response.data.data.user,
         token: response.data.data.token,
       });
-      Cookies.set("analogueshifts", userData, { expires: 0.5 });
+      Cookies.set("analogueshifts", userData);
       toast({
         variant: "default",
         title: "Login Successful",

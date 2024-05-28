@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface FormDetailsProps {
   details: any;
@@ -62,6 +63,9 @@ const ResponseDetails: React.FC<FormDetailsProps> = ({
         title: "Failed to update score",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   };
 

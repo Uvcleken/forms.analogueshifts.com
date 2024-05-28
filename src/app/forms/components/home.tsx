@@ -18,8 +18,8 @@ import { Plus } from "lucide-react";
 import FormGridTile from "./form-grid-tile";
 import IdiomProof from "@/components/application/idiom-proof";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import FormFallbackLoading from "./fallback-loading";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 export default function FormsDashboard() {
   const { toast } = useToast();
@@ -56,6 +56,9 @@ export default function FormsDashboard() {
           title: "Uh oh! Error fetching forms.",
           description: error.message,
         });
+        if (error.response.status === 401) {
+          clearUserSession();
+        }
       }
     );
   };
@@ -82,6 +85,9 @@ export default function FormsDashboard() {
           description: error.message,
         });
         setLoading(false);
+        if (error.response.status === 401) {
+          clearUserSession();
+        }
       }
     );
   };

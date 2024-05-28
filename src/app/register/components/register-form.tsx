@@ -45,7 +45,7 @@ export default function RegisterForm() {
         ...response.data[0].data.user,
         token: response.data[0].data.token,
       });
-      Cookies.set("analogueshifts", userData, { expires: 0.5 });
+      Cookies.set("analogueshifts", userData);
       toast({
         variant: "default",
         title: "Account Created Successfully",

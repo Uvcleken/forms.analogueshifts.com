@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
+import { clearUserSession } from "@/helper-functions/clear-user-session";
 
 interface ShowResultProps {
   resultUUID: string;
@@ -36,6 +37,9 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
         title: "Error Fetching Result",
         description: error.message,
       });
+      if (error?.response?.status === 401) {
+        clearUserSession();
+      }
     }
   }
 
