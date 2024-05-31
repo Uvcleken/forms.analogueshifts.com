@@ -96,7 +96,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
               "radio",
               "checkbox",
               "image",
-              "pdf",
+              "file",
             ].map((option) => {
               return (
                 <SelectItem
@@ -134,7 +134,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
           )}
         </div>
       )}
-      {(type === "image" || type === "pdf") && (
+      {(type === "image" || type === "file") && (
         <div className="w-full flex flex-col gap-3 -z-10">
           <FileInput fileType={type} />
         </div>

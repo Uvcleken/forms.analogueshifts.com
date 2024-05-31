@@ -38,7 +38,8 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
             item.type === "short_text" ||
             item.type === "long_text" ||
             item.type === "radio" ||
-            item.type === "file"
+            item.type === "file" ||
+            item.type === "image"
           ) {
             return { ...item, answer: newValue };
           }

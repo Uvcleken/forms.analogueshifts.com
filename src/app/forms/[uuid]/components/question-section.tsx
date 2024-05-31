@@ -118,7 +118,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
               "radio",
               "checkbox",
               "image",
-              "pdf",
+              "file",
             ].map((option) => {
               return (
                 <option value={option} key={crypto.randomUUID()}>
@@ -156,7 +156,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
         )}
 
         {/* IF TYPE IS A FILE */}
-        {(data.type === "image" || data.type === "pdf") && (
+        {(data.type === "image" || data.type === "file") && (
           <div className="w-full flex flex-col gap-3 relative">
             <div className="absolute top-0 left-0 w-full h-full bg-transparent"></div>
             <FileInput fileType={data.type} />

@@ -24,7 +24,13 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    setInputValue(item.answer || "");
+    if (item.type === "file" || item.type === "image") {
+      if (item.answer) {
+        setFileValue({ name: JSON.parse(item.answer)?.name });
+      }
+    } else {
+      setInputValue(item.answer || "");
+    }
   }, [item.answer]);
 
   // Handle Input change
@@ -43,23 +49,26 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
     const axios = require("axios");
     const formData = new FormData();
     formData.append("upload", file);
-    formData.append("type", "image");
+    formData.append("type", item.type);
 
     let config = {
       method: "POST",
       url: url,
       headers: {
-        "Content-Type": "multipart/form-data",
         Accept: "application/json",
+        "Content-Type": "multipart/form-data",
       },
       data: formData,
     };
     setFileUploading(true);
     try {
       const data = await axios.request(config);
-      updateAnswerValue(item.number, data.data.data.path);
-      setFileValue(file);
       setFileUploading(false);
+      setFileValue(file);
+      updateAnswerValue(
+        item.number,
+        JSON.stringify({ path: data.data.data.full_path, name: file.name })
+      );
     } catch (error: any) {
       setFileUploading(false);
       toast({
@@ -162,7 +171,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
             })}
           </RadioGroup>
         )}
-        {(item.type === "image" || item.type === "pdf") && (
+        {(item.type === "image" || item.type === "file") && (
           <div className="relative w-full h-max overflow-hidden rounded-3xl">
             {fileUploading && (
               <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-primary-boulder200/10">

@@ -41,18 +41,18 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({ data }) => {
       )}
 
       {/* IF TYPE IS A FILE */}
-      {data.question.type === "file" && (
+      {(data.question.type === "file" || data.question.type === "image") && (
         <div className="w-full flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">
-            FILE URL
+            {data.question.type.toUpperCase()} URL
           </p>
 
           <a
-            href={data.answer.answer || ""}
+            href={JSON.parse(data.answer.answer)?.path || ""}
             target="_blank"
-            className="max-w-full w-full h-max min-h-24 pt-3  rounded-2xl px-5 border border-primary-boulder200 text-[13px] font-light text-primary-boulder950"
+            className="w-max h-max  rounded-2xl  text-[13px] font-light text-primary-boulder950 underline"
           >
-            {data.answer.answer || ""}
+            Open {data.question.type.toUpperCase()}
           </a>
         </div>
       )}

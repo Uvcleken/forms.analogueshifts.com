@@ -1,4 +1,4 @@
-// File: C:\Users\USER\Promise\AnalogueShifts\form.analogueshifts.com\src\app\forms\result\[uuid]\page.tsx
+// File: C:\Users\USER\Promise\AnalogueShifts\forms.analogueshifts.com\src\app\forms\result\[uuid]\page.tsx
 import * as entry from '../../../../../../src/app/forms/result/[uuid]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
