@@ -141,7 +141,7 @@ export default function FormsDashboard() {
                 <PaginationPrevious
                   href={
                     currentPageInfo?.prev_page_url
-                      ? currentPageInfo.prev_page_url.slice(34)
+                      ? "/forms" + currentPageInfo?.prev_page_url?.slice(45)
                       : ""
                   }
                 />
@@ -155,7 +155,7 @@ export default function FormsDashboard() {
                       <PaginationItem key={crypto.randomUUID()}>
                         <PaginationLink
                           isActive={item.active}
-                          href={item.url ? item.url.slice(34) : ""}
+                          href={item.url ? "/forms" + item?.url?.slice(45) : ""}
                         >
                           {item.label}
                         </PaginationLink>
@@ -170,7 +170,7 @@ export default function FormsDashboard() {
                 <PaginationNext
                   href={
                     currentPageInfo?.next_page_url
-                      ? currentPageInfo.next_page_url.slice(34)
+                      ? "/forms" + currentPageInfo?.next_page_url?.slice(45)
                       : ""
                   }
                 />
