@@ -22,12 +22,13 @@ export default function LoginForm() {
       url: url,
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
+        secret_key: process.env.NEXT_PUBLIC_SECRET_KEY,
       },
       data: JSON.stringify({
         email: email,
         password: password,
         device_token: crypto.randomUUID(),
-        device_type: "web",
       }),
     };
 
@@ -37,10 +38,7 @@ export default function LoginForm() {
     // Make Request
     try {
       const response = await axios.request(config);
-      const userData = JSON.stringify({
-        ...response.data.data.user,
-        token: response.data.data.token,
-      });
+      const userData = JSON.stringify(response.data.data);
       Cookies.set("analogueshifts", userData);
       toast({
         variant: "default",

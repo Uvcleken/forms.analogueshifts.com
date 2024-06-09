@@ -10,6 +10,7 @@ import {
   Phone,
   Share,
   Table,
+  XCircle,
 } from "lucide-react";
 
 import {
@@ -53,21 +54,30 @@ export default function ProfileDropdown({ user, logout }: any) {
         <DropdownMenuGroup>
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2">
             <User className="mr-2 h-4 w-4" />
-            <span>{user?.name}</span>
+            <span>
+              {user?.user?.first_name}{" "}
+              {user?.user?.last_name && " " + user.user.last_name}
+            </span>
           </DropdownMenuItem>
-          {user?.tel && (
+          {user?.user?.tel && (
             <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
               <Phone className="mr-2 h-4 w-4" />
-              <span>{user.tel}</span>
+              <span>{user.user.tel}</span>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
             <Mail className="mr-2 h-4 w-4" />
-            <span className="truncate">{user?.email}</span>
+            <span className="truncate">{user?.user?.email}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-            <CheckCircle className="mr-2 h-4 w-4" />
-            <span>{user?.email_verified_at ? "Verified" : "Un-verified"}</span>
+            {user?.user?.email_verified_at ? (
+              <CheckCircle className="mr-2 h-4 w-4" />
+            ) : (
+              <XCircle className="mr-2 h-4 w-4" />
+            )}
+            <span>
+              {user?.user?.email_verified_at ? "Verified" : "Un-verified"}
+            </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

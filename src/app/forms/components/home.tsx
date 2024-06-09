@@ -164,9 +164,6 @@ export default function FormsDashboard() {
                   })}
 
               <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
                 <PaginationNext
                   href={
                     currentPageInfo?.next_page_url

@@ -11,7 +11,8 @@ import FormInput from "@/components/application/form-input";
 export default function RegisterForm() {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,15 +24,17 @@ export default function RegisterForm() {
       method: "POST",
       url: url,
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
+        secret_key: process.env.NEXT_PUBLIC_SECRET_KEY,
       },
       data: JSON.stringify({
-        name: name,
+        first_name: firstName,
+        last_name: lastName,
         email: email,
         password: password,
         password_confirmation: confirm_password,
         device_token: crypto.randomUUID(),
-        device_type: "web",
       }),
     };
 
@@ -41,27 +44,28 @@ export default function RegisterForm() {
     // Make Request
     try {
       const response = await axios.request(config);
-      const userData = JSON.stringify({
-        ...response.data[0].data.user,
-        token: response.data[0].data.token,
-      });
-      Cookies.set("analogueshifts", userData);
-      toast({
-        variant: "default",
-        title: "Account Created Successfully",
-        description: "Reirecting you...",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-        },
-      });
-      window.location.href = "/forms";
-    } catch (error) {
+
+      if (response.data[0].status) {
+        const userData = JSON.stringify(response.data[0].data);
+        Cookies.set("analogueshifts", userData);
+        toast({
+          variant: "default",
+          title: "Account Created Successfully",
+          description: "Reirecting you...",
+          style: {
+            backgroundColor: "green",
+            color: "white",
+          },
+        });
+        window.location.href = "/forms";
+      }
+      setLoading(false);
+    } catch (error: any) {
       setLoading(false);
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        description: error.message,
         action: (
           <ToastAction altText="Try again" onClick={makeRequest}>
             Try again
@@ -100,10 +104,18 @@ export default function RegisterForm() {
             <FormInput
               icon="fa-solid fa-signature"
               type="text"
-              onChange={(e) => setName(e.target.value)}
-              label="Name"
-              placeholder="Name"
-              value={name}
+              onChange={(e) => setFirstName(e.target.value)}
+              label="First Name"
+              placeholder="First Name"
+              value={firstName}
+            />
+            <FormInput
+              icon="fa-solid fa-signature"
+              type="text"
+              onChange={(e) => setLastName(e.target.value)}
+              label="Last Name"
+              placeholder="Last Name"
+              value={lastName}
             />
             <FormInput
               icon="fa-solid fa-envelope"
