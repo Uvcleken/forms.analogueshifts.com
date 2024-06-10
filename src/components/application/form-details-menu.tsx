@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { deletePost } from "@/helper-functions/delete-post";
 import { useRouter } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 export default function FormDetailsDropdown({ user, form, setLoading }: any) {
-  const { toast } = useToast();
   const router = useRouter();
 
   // Delete A Vet by using the Form UUID
@@ -25,22 +25,20 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/delete/${form.uuid}`,
       user.token,
       () => {
-        toast({
-          variant: "default",
-          title: "Form deleted successfully",
-          style: {
-            backgroundColor: "green",
-            color: "white",
-          },
-        });
+        successToast(
+          "Form deleted successfully",
+
+          "Your Form has been deleted successfully"
+        );
         router.push("/forms");
       },
       (error: any) => {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Error deleting form.",
-          description: error.message,
-        });
+        errorToast(
+          "Uh oh! Error deleting form.",
+          error?.response?.data?.message ||
+            error.message ||
+            "Failed To Delete Form"
+        );
         setLoading(false);
         console.log(error);
       }
@@ -78,18 +76,16 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
                     url: window.location.origin + "/forms/show/" + form.uuid,
                   });
                 } catch (error) {
-                  toast({
-                    variant: "destructive",
-                    title: "Error sharing content",
-                    description: "There was a problem with your request.",
-                  });
+                  errorToast(
+                    "Error sharing content",
+                    "There was a problem with your request."
+                  );
                 }
               } else {
-                toast({
-                  variant: "destructive",
-                  title: "Sharing not supported on this device.",
-                  description: "There was a problem with your request.",
-                });
+                errorToast(
+                  "Sharing not supported on this device.",
+                  "There was a problem with your request."
+                );
               }
             }}
           >

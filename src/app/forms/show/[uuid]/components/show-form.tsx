@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import RenderQuestion from "./render-question";
 import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
@@ -10,6 +9,7 @@ import IdiomProof from "@/components/application/idiom-proof";
 import { checkAllQuestionFields } from "@/helper-functions/check-all-questions";
 import { checkValidEmail } from "@/helper-functions/check-valid-email";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface ShowFormProps {
   formUUID: string;
@@ -24,7 +24,6 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
   const [timeOutModal, setTimeOutModal] = useState(false);
   const [seconds, setSeconds]: any = useState(null);
   const [email, setEmail] = useState("");
-  const { toast } = useToast();
   const router = useRouter();
 
   // Update The value of the Form
@@ -65,11 +64,12 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
     } catch (error: any) {
       setLoading(false);
       if (error.response.data.message !== "Form closed") {
-        toast({
-          variant: "destructive",
-          title: "Error Fetching Form",
-          description: error.message,
-        });
+        errorToast(
+          "Error Fetching Form",
+          error?.response?.data?.message ||
+            error.message ||
+            "Failed To Fetch Form"
+        );
       } else {
         setFormClosed(true);
       }
@@ -117,11 +117,12 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
       setLoading(false);
       setFormSubmitted(true);
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error submiting response",
-        description: error.message,
-      });
+      errorToast(
+        "Error submiting response",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Submit Response"
+      );
       setLoading(false);
       if (error?.response?.status === 401) {
         clearUserSession();
@@ -178,11 +179,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
       setTimeOutModal(false);
       setSeconds(60 * timeOutMinutes);
     } else {
-      toast({
-        variant: "destructive",
-        title: "Invalid Email",
-        description: "Must provide a valid email",
-      });
+      errorToast("Invalid Email", "Must provide a valid email");
     }
   };
 
@@ -221,7 +218,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
           onKeyDown={handleKeyDown}
           onSubmit={(e: any) => {
             e.preventDefault();
-            if (checkAllQuestionFields(questions, toast)) {
+            if (checkAllQuestionFields(questions, errorToast)) {
               handleSubmit();
             }
           }}

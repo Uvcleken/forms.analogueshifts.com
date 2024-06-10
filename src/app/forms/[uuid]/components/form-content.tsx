@@ -5,10 +5,11 @@ import Cookies from "js-cookie";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormDetails from "./form-details";
 import FormQuestions from "./form-questions";
-import { useToast } from "@/components/ui/use-toast";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
 import FormResponses from "./form-responses";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface FormContentProps {
   uuid: string;
@@ -20,7 +21,6 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const [form, setForm]: any = useState(null);
   const [questions, setQuestions] = useState([]);
   const [responses, setResponses] = useState([]);
-  const { toast } = useToast();
   const axios = require("axios");
 
   // Fetch Form
@@ -41,11 +41,12 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
         )
       );
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error fetching your form",
-        description: error.message,
-      });
+      errorToast(
+        "Error Fetching your Form",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Fetch Form"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }
@@ -66,11 +67,12 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
       const response = await axios.request(config);
       setResponses(response.data.data.response);
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error fetching your form Responses",
-        description: error.message,
-      });
+      errorToast(
+        "Error Fetching your Form Responses",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Fetch Form Responses"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

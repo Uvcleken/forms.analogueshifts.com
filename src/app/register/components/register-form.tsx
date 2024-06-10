@@ -1,15 +1,14 @@
 "use client";
 import ApplicationLogo from "@/components/application/application-logo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import FormInput from "@/components/application/form-input";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 export default function RegisterForm() {
-  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -17,7 +16,8 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const makeRequest = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/register";
     const axios = require("axios");
     let config = {
@@ -38,6 +38,12 @@ export default function RegisterForm() {
       }),
     };
 
+    // Check If Password and Confirm Password Match
+    if (password !== confirm_password) {
+      errorToast("Bad Input", "Password Must Match with Confirm Password");
+      return;
+    }
+
     // Start Loading Process
     setLoading(true);
 
@@ -48,45 +54,21 @@ export default function RegisterForm() {
       if (response.data[0].status) {
         const userData = JSON.stringify(response.data[0].data);
         Cookies.set("analogueshifts", userData);
-        toast({
-          variant: "default",
-          title: "Account Created Successfully",
-          description: "Reirecting you...",
-          style: {
-            backgroundColor: "green",
-            color: "white",
-          },
-        });
+        successToast(
+          "Account Created Successfully",
+          "Reirecting You to your Dashboard."
+        );
         window.location.href = "/forms";
       }
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: error.message,
-        action: (
-          <ToastAction altText="Try again" onClick={makeRequest}>
-            Try again
-          </ToastAction>
-        ),
-      });
+      errorToast(
+        "Uh oh! Something went wrong.",
+        error?.response?.data?.message || error.message || "Failed To Login"
+      );
     }
   };
-
-  function submit(e: any) {
-    e.preventDefault();
-    makeRequest();
-  }
-
-  useEffect((): any => {
-    const auth = Cookies.get("analogueshifts");
-    if (auth) {
-      window.location.href = "/forms";
-      return null;
-    }
-  }, []);
 
   return (
     <main className="w-full h-max min-h-screen mx-auto flex justify-center items-center px-5 py-10">
@@ -94,7 +76,7 @@ export default function RegisterForm() {
       <section className="max-w-full lg:w-[1000px] md:w-[800px]  flex justify-center items-center">
         <div className="lg:w-[450px] md:w-[350px] flex flex-col items-center">
           <ApplicationLogo />
-          <form onSubmit={submit} className="pt-11 w-full flex flex-col">
+          <form onSubmit={handleSubmit} className="pt-11 w-full flex flex-col">
             <p className="font-medium text-lg text-content-grayText pb-4">
               Welcome!
             </p>

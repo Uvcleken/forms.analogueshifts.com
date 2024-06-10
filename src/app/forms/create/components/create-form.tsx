@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect, FormEvent } from "react";
 import Cookies from "js-cookie";
-import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 export default function CreateForm() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,6 @@ export default function CreateForm() {
   const [timeout, setTimeoutValue] = useState("");
   const [deadline, setDeadline] = useState("");
   const [formattedDate, setFormattedDate] = useState("");
-  const { toast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -65,19 +65,19 @@ export default function CreateForm() {
       setLoading(true);
       const response = await axios.request(config);
       if (response.data.success) {
-        toast({
-          variant: "default",
-          title: "Form created successfully",
-          description: "Reirecting you...",
-        });
+        successToast(
+          "Form created successfully",
+          "Reirecting you to the Created Form"
+        );
         router.push("/forms/" + response.data.data.form.uuid);
       }
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error Creating Form",
-        description: error?.message,
-      });
+      errorToast(
+        "Error Creating Form",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Create Form"
+      );
       setLoading(false);
       if (error?.response?.status === 401) {
         clearUserSession();

@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface FormDetailsProps {
   details: any;
@@ -30,7 +31,6 @@ const ResponseDetails: React.FC<FormDetailsProps> = ({
   getResponse,
 }) => {
   const [score, setScore] = useState(details.score || "");
-  const { toast } = useToast();
   const axios = require("axios");
 
   const updateScore = async () => {
@@ -51,18 +51,16 @@ const ResponseDetails: React.FC<FormDetailsProps> = ({
       setLoading(true);
       await axios.request(config);
       await getResponse();
-      toast({
-        variant: "default",
-        title: "Score updated!",
-        description: "Your score has been updated.",
-      });
+      successToast("Score updated!", "Your score has been updated.");
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Failed to update score",
-        description: error.message,
-      });
+      errorToast(
+        "Failed to update score",
+
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To update Score"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

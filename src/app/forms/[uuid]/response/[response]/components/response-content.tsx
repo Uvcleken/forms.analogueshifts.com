@@ -2,10 +2,10 @@
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useToast } from "@/components/ui/use-toast";
 import ResponseDetails from "./response-details";
 import AnswerSection from "./answer-section";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface ResponseContentProps {
   uuid: string;
@@ -14,7 +14,6 @@ interface ResponseContentProps {
 const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser]: any = useState(null);
-  const { toast } = useToast();
   const axios = require("axios");
   const [response, setResponse] = useState(null);
   const [answers, setAnswers] = useState([]);
@@ -37,11 +36,12 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
       setAnswers(response.data.data.answers);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error fetching your Response",
-        description: error.message,
-      });
+      errorToast(
+        "Error fetching your Response",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To fetch Response"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

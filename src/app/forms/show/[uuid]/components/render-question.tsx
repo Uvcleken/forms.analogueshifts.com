@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import FileInput from "@/components/application/file-input";
-import { useToast } from "@/components/ui/use-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface RenderQuestionProps {
   item: any;
@@ -21,7 +21,6 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
   const [fileValue, setFileValue]: any = useState(null);
   const [inputValue, setInputValue] = useState(item.answer || "");
   const [fileUploading, setFileUploading] = useState(false);
-  const { toast } = useToast();
 
   useEffect(() => {
     if (item.type === "file" || item.type === "image") {
@@ -71,11 +70,12 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
       );
     } catch (error: any) {
       setFileUploading(false);
-      toast({
-        variant: "destructive",
-        title: "Error Uploading File",
-        description: error.message,
-      });
+      errorToast(
+        "Error Uploading File",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Upload File"
+      );
     }
   };
 

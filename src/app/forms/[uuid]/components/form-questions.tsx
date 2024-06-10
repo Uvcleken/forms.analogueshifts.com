@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Reorder } from "framer-motion";
 import QuestionSection from "./question-section";
-import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +12,8 @@ import {
 import AddQuestionForm from "./add-question-form";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface FormQuestionsProps {
   uuid: string;
@@ -27,7 +28,6 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
 }) => {
   const [vetQuestions, setVetQuestions]: any = useState(questions);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   // Delete A question From the Database
   const handleDeleteQuestion = async (questionUUID: string) => {
@@ -45,11 +45,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
       setLoading(true);
       // Delete Question
       await axios.request(config);
-      toast({
-        variant: "default",
-        title: "Question Deleted",
-        description: "Your question has been removed.",
-      });
+      successToast("Question Deleted", "Your question has been removed.");
 
       // Reset The state that holds our Questions
       setVetQuestions((prev: any) =>
@@ -60,11 +56,12 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error Deleting Question",
-        description: error.message,
-      });
+      errorToast(
+        "Error Deleting Question",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To delete Question"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }
@@ -103,19 +100,16 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     try {
       await axois.request(config);
       setLoading(false);
-      toast({
-        variant: "default",
-        title: "Form Updated",
-        description: "Your Form questions has been Updated",
-      });
+      successToast("Form Updated", "Your Form questions has been Updated");
       setVetQuestions(reOrderedQuestions);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "An error occured",
-        description: error.message,
-      });
+      errorToast(
+        "An error occured",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To update Form"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

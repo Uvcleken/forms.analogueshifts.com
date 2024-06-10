@@ -5,14 +5,13 @@ import ProfileDropdown from "./profile-dropdown";
 import AppsDropdown from "./apps-dropdown";
 import { useState } from "react";
 import Cookies from "js-cookie";
-import { useToast } from "../ui/use-toast";
 import IdiomProof from "./idiom-proof";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
+import { errorToast } from "@/helper-functions/error-toast";
 
 function AuthenticatedNavigation({ user }: any) {
   const [logoutModal, setLogoutModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const handleLogout = async () => {
     const axios = require("axios");
@@ -32,11 +31,7 @@ function AuthenticatedNavigation({ user }: any) {
       window.location.href = "/login";
     } catch (error) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error logging out",
-        description: "There was a problem with your request.",
-      });
+      errorToast("Error logging out", "There was a problem with your request.");
     }
   };
 

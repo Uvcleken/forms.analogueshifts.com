@@ -1,11 +1,12 @@
 "use client";
-import { useState, useEffect, FormEvent } from "react";
+import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface FormDetailsProps {
   title: string;
@@ -36,7 +37,6 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   user,
   uuid,
 }) => {
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [titleValue, setTitleValue] = useState(title);
@@ -71,18 +71,15 @@ const FormDetails: React.FC<FormDetailsProps> = ({
     try {
       await axios.request(config);
       setLoading(false);
-      toast({
-        variant: "default",
-        title: "Form updated",
-        description: "Your form has been updated successfully",
-      });
+      successToast("Form updated", "Your form has been updated successfully");
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error updating your form",
-        description: error.message,
-      });
+      errorToast(
+        "Error updating your form",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To update Form"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

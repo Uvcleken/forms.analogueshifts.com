@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import Cookies from "js-cookie";
 import { fetchVetPosts } from "@/helper-functions/fetch-form";
 import { deletePost } from "@/helper-functions/delete-post";
@@ -20,9 +19,10 @@ import IdiomProof from "@/components/application/idiom-proof";
 import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "./fallback-loading";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { successToast } from "@/helper-functions/success-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 export default function FormsDashboard() {
-  const { toast } = useToast();
   const router = useRouter();
   const [user, setUser]: any = useState(null);
   const [idiomModal, setIdiomModal] = useState(false);
@@ -51,11 +51,12 @@ export default function FormsDashboard() {
       },
       (error: any) => {
         setLoading(false);
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Error fetching forms.",
-          description: error.message,
-        });
+        errorToast(
+          "Uh oh! Error fetching forms.",
+          error?.response?.data?.message ||
+            error.message ||
+            "Failed To Fetch Forms"
+        );
         if (error.response.status === 401) {
           clearUserSession();
         }
@@ -71,19 +72,16 @@ export default function FormsDashboard() {
       user.token,
       () => {
         fetchVets();
-        toast({
-          variant: "default",
-          title: "Form deleted",
-          description: "Your form has been deleted successfully",
-        });
+        successToast("Form deleted", "Your form has been deleted successfully");
         setIdToBeDeleted(null);
       },
       (error: any) => {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Error deleting form.",
-          description: error.message,
-        });
+        errorToast(
+          "Uh oh! Error deleting form.",
+          error?.response?.data?.message ||
+            error.message ||
+            "Failed To Delete Form"
+        );
         setLoading(false);
         if (error.response.status === 401) {
           clearUserSession();

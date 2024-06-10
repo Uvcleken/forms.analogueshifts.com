@@ -29,11 +29,10 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ProfileImage from "@/assets/images/profile_avatar.jpg";
-import { useToast } from "../ui/use-toast";
+import { errorToast } from "@/helper-functions/error-toast";
 
 export default function ProfileDropdown({ user, logout }: any) {
   const router = useRouter();
-  const { toast } = useToast();
 
   return (
     <DropdownMenu>
@@ -100,18 +99,16 @@ export default function ProfileDropdown({ user, logout }: any) {
                           url: window.location.origin,
                         });
                       } catch (error) {
-                        toast({
-                          variant: "destructive",
-                          title: "Error sharing content",
-                          description: "There was a problem with your request.",
-                        });
+                        errorToast(
+                          "Error sharing content",
+                          "There was a problem with your request."
+                        );
                       }
                     } else {
-                      toast({
-                        variant: "destructive",
-                        title: "Sharing not supported on this device.",
-                        description: "There was a problem with your request.",
-                      });
+                      errorToast(
+                        "Sharing not supported on this device.",
+                        "There was a problem with your request."
+                      );
                     }
                   }}
                 >

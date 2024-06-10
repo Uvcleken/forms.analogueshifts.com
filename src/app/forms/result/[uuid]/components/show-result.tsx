@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { clearUserSession } from "@/helper-functions/clear-user-session";
+import { errorToast } from "@/helper-functions/error-toast";
 
 interface ShowResultProps {
   resultUUID: string;
@@ -12,7 +12,6 @@ interface ShowResultProps {
 
 const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   async function getResult() {
@@ -32,11 +31,12 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error Fetching Result",
-        description: error.message,
-      });
+      errorToast(
+        "Error Fetching Result",
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed To Fetch Result"
+      );
       if (error?.response?.status === 401) {
         clearUserSession();
       }

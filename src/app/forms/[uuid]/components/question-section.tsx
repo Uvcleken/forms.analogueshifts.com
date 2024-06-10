@@ -16,9 +16,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import EditQuestionForm from "./edit-question-form";
 import FileInput from "@/components/application/file-input";
-import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import LoadingSpinner from "@/components/application/loading-spinner";
+import { successToast } from "@/helper-functions/success-toast";
 
 interface QuestionSectionProps {
   data: any;
@@ -32,7 +32,6 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
   handleDeleteQuestion,
 }) => {
   const controls = useDragControls();
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   // Removing a vet question
@@ -41,11 +40,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
       setFormQuestions((prev: any) =>
         prev.filter((item: any) => item.number !== data.number)
       );
-      toast({
-        variant: "default",
-        title: "Question Deleted",
-        description: "Your question has been removed.",
-      });
+      successToast("Question Deleted", "Your question has been removed.");
     } else {
       handleDeleteQuestion(data.uuid);
     }
