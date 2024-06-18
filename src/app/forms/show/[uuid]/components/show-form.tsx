@@ -193,7 +193,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
         label="Proceed"
         action={handleStartTimer}
         close={() => {
-          router.push("/");
+          router.back();
         }}
         emailInput={true}
         onChangeEmailValue={(value: string) => setEmail(value)}

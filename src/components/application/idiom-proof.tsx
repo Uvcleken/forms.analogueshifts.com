@@ -9,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "../ui/input";
 
 interface IdiomProps {
@@ -40,12 +39,14 @@ const IdiomProof: React.FC<IdiomProps> = ({
           <AlertDialogTitle className="text-primary-boulder950">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogDescription className="text-sm text-primary-boulder700">
+            {description}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         {emailInput && (
           <Input
             type="email"
-            className="text-primary-boulder900"
+            className="text-primary-boulder900 placeholder:text-primary-boulder700"
             placeholder="Enter email"
             onChange={(e: any) => {
               onChangeEmailValue(e.target.value);
@@ -53,7 +54,12 @@ const IdiomProof: React.FC<IdiomProps> = ({
           />
         )}
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel
+            className="outline-white outline-none"
+            onClick={close}
+          >
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={action}
             className="bg-red-600 hover:bg-red-500"
