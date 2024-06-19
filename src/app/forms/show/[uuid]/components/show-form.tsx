@@ -158,7 +158,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
     }
     if (typeof seconds === "number") {
       const intervalId = setInterval(() => {
-        setSeconds((prev: any) => prev - 1);
+        // setSeconds((prev: number) => prev - 1);
       }, 1000);
       return () => clearInterval(intervalId);
     }
@@ -243,7 +243,6 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
                   </p>
                 )}
                 <input
-                  disabled={seconds !== null ? true : false}
                   required
                   type="email"
                   value={email}
