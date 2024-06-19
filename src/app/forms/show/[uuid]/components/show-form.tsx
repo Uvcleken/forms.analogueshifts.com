@@ -144,25 +144,25 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
   }, [formUUID]);
 
   // Check if there is a timeout
-  useEffect((): any => {
-    if (form?.timeout !== null && parseInt(form?.timeout)) {
-      setTimeOutModal(true);
-    }
-  }, [form]);
+  // useEffect((): any => {
+  //   if (form?.timeout !== null && parseInt(form?.timeout)) {
+  //     setTimeOutModal(true);
+  //   }
+  // }, [form]);
 
   // Handle Timeout
-  useEffect(() => {
-    if (typeof seconds === "number" && seconds <= 0) {
-      handleSubmit();
-      return;
-    }
-    if (typeof seconds === "number") {
-      const intervalId = setInterval(() => {
-        // setSeconds((prev: number) => prev - 1);
-      }, 1000);
-      return () => clearInterval(intervalId);
-    }
-  }, [seconds]);
+  // useEffect(() => {
+  //   if (typeof seconds === "number" && seconds <= 0) {
+  //     handleSubmit();
+  //     return;
+  //   }
+  //   if (typeof seconds === "number") {
+  //     const intervalId = setInterval(() => {
+  //       setSeconds((prev: number) => prev - 1);
+  //     }, 1000);
+  //     return () => clearInterval(intervalId);
+  //   }
+  // }, [seconds]);
 
   // Function to format time as mm:ss
   const formatTime = (s: any) => {
