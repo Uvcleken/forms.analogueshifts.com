@@ -29,7 +29,7 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ProfileImage from "@/assets/images/profile_avatar.jpg";
-import { errorToast } from "@/helper-functions/error-toast";
+import { errorToast } from "@/utils/error-toast";
 
 export default function ProfileDropdown({ user, logout }: any) {
   const router = useRouter();

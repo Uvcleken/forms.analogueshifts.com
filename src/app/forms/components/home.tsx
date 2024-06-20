@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
-import { fetchVetPosts } from "@/helper-functions/fetch-form";
-import { deletePost } from "@/helper-functions/delete-post";
+import { fetchForms } from "@/utils/fetch-form";
+import { deletePost } from "@/utils/delete-post";
 import {
   Pagination,
   PaginationContent,
@@ -18,9 +18,9 @@ import FormGridTile from "./form-grid-tile";
 import IdiomProof from "@/components/application/idiom-proof";
 import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "./fallback-loading";
-import { clearUserSession } from "@/helper-functions/clear-user-session";
-import { successToast } from "@/helper-functions/success-toast";
-import { errorToast } from "@/helper-functions/error-toast";
+import { clearUserSession } from "@/utils/clear-user-session";
+import { successToast } from "@/utils/success-toast";
+import { errorToast } from "@/utils/error-toast";
 
 export default function FormsDashboard() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function FormsDashboard() {
   const fetchVets = () => {
     setLoading(true);
     // Fetch vet data from your API
-    fetchVetPosts(
+    fetchForms(
       getVetsUrl,
       user.token,
       (response) => {

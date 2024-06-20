@@ -19,6 +19,7 @@ interface IdiomProps {
   close: () => void;
   action: () => void;
   emailInput?: boolean;
+  emailValue?: string;
   onChangeEmailValue?: any;
 }
 
@@ -30,6 +31,7 @@ const IdiomProof: React.FC<IdiomProps> = ({
   action,
   close,
   emailInput,
+  emailValue,
   onChangeEmailValue,
 }) => {
   return (
@@ -51,6 +53,7 @@ const IdiomProof: React.FC<IdiomProps> = ({
             onChange={(e: any) => {
               onChangeEmailValue(e.target.value);
             }}
+            value={emailValue}
           />
         )}
         <AlertDialogFooter>

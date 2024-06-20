@@ -5,8 +5,8 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import FormInput from "@/components/application/form-input";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
-import { successToast } from "@/helper-functions/success-toast";
-import { errorToast } from "@/helper-functions/error-toast";
+import { successToast } from "@/utils/success-toast";
+import { errorToast } from "@/utils/error-toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

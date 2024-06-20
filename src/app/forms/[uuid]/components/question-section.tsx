@@ -18,7 +18,7 @@ import EditQuestionForm from "./edit-question-form";
 import FileInput from "@/components/application/file-input";
 import { useState } from "react";
 import LoadingSpinner from "@/components/application/loading-spinner";
-import { successToast } from "@/helper-functions/success-toast";
+import { successToast } from "@/utils/success-toast";
 
 interface QuestionSectionProps {
   data: any;

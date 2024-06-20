@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
-import { clearUserSession } from "@/helper-functions/clear-user-session";
-import { errorToast } from "@/helper-functions/error-toast";
+import { clearUserSession } from "@/utils/clear-user-session";
+import { errorToast } from "@/utils/error-toast";
 
 interface ShowResultProps {
   resultUUID: string;

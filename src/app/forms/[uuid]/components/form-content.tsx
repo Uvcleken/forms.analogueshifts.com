@@ -7,9 +7,9 @@ import FormDetails from "./form-details";
 import FormQuestions from "./form-questions";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
 import FormResponses from "./form-responses";
-import { clearUserSession } from "@/helper-functions/clear-user-session";
-import { successToast } from "@/helper-functions/success-toast";
-import { errorToast } from "@/helper-functions/error-toast";
+import { clearUserSession } from "@/utils/clear-user-session";
+import { successToast } from "@/utils/success-toast";
+import { errorToast } from "@/utils/error-toast";
 
 interface FormContentProps {
   uuid: string;

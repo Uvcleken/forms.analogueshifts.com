@@ -10,10 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deletePost } from "@/helper-functions/delete-post";
+import { deletePost } from "@/utils/delete-post";
 import { useRouter } from "next/navigation";
-import { successToast } from "@/helper-functions/success-toast";
-import { errorToast } from "@/helper-functions/error-toast";
+import { successToast } from "@/utils/success-toast";
+import { errorToast } from "@/utils/error-toast";
 
 export default function FormDetailsDropdown({ user, form, setLoading }: any) {
   const router = useRouter();

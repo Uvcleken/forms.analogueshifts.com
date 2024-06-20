@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import AddQuestionForm from "./add-question-form";
 import FormFallbackLoading from "../../components/fallback-loading";
-import { clearUserSession } from "@/helper-functions/clear-user-session";
-import { successToast } from "@/helper-functions/success-toast";
-import { errorToast } from "@/helper-functions/error-toast";
+import { clearUserSession } from "@/utils/clear-user-session";
+import { successToast } from "@/utils/success-toast";
+import { errorToast } from "@/utils/error-toast";
 
 interface FormQuestionsProps {
   uuid: string;

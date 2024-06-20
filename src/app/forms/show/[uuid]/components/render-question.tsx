@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import FileInput from "@/components/application/file-input";
-import { errorToast } from "@/helper-functions/error-toast";
+import { errorToast } from "@/utils/error-toast";
 
 interface RenderQuestionProps {
   item: any;
@@ -27,7 +27,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
       if (item.answer) {
         setFileValue({ name: JSON.parse(item.answer)?.name });
       }
-    } else {
+    } else if (item.type === "short_text" || item.type === "long_text") {
       setInputValue(item.answer || "");
     }
   }, [item.answer]);

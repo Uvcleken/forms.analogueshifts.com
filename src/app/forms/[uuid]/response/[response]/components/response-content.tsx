@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import ResponseDetails from "./response-details";
 import AnswerSection from "./answer-section";
-import { clearUserSession } from "@/helper-functions/clear-user-session";
-import { errorToast } from "@/helper-functions/error-toast";
+import { clearUserSession } from "@/utils/clear-user-session";
+import { errorToast } from "@/utils/error-toast";
 
 interface ResponseContentProps {
   uuid: string;
