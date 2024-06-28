@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import FormFallbackLoading from "../../components/fallback-loading";
-import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
+import { createForm } from "@/utils/create-form/create-form";
 
 export default function CreateForm() {
   const [loading, setLoading] = useState(false);
@@ -15,6 +13,7 @@ export default function CreateForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [multiResponseSwitch, setMultiResponseSwitch]: any = useState(false);
+  const [isTimeout, setIsTimeOut] = useState(false);
   const [timeout, setTimeoutValue] = useState("");
   const [deadline, setDeadline] = useState("");
   const [formattedDate, setFormattedDate] = useState("");
@@ -43,46 +42,16 @@ export default function CreateForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/create";
-    const axios = require("axios");
-    const config = {
-      method: "POST",
-      url: url,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + user.token,
-      },
-      data: {
-        title: title,
-        timeout: timeout.trim().length > 0 ? timeout : null,
-        deadline: formattedDate,
-        multi_response: multiResponseSwitch,
-        description: description,
-      },
-    };
-    try {
-      setLoading(true);
-      const response = await axios.request(config);
-      if (response.data.success) {
-        successToast(
-          "Form created successfully",
-          "Reirecting you to the Created Form"
-        );
-        router.push("/forms/" + response.data.data.form.uuid);
-      }
-    } catch (error: any) {
-      errorToast(
-        "Error Creating Form",
-        error?.response?.data?.message ||
-          error.message ||
-          "Failed To Create Form"
-      );
-      setLoading(false);
-      if (error?.response?.status === 401) {
-        clearUserSession();
-      }
-    }
+    createForm(
+      user,
+      title,
+      isTimeout ? timeout : null,
+      isTimeout ? formattedDate : null,
+      setLoading,
+      description,
+      multiResponseSwitch,
+      router
+    );
   };
 
   return (
@@ -97,6 +66,7 @@ export default function CreateForm() {
         className="w-full flex flex-wrap gap-x-5 gap-y-5"
       >
         {" "}
+        {/* Multi Response Switch */}
         <div className="w-full md:w-[calc(20%-10px)] flex flex-col gap-4">
           <p className="text-sm font-normal text-primary-boulder400">
             MULTI RESPONSE
@@ -108,6 +78,7 @@ export default function CreateForm() {
             />
           </div>
         </div>
+        {/* Title */}
         <div className="w-full md:w-[calc(80%-10px)] flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">TITLE</p>
           <input
@@ -119,29 +90,7 @@ export default function CreateForm() {
             className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
           />
         </div>
-        <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p className="text-sm font-normal text-primary-boulder400">
-            TIME OUT (In Minutes)
-          </p>
-          <input
-            type="number"
-            value={timeout}
-            onChange={(e) => setTimeoutValue(e.target.value)}
-            className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-          />
-        </div>
-        <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p className="text-sm font-normal text-primary-boulder400">
-            DEADLINE
-          </p>
-          <input
-            required
-            type="datetime-local"
-            value={deadline}
-            onChange={handleDateInputChange}
-            className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-          />
-        </div>
+        {/* Description */}
         <div className="w-full flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">
             DESCRIPTION
@@ -155,6 +104,45 @@ export default function CreateForm() {
             />
           </div>
         </div>
+        {/* Option for Timeout */}
+        <div className="w-full flex flex-wrap gap-4">
+          <p className="text-sm font-normal text-primary-boulder400">
+            SET TIMEOUT & DEADLINE
+          </p>
+          <Switch
+            checked={isTimeout}
+            onCheckedChange={(checked) => setIsTimeOut(checked)}
+          />
+        </div>
+        {/* TimeOut And DeadLine */}
+        {isTimeout && (
+          <>
+            <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+              <p className="text-sm font-normal text-primary-boulder400">
+                TIME OUT (In Minutes)
+              </p>
+              <input
+                type="number"
+                value={timeout}
+                onChange={(e) => setTimeoutValue(e.target.value)}
+                className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+              />
+            </div>
+            <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+              <p className="text-sm font-normal text-primary-boulder400">
+                DEADLINE
+              </p>
+              <input
+                required
+                type="datetime-local"
+                value={deadline}
+                onChange={handleDateInputChange}
+                className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+              />
+            </div>
+          </>
+        )}
+        {/* Submit Button */}
         <div className=" flex w-full">
           <input
             value="Create Form"

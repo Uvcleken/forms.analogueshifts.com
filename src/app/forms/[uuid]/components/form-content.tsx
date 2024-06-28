@@ -8,7 +8,6 @@ import FormQuestions from "./form-questions";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
 import FormResponses from "./form-responses";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
 import { errorToast } from "@/utils/error-toast";
 
 interface FormContentProps {
@@ -135,23 +134,6 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
         {/* Action Menu */}
         {form && (
           <div className="absolute h-11 right-0 top-0 flex items-center">
-            {/* <TabsContent value="responses">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      onClick={handleRefetchResponses}
-                      className="w-6 -mb-1 rounded-full hover:rotate-180 flex text-primary-boulder700 items-center justify-center duration-300 cursor-pointer"
-                    >
-                      <RefreshCcw width={15} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Refresh Responses</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TabsContent> */}
             <FormDetailsDropdown
               user={user}
               form={form}

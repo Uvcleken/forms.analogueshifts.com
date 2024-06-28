@@ -59,6 +59,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
       },
       data: formData,
     };
+
     setFileUploading(true);
     try {
       const data = await axios.request(config);

@@ -4,29 +4,12 @@ import { Textarea } from "@/components/ui/textarea";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
-import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
 
-interface FormDetailsProps {
-  title: string;
-  description: string;
-  timeout: string;
-  multiResponse: string;
-  deadline: string;
-  user: any;
-  uuid: string;
-}
-
-const convertDateFormat = (date: string) => {
-  const dateStr = date;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    const formatted = `${dateStr} 00:00:00`;
-    return formatted;
-  } else {
-    return "";
-  }
-};
+import {
+  convertDateFormat,
+  FormDetailsProps,
+  updateForm,
+} from "@/utils/forms/forms-details";
 
 const FormDetails: React.FC<FormDetailsProps> = ({
   title,
@@ -38,7 +21,9 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   uuid,
 }) => {
   const [loading, setLoading] = useState(false);
-
+  const [isTimeout, setIsTimeOut] = useState(
+    timeout || deadline ? true : false
+  );
   const [titleValue, setTitleValue] = useState(title);
   const [descriptionValue, setDescriptionValue] = useState(description);
   const [multiResponseSwitch, setMultiResponseSwitch]: any = useState(
@@ -46,49 +31,26 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   );
   const [timeoutValue, setTimeoutValue] = useState(parseInt(timeout) || "");
   const [deadlineValue, setDeadlineValue] = useState(
-    deadline[0] ? convertDateFormat(deadline) : ""
+    deadline ? convertDateFormat(deadline) : ""
   );
 
-  const handleUpdateForm = async (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    const axios = require("axios");
-    let config = {
-      method: "PUT",
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/update/${uuid}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + user.token,
-      },
-      data: {
-        title: titleValue,
-        timeout: String(timeoutValue).trim().length > 0 ? timeoutValue : null,
-        deadline: deadlineValue,
-        multi_response: multiResponseSwitch ? "1" : "0",
-        description: descriptionValue,
-      },
-    };
-    setLoading(true);
-    try {
-      await axios.request(config);
-      setLoading(false);
-      successToast("Form updated", "Your form has been updated successfully");
-    } catch (error: any) {
-      setLoading(false);
-      errorToast(
-        "Error updating your form",
-        error?.response?.data?.message ||
-          error.message ||
-          "Failed To update Form"
-      );
-      if (error?.response?.status === 401) {
-        clearUserSession();
-      }
-    }
+    updateForm(
+      user,
+      uuid,
+      titleValue,
+      isTimeout ? timeoutValue : null,
+      isTimeout ? deadlineValue : null,
+      multiResponseSwitch,
+      descriptionValue,
+      setLoading
+    );
   };
 
   return (
     <form
-      onSubmit={handleUpdateForm}
+      onSubmit={handleSubmit}
       className="w-full flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-3xl"
     >
       {loading && (
@@ -96,6 +58,8 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           <FormFallbackLoading />
         </>
       )}
+
+      {/* Multi Response Switch */}
       <div className="w-full md:w-[calc(20%-10px)] flex flex-col gap-4">
         <p className="text-sm font-normal text-primary-boulder400">
           MULTI RESPONSE
@@ -107,6 +71,8 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           />
         </div>
       </div>
+
+      {/* Title */}
       <div className="w-full md:w-[calc(80%-10px)] flex flex-col gap-3">
         <p className="text-sm font-normal text-primary-boulder400">TITLE</p>
         <input
@@ -118,27 +84,8 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
         />
       </div>
-      <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-        <p className="text-sm font-normal text-primary-boulder400">
-          TIME OUT (In Minutes)
-        </p>
-        <input
-          type="number"
-          value={timeoutValue}
-          onChange={(e: any) => setTimeoutValue(e.target.value)}
-          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-        />
-      </div>
-      <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-        <p className="text-sm font-normal text-primary-boulder400">DEADLINE</p>
-        <input
-          required
-          type="datetime-local"
-          value={deadlineValue}
-          onChange={(e: any) => setDeadlineValue(e.target.value)}
-          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-        />
-      </div>
+
+      {/* Description */}
       <div className="w-full flex flex-col gap-3">
         <p className="text-sm font-normal text-primary-boulder400">
           DESCRIPTION
@@ -151,6 +98,48 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           />
         </div>
       </div>
+
+      {/* Option for Timeout */}
+      <div className="w-full flex flex-wrap gap-4">
+        <p className="text-sm font-normal text-primary-boulder400">
+          SET TIMEOUT & DEADLINE
+        </p>
+        <Switch
+          checked={isTimeout}
+          onCheckedChange={(checked) => setIsTimeOut(checked)}
+        />
+      </div>
+
+      {/* Timeout & Deadline */}
+      {isTimeout && (
+        <>
+          <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+            <p className="text-sm font-normal text-primary-boulder400">
+              TIME OUT (In Minutes)
+            </p>
+            <input
+              type="number"
+              value={timeoutValue}
+              onChange={(e: any) => setTimeoutValue(e.target.value)}
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+            />
+          </div>
+          <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+            <p className="text-sm font-normal text-primary-boulder400">
+              DEADLINE
+            </p>
+            <input
+              required
+              type="datetime-local"
+              value={deadlineValue}
+              onChange={(e: any) => setDeadlineValue(e.target.value)}
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+            />
+          </div>
+        </>
+      )}
+
+      {/* Submit Form */}
       <div className=" flex w-full">
         <input
           value="Save changes"
