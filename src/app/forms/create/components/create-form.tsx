@@ -145,7 +145,7 @@ export default function CreateForm() {
         {/* Submit Button */}
         <div className=" flex w-full">
           <input
-            value="Create Form"
+            value="Create Vet"
             type="submit"
             className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}
           />

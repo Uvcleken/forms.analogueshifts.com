@@ -100,7 +100,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
       <IdiomProof
         open={timeOutModal}
         emailValue={email}
-        description={`You have ${form?.timeout} minutes to fill this form and submit it. Form will be submitted automatically if you fail to finish on time. Enter email in the field below to proceed. Note that the email will be used to submit your form, and It is required.`}
+        description={`You have ${form?.timeout} minutes to fill this vet and submit it. Vet will be submitted automatically if you fail to finish on time. Enter email in the field below to proceed. Note that the email will be used to submit your vet, and It is required.`}
         title="Instruction"
         label="Proceed"
         action={() =>
@@ -118,11 +118,11 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
           <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-lightYellow mb-4">
             <div className="px-3 md:px-6 py-3 md:pt-6">
               <h1 className="text-4xl w-full mt-1.5 mb-5  text-primary-boulder950 font-semibold">
-                Form Closed
+                Vet Closed
               </h1>
               <div className="w-full border-b border-dotted mb-4"></div>
               <span className="text-base w-full  text-primary-boulder700">
-                This Form Is Closed
+                This Vet Is Closed
               </span>
             </div>
           </div>

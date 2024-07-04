@@ -52,12 +52,12 @@ export const updateForm = async (
   try {
     await axios.request(config);
     setLoading(false);
-    successToast("Form updated", "Your form has been updated successfully");
+    successToast("Vet updated", "Your vet has been updated successfully");
   } catch (error: any) {
     setLoading(false);
     errorToast(
       "Error updating your form",
-      error?.response?.data?.message || error.message || "Failed To update Form"
+      error?.response?.data?.message || error.message || "Failed To update Vet"
     );
     if (error?.response?.status === 401) {
       clearUserSession();

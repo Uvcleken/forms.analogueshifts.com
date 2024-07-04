@@ -24,12 +24,10 @@ export async function getForm(
     setLoading(false);
   } catch (error: any) {
     setLoading(false);
-    if (error.response.data.message !== "Form closed") {
+    if (error.response.data.message !== "Vet closed") {
       errorToast(
-        "Error Fetching Form",
-        error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Form"
+        "Error Fetching Vet",
+        error?.response?.data?.message || error.message || "Failed To Fetch Vet"
       );
     } else {
       setFormClosed(true);

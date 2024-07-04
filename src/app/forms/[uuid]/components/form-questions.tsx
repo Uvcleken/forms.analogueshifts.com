@@ -100,7 +100,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     try {
       await axois.request(config);
       setLoading(false);
-      successToast("Form Updated", "Your Form questions has been Updated");
+      successToast("Vet Updated", "Your Vet questions has been Updated");
       setVetQuestions(reOrderedQuestions);
     } catch (error: any) {
       setLoading(false);

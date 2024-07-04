@@ -34,10 +34,10 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
       },
       (error: any) => {
         errorToast(
-          "Uh oh! Error deleting form.",
+          "Uh oh! Error deleting vet.",
           error?.response?.data?.message ||
             error.message ||
-            "Failed To Delete Form"
+            "Failed To Delete Vet"
         );
         setLoading(false);
         console.log(error);

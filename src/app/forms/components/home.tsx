@@ -52,10 +52,10 @@ export default function FormsDashboard() {
       (error: any) => {
         setLoading(false);
         errorToast(
-          "Uh oh! Error fetching forms.",
+          "Uh oh! Error fetching vets.",
           error?.response?.data?.message ||
             error.message ||
-            "Failed To Fetch Forms"
+            "Failed To Fetch Vets"
         );
         if (error.response.status === 401) {
           clearUserSession();
@@ -72,15 +72,15 @@ export default function FormsDashboard() {
       user.token,
       () => {
         fetchVets();
-        successToast("Form deleted", "Your form has been deleted successfully");
+        successToast("Vet deleted", "Your vet has been deleted successfully");
         setIdToBeDeleted(null);
       },
       (error: any) => {
         errorToast(
-          "Uh oh! Error deleting form.",
+          "Uh oh! Error deleting vet.",
           error?.response?.data?.message ||
             error.message ||
-            "Failed To Delete Form"
+            "Failed To Delete Vet"
         );
         setLoading(false);
         if (error.response.status === 401) {
