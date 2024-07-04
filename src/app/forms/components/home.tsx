@@ -184,7 +184,8 @@ export default function FormsDashboard() {
             type="submit"
             className="bg-background-lightYellow flex items-center gap-2 hover:bg-background-lightYellow/80"
           >
-            Create Form <Plus width={18} height={18} />
+            Create Vet
+            <Plus width={18} height={18} />
           </Button>
         </div>
       </div>
