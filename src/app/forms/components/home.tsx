@@ -2,12 +2,9 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
-import { fetchForms } from "@/utils/fetch-form";
-import { deletePost } from "@/utils/delete-post";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -18,87 +15,50 @@ import FormGridTile from "./form-grid-tile";
 import IdiomProof from "@/components/application/idiom-proof";
 import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "./fallback-loading";
-import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
+
+import { useForms } from "@/hooks/forms";
+import { useUser } from "@/contexts/user";
 
 export default function FormsDashboard() {
   const router = useRouter();
-  const [user, setUser]: any = useState(null);
   const [idiomModal, setIdiomModal] = useState(false);
   const pageQuery = useSearchParams().getAll("page");
   const [currentPageInfo, setCurrentPageInfo]: any = useState({});
   const [idToBeDeleted, setIdToBeDeleted]: any = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [getVetsUrl, setGetVetsUrl] = useState(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form${
-      pageQuery.length ? `?page=${pageQuery[0]}` : ""
-    }`
-  );
+
+  const { user } = useUser();
+  const { getForms, deleteForm } = useForms();
+
+  const getVetsUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form${
+    pageQuery.length ? `?page=${pageQuery[0]}` : ""
+  }`;
+
+  const token: any = Cookies.get("analogueshifts");
 
   //Fetch Vets
   const fetchVets = () => {
     setLoading(true);
     // Fetch vet data from your API
-    fetchForms(
-      getVetsUrl,
-      user.token,
-      (response) => {
-        setCurrentPageInfo(response.data.data.forms);
-        setData(response.data.data.forms.data);
-        setLoading(false);
-      },
-      (error: any) => {
-        setLoading(false);
-        errorToast(
-          "Uh oh! Error fetching vets.",
-          error?.response?.data?.message ||
-            error.message ||
-            "Failed To Fetch Vets"
-        );
-        if (error.response.status === 401) {
-          clearUserSession();
-        }
-      }
-    );
+    getForms({ setLoading, url: getVetsUrl, setData, setCurrentPageInfo });
   };
 
   // Delete A Vet by using the Vet Id
   const deleteVet = async () => {
-    setLoading(true);
-    deletePost(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/delete/${idToBeDeleted}`,
-      user.token,
-      () => {
-        fetchVets();
-        successToast("Vet deleted", "Your vet has been deleted successfully");
-        setIdToBeDeleted(null);
-      },
-      (error: any) => {
-        errorToast(
-          "Uh oh! Error deleting vet.",
-          error?.response?.data?.message ||
-            error.message ||
-            "Failed To Delete Vet"
-        );
-        setLoading(false);
-        if (error.response.status === 401) {
-          clearUserSession();
-        }
-      }
-    );
-  };
-
-  useEffect(() => {
-    let authSession = Cookies.get("analogueshifts");
-
-    if (!authSession) {
-      router.push("/login");
-    } else {
-      setUser(JSON.parse(authSession));
+    try {
+      await deleteForm({
+        setLoading,
+        setForms: setData,
+        setCurrentPageInfo,
+        getFormsUrl: getVetsUrl,
+        id: idToBeDeleted,
+      });
+      setIdToBeDeleted(null);
+    } catch (error) {
+      setLoading(false);
     }
-  }, []);
+  };
 
   // If the user session is active, fetch the users vets
   useEffect(() => {
@@ -174,11 +134,6 @@ export default function FormsDashboard() {
           </Pagination>
         </div>
         <div className="flex w-max gap-3">
-          {/* <Input
-            type="search"
-            placeholder="Filter forms..."
-            className="max-w-sm"
-          /> */}
           <Button
             onClick={() => router.push("/forms/create")}
             type="submit"

@@ -7,7 +7,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import IdiomProof from "./idiom-proof";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 
 function AuthenticatedNavigation({ user }: any) {
   const [logoutModal, setLogoutModal] = useState(false);

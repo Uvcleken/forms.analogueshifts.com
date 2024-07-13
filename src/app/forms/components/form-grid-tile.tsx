@@ -13,8 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
+import { shareContent } from "@/utils/share-content";
 
 interface FormGridTileProps {
   item: any;
@@ -25,25 +24,11 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
   const router = useRouter();
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: item.title,
-          text: "",
-          url: window.location.href + "/show/" + item.uuid,
-        });
-      } catch (error) {
-        successToast(
-          "Error sharing content",
-          "There was a problem with your request."
-        );
-      }
-    } else {
-      errorToast(
-        "Sharing not supported on this device.",
-        "There was a problem with your request."
-      );
-    }
+    shareContent(
+      item.title || "",
+      "",
+      window.location.href + "/show/" + item.uuid
+    );
   };
 
   return (

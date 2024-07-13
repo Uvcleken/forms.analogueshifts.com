@@ -14,8 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
+import { successToast } from "@/utils/toast";
+import { errorToast } from "@/utils/toast";
 
 interface FormDetailsProps {
   details: any;

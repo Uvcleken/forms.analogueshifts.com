@@ -4,7 +4,7 @@ import {
   checkValidEmail,
 } from "@/utils/show-form/helper-functions";
 import { useEffect, useRef, useState } from "react";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 import IdiomProof from "@/components/application/idiom-proof";
 
 export default function Countdown({

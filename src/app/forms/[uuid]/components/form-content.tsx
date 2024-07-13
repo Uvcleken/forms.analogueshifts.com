@@ -7,8 +7,9 @@ import FormDetails from "./form-details";
 import FormQuestions from "./form-questions";
 import FormDetailsDropdown from "@/components/application/form-details-menu";
 import FormResponses from "./form-responses";
-import { clearUserSession } from "@/utils/clear-user-session";
-import { errorToast } from "@/utils/error-toast";
+
+import { useUser } from "@/contexts/user";
+import { useForms } from "@/hooks/forms";
 
 interface FormContentProps {
   uuid: string;
@@ -16,72 +17,40 @@ interface FormContentProps {
 
 const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser]: any = useState(null);
   const [form, setForm]: any = useState(null);
   const [questions, setQuestions] = useState([]);
   const [responses, setResponses] = useState([]);
-  const axios = require("axios");
+
+  const { user }: any = useUser();
+  const { getForm, getResponses } = useForms();
+
+  const token = Cookies.get("analogueshifts");
 
   // Fetch Form
-  const getForm = async () => {
-    let config = {
-      method: "GET",
-      url: process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/" + uuid,
-      headers: {
-        Authorization: "Bearer " + user.token,
+  const fetchForm = async () => {
+    await getForm({
+      setLoading,
+      uuid,
+      setData: (response) => {
+        setForm(response.data.data.form);
+        setQuestions(
+          response.data.data.questions.sort(
+            (a: any, b: any) => parseInt(a.number) - parseInt(b.number)
+          )
+        );
       },
-    };
-    try {
-      const response = await axios.request(config);
-      setForm(response.data.data.form);
-      setQuestions(
-        response.data.data.questions.sort(
-          (a: any, b: any) => parseInt(a.number) - parseInt(b.number)
-        )
-      );
-    } catch (error: any) {
-      errorToast(
-        "Error Fetching your Form",
-        error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Form"
-      );
-      if (error?.response?.status === 401) {
-        clearUserSession();
-      }
-    }
+    });
   };
 
   // Fetch Responses
-  const getResponses = async () => {
-    let config = {
-      method: "GET",
-      url:
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/responses/" + uuid,
-      headers: {
-        Authorization: "Bearer " + user.token,
-      },
-    };
-    try {
-      const response = await axios.request(config);
-      setResponses(response.data.data.response);
-    } catch (error: any) {
-      errorToast(
-        "Error Fetching your Form Responses",
-        error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Form Responses"
-      );
-      if (error?.response?.status === 401) {
-        clearUserSession();
-      }
-    }
+  const fetchResponses = async () => {
+    await getResponses({ uuid, setData: setResponses });
   };
 
   const handleRefetchResponses = async () => {
     try {
       setLoading(true);
-      await getResponses();
+      await fetchResponses();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -92,23 +61,13 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const getData = async () => {
     try {
       setLoading(true);
-      await getForm();
-      await getResponses();
+      await fetchForm();
+      await fetchResponses();
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
   };
-
-  useEffect((): any => {
-    const auth = Cookies.get("analogueshifts");
-    if (!auth) {
-      window.location.href = "/login";
-      return null;
-    } else {
-      setUser(JSON.parse(auth));
-    }
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -134,11 +93,7 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
         {/* Action Menu */}
         {form && (
           <div className="absolute h-11 right-0 top-0 flex items-center">
-            <FormDetailsDropdown
-              user={user}
-              form={form}
-              setLoading={setLoading}
-            />
+            <FormDetailsDropdown form={form} setLoading={setLoading} />
           </div>
         )}
 
@@ -151,14 +106,17 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
               deadline={form.deadline}
               multiResponse={form.multi_response}
               timeout={form.timeout}
-              user={user}
               uuid={uuid}
             />
           )}
 
           {/* Form Questions */}
           {form && (
-            <FormQuestions uuid={uuid} user={user} questions={questions} />
+            <FormQuestions
+              token={token || ""}
+              uuid={uuid}
+              questions={questions}
+            />
           )}
         </TabsContent>
         <TabsContent value="responses">

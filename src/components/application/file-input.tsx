@@ -1,5 +1,5 @@
 "use client";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 import React, { useState, useRef, useEffect, Ref } from "react";
 
 interface FileInputProps {

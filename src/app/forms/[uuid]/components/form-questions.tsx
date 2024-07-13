@@ -12,18 +12,18 @@ import {
 import AddQuestionForm from "./add-question-form";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
+import { successToast } from "@/utils/toast";
+import { errorToast } from "@/utils/toast";
 
 interface FormQuestionsProps {
   uuid: string;
-  user: any;
+  token: string;
   questions: any;
 }
 
 const FormQuestions: React.FC<FormQuestionsProps> = ({
   uuid,
-  user,
+  token,
   questions,
 }) => {
   const [vetQuestions, setVetQuestions]: any = useState(questions);
@@ -38,7 +38,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
         process.env.NEXT_PUBLIC_BACKEND_URL +
         "/tools/form/question/delete/" +
         questionUUID,
-      headers: { Authorization: "Bearer " + user.token },
+      headers: { Authorization: "Bearer " + token },
     };
 
     try {
@@ -90,7 +90,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
         "/tools/form/question/store/" +
         uuid,
       headers: {
-        Authorization: "Bearer " + user.token,
+        Authorization: "Bearer " + token,
       },
       data: reOrderedQuestions,
     };

@@ -6,6 +6,8 @@ import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { UserProvider } from "@/contexts/user";
+
 const roboto = Roboto({ weight: "400", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
@@ -34,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(roboto.className)}>
-        {children}
+        <UserProvider>{children}</UserProvider>
         <ToastContainer position="top-center" />
         <Script
           async

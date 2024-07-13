@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import FileInput from "@/components/application/file-input";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 
 interface RenderQuestionProps {
   item: any;

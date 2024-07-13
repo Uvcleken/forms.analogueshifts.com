@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { toggleArr } from "@/utils/toggle-arr-value";
 import IdiomProof from "@/components/application/idiom-proof";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 import { getForm } from "@/utils/show-form/get-form";
 import { submitResponse } from "@/utils/show-form/submit-response";
 import {

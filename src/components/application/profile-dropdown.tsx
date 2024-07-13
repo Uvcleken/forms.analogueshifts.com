@@ -29,10 +29,18 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ProfileImage from "@/assets/images/profile_avatar.jpg";
-import { errorToast } from "@/utils/error-toast";
+import { shareContent } from "@/utils/share-content";
 
 export default function ProfileDropdown({ user, logout }: any) {
   const router = useRouter();
+
+  const share = () => {
+    shareContent(
+      "AnalogueShifts Vetting System",
+      "Build forms and analyze results, with AnalogueShifts Form",
+      window.location.origin
+    );
+  };
 
   return (
     <DropdownMenu>
@@ -54,29 +62,26 @@ export default function ProfileDropdown({ user, logout }: any) {
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2">
             <User className="mr-2 h-4 w-4" />
             <span>
-              {user?.user?.first_name}{" "}
-              {user?.user?.last_name && " " + user.user.last_name}
+              {user?.first_name} {user?.last_name && " " + user.last_name}
             </span>
           </DropdownMenuItem>
-          {user?.user?.tel && (
+          {user?.tel && (
             <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
               <Phone className="mr-2 h-4 w-4" />
-              <span>{user.user.tel}</span>
+              <span>{user?.tel}</span>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
             <Mail className="mr-2 h-4 w-4" />
-            <span className="truncate">{user?.user?.email}</span>
+            <span className="truncate">{user?.email}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-            {user?.user?.email_verified_at ? (
+            {user?.email_verified_at ? (
               <CheckCircle className="mr-2 h-4 w-4" />
             ) : (
               <XCircle className="mr-2 h-4 w-4" />
             )}
-            <span>
-              {user?.user?.email_verified_at ? "Verified" : "Un-verified"}
-            </span>
+            <span>{user?.email_verified_at ? "Verified" : "Un-verified"}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -90,27 +95,7 @@ export default function ProfileDropdown({ user, logout }: any) {
               <DropdownMenuSubContent>
                 <DropdownMenuItem
                   className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
-                  onClick={async () => {
-                    if (navigator.share) {
-                      try {
-                        await navigator.share({
-                          title: "AnalogueShifts Vetting System",
-                          text: "Build forms and analyze results, with AnalogueShifts Form",
-                          url: window.location.origin,
-                        });
-                      } catch (error) {
-                        errorToast(
-                          "Error sharing content",
-                          "There was a problem with your request."
-                        );
-                      }
-                    } else {
-                      errorToast(
-                        "Sharing not supported on this device.",
-                        "There was a problem with your request."
-                      );
-                    }
-                  }}
+                  onClick={share}
                 >
                   <Share className="mr-2 h-4 w-4" />
                   <span>Share</span>

@@ -5,7 +5,8 @@ import Cookies from "js-cookie";
 import ResponseDetails from "./response-details";
 import AnswerSection from "./answer-section";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
+import { useUser } from "@/contexts/user";
 
 interface ResponseContentProps {
   uuid: string;
@@ -13,10 +14,12 @@ interface ResponseContentProps {
 
 const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser]: any = useState(null);
+  const { user }: any = useUser();
   const axios = require("axios");
   const [response, setResponse] = useState(null);
   const [answers, setAnswers] = useState([]);
+
+  const token = Cookies.get("analogueshifts");
 
   // Fetch Response
   const getResponse = async () => {
@@ -24,7 +27,7 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
       method: "GET",
       url: process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/response/" + uuid,
       headers: {
-        Authorization: "Bearer " + user.token,
+        Authorization: "Bearer " + token || "",
       },
     };
 
@@ -48,16 +51,6 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
     }
   };
 
-  useEffect((): any => {
-    const auth = Cookies.get("analogueshifts");
-    if (!auth) {
-      window.location.href = "/login";
-      return null;
-    } else {
-      setUser(JSON.parse(auth));
-    }
-  }, []);
-
   useEffect(() => {
     if (user) {
       getResponse();
@@ -72,7 +65,7 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
           details={response}
           setLoading={setLoading}
           getResponse={getResponse}
-          userToken={user.token}
+          userToken={token || ""}
         />
       )}
       <div className="mt-6 w-full flex flex-col gap-5 pb-10">

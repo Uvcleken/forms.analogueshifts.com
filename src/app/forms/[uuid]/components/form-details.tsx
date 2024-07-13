@@ -8,8 +8,9 @@ import React from "react";
 import {
   convertDateFormat,
   FormDetailsProps,
-  updateForm,
 } from "@/utils/forms/forms-details";
+
+import { useForms } from "@/hooks/forms";
 
 const FormDetails: React.FC<FormDetailsProps> = ({
   title,
@@ -17,7 +18,6 @@ const FormDetails: React.FC<FormDetailsProps> = ({
   timeout,
   multiResponse,
   deadline,
-  user,
   uuid,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -34,18 +34,19 @@ const FormDetails: React.FC<FormDetailsProps> = ({
     deadline ? convertDateFormat(deadline) : ""
   );
 
+  const { updateForm } = useForms();
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    updateForm(
-      user,
+    updateForm({
+      title: titleValue,
+      description: descriptionValue,
+      deadline: isTimeout ? deadlineValue : null,
+      timeout: isTimeout ? timeoutValue : null,
+      multi_response: multiResponseSwitch,
+      setLoading,
       uuid,
-      titleValue,
-      isTimeout ? timeoutValue : null,
-      isTimeout ? deadlineValue : null,
-      multiResponseSwitch,
-      descriptionValue,
-      setLoading
-    );
+    });
   };
 
   return (

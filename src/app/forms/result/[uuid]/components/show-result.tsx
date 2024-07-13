@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { errorToast } from "@/utils/error-toast";
+import { errorToast } from "@/utils/toast";
 
 interface ShowResultProps {
   resultUUID: string;

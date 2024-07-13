@@ -1,15 +1,14 @@
 "use client";
-import { useState, useEffect, FormEvent } from "react";
-import Cookies from "js-cookie";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import FormFallbackLoading from "../../components/fallback-loading";
-import { createForm } from "@/utils/create-form/create-form";
+
+import { useForms } from "@/hooks/forms";
 
 export default function CreateForm() {
   const [loading, setLoading] = useState(false);
-  const [user, setUser]: any = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [multiResponseSwitch, setMultiResponseSwitch]: any = useState(false);
@@ -19,15 +18,7 @@ export default function CreateForm() {
   const [formattedDate, setFormattedDate] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    let authSession = Cookies.get("analogueshifts");
-
-    if (!authSession) {
-      router.push("/login");
-    } else {
-      setUser(JSON.parse(authSession));
-    }
-  }, []);
+  const { createForm } = useForms();
 
   const handleDateInputChange = (event: any) => {
     setDeadline(event.target.value);
@@ -42,16 +33,15 @@ export default function CreateForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createForm(
-      user,
+    createForm({
       title,
-      isTimeout ? timeout : null,
-      isTimeout ? formattedDate : null,
-      setLoading,
       description,
-      multiResponseSwitch,
-      router
-    );
+      router,
+      deadline: isTimeout ? formattedDate : null,
+      timeout: isTimeout ? timeout : null,
+      multi_response: multiResponseSwitch,
+      setLoading,
+    });
   };
 
   return (

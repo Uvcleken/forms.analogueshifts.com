@@ -10,38 +10,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deletePost } from "@/utils/delete-post";
 import { useRouter } from "next/navigation";
-import { successToast } from "@/utils/success-toast";
-import { errorToast } from "@/utils/error-toast";
 
-export default function FormDetailsDropdown({ user, form, setLoading }: any) {
+import { useForms } from "@/hooks/forms";
+import { shareContent } from "@/utils/share-content";
+
+export default function FormDetailsDropdown({ form, setLoading }: any) {
   const router = useRouter();
 
-  // Delete A Vet by using the Form UUID
-  const deleteForm = async () => {
-    setLoading(true);
-    deletePost(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/delete/${form.uuid}`,
-      user.token,
-      () => {
-        successToast(
-          "Form deleted successfully",
+  const { deleteForm } = useForms();
 
-          "Your Form has been deleted successfully"
-        );
-        router.push("/forms");
-      },
-      (error: any) => {
-        errorToast(
-          "Uh oh! Error deleting vet.",
-          error?.response?.data?.message ||
-            error.message ||
-            "Failed To Delete Vet"
-        );
-        setLoading(false);
-        console.log(error);
-      }
+  // Delete A Vet by using the Form UUID
+  const deletePost = async () => {
+    deleteForm({ id: form.uuid, setLoading, getFormsUrl: null });
+  };
+
+  const share = () => {
+    shareContent(
+      form.title || "",
+      "Analogueshifts Forms",
+      window.location.origin + "/forms/show/" + form.uuid
     );
   };
 
@@ -67,33 +55,13 @@ export default function FormDetailsDropdown({ user, form, setLoading }: any) {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
-            onClick={async () => {
-              if (navigator.share) {
-                try {
-                  await navigator.share({
-                    title: form.title,
-                    text: "Analogueshifts Forms",
-                    url: window.location.origin + "/forms/show/" + form.uuid,
-                  });
-                } catch (error) {
-                  errorToast(
-                    "Error sharing content",
-                    "There was a problem with your request."
-                  );
-                }
-              } else {
-                errorToast(
-                  "Sharing not supported on this device.",
-                  "There was a problem with your request."
-                );
-              }
-            }}
+            onClick={share}
           >
             <Share className="mr-2 h-4 w-4" />
             <span>Share</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={deleteForm}
+            onClick={deletePost}
             className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2"
           >
             <Trash className="mr-2 h-4 w-4" />
