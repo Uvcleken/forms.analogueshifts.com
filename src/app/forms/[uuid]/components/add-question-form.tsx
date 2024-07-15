@@ -67,6 +67,17 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
     });
   };
 
+  // This function checks if all required field has been entered
+  const validate = () => {
+    let checkType =
+      type === "radio" && answer.trim().length === 0 ? false : true;
+    if (question.trim().length > 0 && checkType) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -112,23 +123,33 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
         </Select>
       </div>
 
-      {(type === "short_text" || type === "long_text") && (
+      {(type === "short_text" || type === "long_text" || type === "radio") && (
         <div className="w-full flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">ANSWER</p>
 
-          {type === "long_text" ? (
+          {type === "long_text" && (
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="e.g “Frontend Development”"
               className="max-w-full w-full h-24 pt-3 rounded-2xl px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
             ></textarea>
-          ) : (
+          )}
+          {type === "short_text" && (
             <input
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="e.g “Frontend Development”"
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+            />
+          )}
+          {type === "radio" && (
+            <input
+              type="text"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              placeholder="e.g “Option One”"
               className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
             />
           )}
@@ -199,9 +220,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
       <div className="w-full mt-5 flex justify-end">
         <DialogClose
           className={`${
-            question.trim().length < 1
-              ? "-z-10 opacity-50"
-              : "z-auto opacity-100"
+            !validate() ? "-z-10 opacity-50" : "z-auto opacity-100"
           } duration-300`}
         >
           <Button

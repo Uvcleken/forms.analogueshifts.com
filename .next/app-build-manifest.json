@@ -21,25 +21,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/login/page.js"
     ],
-    "/forms/create/page": [
+    "/forms/result/[uuid]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/forms/create/page.js"
-    ],
-    "/forms/[uuid]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/forms/[uuid]/page.js"
+      "static/chunks/app/forms/result/[uuid]/page.js"
     ],
     "/forms/show/[uuid]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/forms/show/[uuid]/page.js"
     ],
+    "/forms/[uuid]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/forms/[uuid]/page.js"
+    ],
     "/forms/[uuid]/response/[response]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/forms/[uuid]/response/[response]/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

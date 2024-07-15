@@ -69,7 +69,7 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
         />
       )}
       <div className="mt-6 w-full flex flex-col gap-5 pb-10">
-        {answers[0] &&
+        {answers &&
           answers.map((item: any) => {
             return <AnswerSection key={crypto.randomUUID()} data={item} />;
           })}

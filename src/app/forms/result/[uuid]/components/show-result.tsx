@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
+import QuestionAndAnswer from "./question-and-answer";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
+
 import { clearUserSession } from "@/utils/clear-user-session";
 import { errorToast } from "@/utils/toast";
 
@@ -12,7 +13,7 @@ interface ShowResultProps {
 
 const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [response, setResponse]: any = useState(null);
 
   async function getResult() {
     const axios = require("axios");
@@ -27,7 +28,9 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
     try {
       setLoading(true);
       let response = await axios.request(config);
-      console.log(response);
+      if (response.data.success) {
+        setResponse(response.data.data.response);
+      }
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
@@ -43,6 +46,10 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
     }
   }
 
+  useEffect(() => {
+    getResult();
+  }, []);
+
   return (
     <>
       {loading && <FormFallbackLoading />}
@@ -53,10 +60,28 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
               Vet Result
             </h1>
             <div className="w-full border-b border-dotted mb-4"></div>
-            <span className="text-base w-full  text-primary-boulder700">
-              This Vet Is Closed
-            </span>
+            <span className="text-base w-full  text-primary-boulder700 ">
+              {response &&
+                `This is your answers and score for the form: ${response.form.title}`}
+            </span>{" "}
+            <p className="text-base w-full  text-primary-boulder700 mt-3">
+              {response && (
+                <span>
+                  Overall Score: <b>{response.score}</b>
+                </span>
+              )}
+            </p>
           </div>
+        </div>
+
+        {/* Answers */}
+        <div className="mt-6 w-full flex flex-col gap-5 pb-10">
+          {response &&
+            response?.form?.form_questions.map((item: any) => {
+              return (
+                <QuestionAndAnswer key={crypto.randomUUID()} data={item} />
+              );
+            })}
         </div>
       </div>
     </>
