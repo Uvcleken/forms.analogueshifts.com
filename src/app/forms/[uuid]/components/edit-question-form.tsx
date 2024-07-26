@@ -42,9 +42,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
   );
 
   // Update the value of an option
-  const updateOption: UpdateOption = (index, event) => {
+  const updateOption: UpdateOption = (index, newValue) => {
     const newItems: any = [...options];
-    newItems[index].value = event.target.value;
+    newItems[index].value = newValue;
     setOptions(newItems);
   };
 
@@ -177,7 +177,7 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
           {options.map((item: any, index: number) => {
             return (
               <div
-                key={crypto.randomUUID()}
+                key={index}
                 className="w-full flex justify-between items-cenFter"
               >
                 <div className="w-11/12 flex items-center gap-2.5">
@@ -187,8 +187,8 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
                     }`}
                   ></div>
                   <input
-                    onChange={(e) => updateOption(index, e)}
                     value={item.value}
+                    onChange={(e) => updateOption(index, e.target.value)}
                     className="w-[calc(100%-26px)] border-b focus:border-tremor-brand-boulder300/80 border-primary-boulder200/50 text-[13px] pb-1 px-1 font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-none"
                   />
                 </div>

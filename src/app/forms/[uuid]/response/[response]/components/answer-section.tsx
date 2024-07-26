@@ -67,10 +67,7 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({ data }) => {
           <RadioGroup defaultValue={data.answer.answer || ""}>
             {data.question.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={data.number} className="flex items-center space-x-2">
                   <RadioGroupItem
                     disabled
                     value={option.value || ""}
@@ -100,10 +97,7 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({ data }) => {
           <div className="w-full flex flex-col gap-2">
             {data.question.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={data.number} className="flex items-center space-x-2">
                   <Checkbox
                     id={data.number + option.value}
                     checked={data.answer.answer?.indexOf(option.value) > -1}

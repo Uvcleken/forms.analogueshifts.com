@@ -66,10 +66,7 @@ const QuestionAndAnswer: React.FC<QuestionAndAnswerProps> = ({ data }) => {
           <RadioGroup defaultValue={data?.form_answers[0]?.answer || ""}>
             {data?.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={data.number} className="flex items-center space-x-2">
                   <RadioGroupItem
                     disabled
                     value={option.value || ""}
@@ -99,10 +96,7 @@ const QuestionAndAnswer: React.FC<QuestionAndAnswerProps> = ({ data }) => {
           <div className="w-full flex flex-col gap-2">
             {data?.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={data.number} className="flex items-center space-x-2">
                   <Checkbox
                     id={data.number + option.value}
                     checked={

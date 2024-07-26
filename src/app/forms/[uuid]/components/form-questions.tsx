@@ -165,7 +165,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
             <QuestionSection
               handleDeleteQuestion={handleDeleteQuestion}
               data={item}
-              key={crypto.randomUUID()}
+              key={item.number}
               setFormQuestions={setVetQuestions}
             />
           ))}

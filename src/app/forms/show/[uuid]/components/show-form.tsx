@@ -184,7 +184,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
               {questions.map((item: any) => {
                 return (
                   <RenderQuestion
-                    key={crypto.randomUUID()}
+                    key={item.number}
                     item={item}
                     formUUID={formUUID}
                     updateAnswerValue={updateAnswerValue}

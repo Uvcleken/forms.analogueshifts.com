@@ -46,7 +46,7 @@ const FormResponses: React.FC<FormResponsesInterface> = ({
           {responses.map((item: any, index: number) => {
             return (
               <tr
-                key={crypto.randomUUID()}
+                key={item.created_at}
                 className={`w-full h-11 ${
                   index % 2 === 0 ? "bg-primary-boulder300/10" : ""
                 }`}

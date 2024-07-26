@@ -1,9 +1,8 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/forms/result/[uuid]/page": "app/forms/result/[uuid]/page.js",
-  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/forms/page": "app/forms/page.js",
   "/forms/[uuid]/page": "app/forms/[uuid]/page.js",
-  "/forms/[uuid]/response/[response]/page": "app/forms/[uuid]/response/[response]/page.js",
   "/forms/show/[uuid]/page": "app/forms/show/[uuid]/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/forms/[uuid]/response/[response]/page": "app/forms/[uuid]/response/[response]/page.js",
+  "/forms/create/page": "app/forms/create/page.js"
 }

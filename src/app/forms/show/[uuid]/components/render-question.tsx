@@ -119,10 +119,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
           <div className="w-full flex flex-col gap-2">
             {item.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={item.number} className="flex items-center space-x-2">
                   <Checkbox
                     id={item.number + option.value}
                     onCheckedChange={() =>
@@ -152,10 +149,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
           >
             {item.options.map((option: any) => {
               return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="flex items-center space-x-2"
-                >
+                <div key={item.number} className="flex items-center space-x-2">
                   <RadioGroupItem
                     checked={item.answer === option.value}
                     value={option.value}

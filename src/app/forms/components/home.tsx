@@ -110,7 +110,7 @@ export default function FormsDashboard() {
                   .slice(1, currentPageInfo.links.length - 1)
                   .map((item: any) => {
                     return (
-                      <PaginationItem key={crypto.randomUUID()}>
+                      <PaginationItem key={item.label}>
                         <PaginationLink
                           isActive={item.active}
                           href={item.url ? "/forms" + item?.url?.slice(45) : ""}
@@ -151,7 +151,7 @@ export default function FormsDashboard() {
           data.map((item: any) => {
             return (
               <FormGridTile
-                key={crypto.randomUUID()}
+                key={item.uuid}
                 item={item}
                 deleteForm={() => {
                   setIdToBeDeleted(item.uuid);

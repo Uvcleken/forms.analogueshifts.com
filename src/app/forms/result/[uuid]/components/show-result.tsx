@@ -78,9 +78,7 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
         <div className="mt-6 w-full flex flex-col gap-5 pb-10">
           {response &&
             response?.form?.form_questions.map((item: any) => {
-              return (
-                <QuestionAndAnswer key={crypto.randomUUID()} data={item} />
-              );
+              return <QuestionAndAnswer key={item.number} data={item} />;
             })}
         </div>
       </div>
