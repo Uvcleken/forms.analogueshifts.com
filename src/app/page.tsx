@@ -2,7 +2,11 @@
 import Link from "next/link";
 import GuestLayout from "@/components/layouts/guest";
 
+import Cookies from "js-cookie";
+
 export default function Home() {
+  const token = Cookies.get("analogueshifts");
+
   return (
     <GuestLayout>
       <main className="w-containerWidth max-w-desktop mx-auto pt-80 flex flex-col gap-6 items-center">
@@ -23,7 +27,7 @@ export default function Home() {
 
           <Link
             className="text-base font-medium py-3 px-10 duration-300 rounded-full bg-yellow-500 hover:scale-[1.02] text-white hover:ring-1 ring-yellow-500"
-            href="/forms"
+            href={token ? "/forms" : "/login"}
           >
             Get Started
           </Link>

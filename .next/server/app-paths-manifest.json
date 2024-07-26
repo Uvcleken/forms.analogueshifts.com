@@ -1,8 +1,4 @@
 {
   "/page": "app/page.js",
-  "/forms/page": "app/forms/page.js",
-  "/forms/[uuid]/page": "app/forms/[uuid]/page.js",
-  "/forms/show/[uuid]/page": "app/forms/show/[uuid]/page.js",
-  "/forms/[uuid]/response/[response]/page": "app/forms/[uuid]/response/[response]/page.js",
-  "/forms/create/page": "app/forms/create/page.js"
+  "/login/page": "app/login/page.js"
 }
