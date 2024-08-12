@@ -19,7 +19,9 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
   formUUID,
 }) => {
   const [fileValue, setFileValue]: any = useState(null);
-  const [inputValue, setInputValue] = useState(item.answer || "");
+  const [inputValue, setInputValue] = useState("");
+  const [radioValue, setRadioValue] = useState("");
+  const [checkboxValue, setCheckboxValue] = useState(null);
   const [fileUploading, setFileUploading] = useState(false);
 
   useEffect(() => {
@@ -27,10 +29,20 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
       if (item.answer) {
         setFileValue({ name: JSON.parse(item.answer)?.name });
       }
-    } else if (item.type === "short_text" || item.type === "long_text") {
-      setInputValue(item.answer || "");
     }
   }, [item.answer]);
+
+  useEffect(() => {
+    if (item.type === "radio") {
+      updateAnswerValue(item.number, radioValue);
+    }
+  }, [radioValue]);
+
+  useEffect(() => {
+    if (item.type === "checkbox") {
+      updateAnswerValue(item.number, checkboxValue);
+    }
+  }, [checkboxValue]);
 
   // Handle Input change
   const handleChange = (e: any) => {
@@ -117,18 +129,12 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
         )}
         {item.type === "checkbox" && (
           <div className="w-full flex flex-col gap-2">
-            {item.options.map((option: any) => {
+            {item.options.map((option: any, index: number) => {
               return (
-                <div key={item.number} className="flex items-center space-x-2">
+                <div key={index} className="flex items-center space-x-2">
                   <Checkbox
                     id={item.number + option.value}
-                    onCheckedChange={() =>
-                      updateAnswerValue(item.number, option.value)
-                    }
-                    checked={
-                      item.answer !== null &&
-                      item.answer.indexOf(option.value) > -1
-                    }
+                    onCheckedChange={() => setCheckboxValue(option.value)}
                   />
                   <label
                     htmlFor={item.number + option.value}
@@ -144,14 +150,13 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
         {item.type === "radio" && (
           <RadioGroup
             onValueChange={(value: string) => {
-              updateAnswerValue(item.number, value);
+              setRadioValue(value);
             }}
           >
-            {item.options.map((option: any) => {
+            {item.options.map((option: any, index: number) => {
               return (
-                <div key={item.number} className="flex items-center space-x-2">
+                <div key={index} className="flex items-center space-x-2">
                   <RadioGroupItem
-                    checked={item.answer === option.value}
                     value={option.value}
                     id={item.number + option.value}
                   />

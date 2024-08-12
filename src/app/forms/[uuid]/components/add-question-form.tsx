@@ -3,7 +3,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import FileInput from "@/components/application/file-input";
 import { DialogClose } from "@/components/ui/dialog";
 
 // Select
@@ -123,27 +122,10 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
         </Select>
       </div>
 
-      {(type === "short_text" || type === "long_text" || type === "radio") && (
+      {type === "radio" && (
         <div className="w-full flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400">ANSWER</p>
 
-          {type === "long_text" && (
-            <textarea
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              placeholder="e.g “Frontend Development”"
-              className="max-w-full w-full h-24 pt-3 rounded-2xl px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-            ></textarea>
-          )}
-          {type === "short_text" && (
-            <input
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              placeholder="e.g “Frontend Development”"
-              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-            />
-          )}
           {type === "radio" && (
             <input
               type="text"
@@ -155,11 +137,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
           )}
         </div>
       )}
-      {(type === "image" || type === "file") && (
-        <div className="w-full flex flex-col gap-3 -z-10">
-          <FileInput fileType={type} />
-        </div>
-      )}
+
       {(type === "radio" || type === "checkbox") && (
         <div className="w-full flex flex-col gap-3">
           <p className="text-sm font-normal text-primary-boulder400 mb-1">

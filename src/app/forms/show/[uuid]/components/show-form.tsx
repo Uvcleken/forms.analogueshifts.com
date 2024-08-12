@@ -200,6 +200,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
                   Clear form
                 </Button>
                 <Button
+                  onClick={() => console.log(questions)}
                   type="submit"
                   className="bg-background-lightYellow hover:bg-background-lightYellow/80 w-28"
                 >
