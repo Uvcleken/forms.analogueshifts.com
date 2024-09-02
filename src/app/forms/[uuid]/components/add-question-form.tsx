@@ -90,7 +90,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="e.g “What is your role?”"
-          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
         />
       </div>
       <div className="w-full md:w-[calc(35%-10px)] flex flex-col gap-3">
@@ -110,7 +110,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
             ].map((option) => {
               return (
                 <SelectItem
-                  className="focus:bg-background-lightYellow/10 py-2 text-xs text-primary-boulder900"
+                  className="focus:bg-background-darkYellow/10 py-2 text-xs text-primary-boulder900"
                   key={option}
                   value={option}
                 >
@@ -132,7 +132,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="e.g “Option One”"
-              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
             />
           )}
         </div>
@@ -203,7 +203,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
         >
           <Button
             type="submit"
-            className="bg-background-lightYellow hover:bg-background-lightYellow/80"
+            className="bg-background-darkYellow hover:bg-background-darkYellow/80"
           >
             Add Question
           </Button>

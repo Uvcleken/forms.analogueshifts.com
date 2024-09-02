@@ -11,12 +11,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import EditQuestionForm from "./edit-question-form";
 import { useState } from "react";
-import LoadingSpinner from "@/components/application/loading-spinner";
 import { successToast } from "@/utils/toast";
+import IdiomProof from "@/components/application/idiom-proof";
 
 interface QuestionSectionProps {
   data: any;
@@ -31,16 +30,26 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
 }) => {
   const controls = useDragControls();
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Removing a vet question
-  const removeVetQuestion = (data: any) => {
+  const removeVetQuestion = async () => {
     if (!data.uuid) {
       setFormQuestions((prev: any) =>
         prev.filter((item: any) => item.number !== data.number)
       );
       successToast("Question Deleted", "Your question has been removed.");
+      setShowModal(false);
     } else {
-      handleDeleteQuestion(data.uuid);
+      try {
+        setLoading(true);
+        await handleDeleteQuestion(data.uuid);
+        setLoading(false);
+        setShowModal(false);
+      } catch (error) {
+        setLoading(false);
+        setShowModal(false);
+      }
     }
   };
 
@@ -71,7 +80,15 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
       dragListener={false}
       dragControls={controls}
     >
-      {loading && <LoadingSpinner />}
+      <IdiomProof
+        open={showModal}
+        close={() => setShowModal(false)}
+        buttonLabel="Delete Question"
+        description="Are you sure you want to delete this question? This can not be undone."
+        title="Delete Question"
+        loading={loading}
+        action={() => removeVetQuestion()}
+      />
       <form className="w-full mt-5 flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] h-max px-4 lg:px-10 py-5 rounded-3xl">
         <div
           onPointerDown={(e) => controls.start(e)}
@@ -163,29 +180,12 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
           </button> */}
 
           {/* DELETE ACTION BUTTON */}
-          <Dialog>
-            <DialogTrigger>
-              <span className="text-xs font-normal text-red-600 border-none bg-transparent outline-none flex items-center gap-1">
-                <i className="fa-regular fa-trash-can text-sm"></i> REMOVE
-              </span>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="text-primary-boulder950">
-                  Are you sure you want to remove the Question:
-                </DialogTitle>
-                <DialogDescription>{data.question}</DialogDescription>
-              </DialogHeader>
-              <DialogTrigger className="w-max ml-auto">
-                <span
-                  onClick={() => removeVetQuestion(data)}
-                  className="bg-red-500 text-background-white300 px-5 py-2.5 rounded text-sm hover:bg-red-500/80"
-                >
-                  Delete Question
-                </span>
-              </DialogTrigger>
-            </DialogContent>
-          </Dialog>
+
+          <button type="button" onClick={() => setShowModal(true)}>
+            <span className="text-xs font-normal text-red-600 border-none bg-transparent outline-none flex items-center gap-1">
+              <i className="fa-regular fa-trash-can text-sm"></i> REMOVE
+            </span>
+          </button>
         </div>
       </form>
     </Reorder.Item>

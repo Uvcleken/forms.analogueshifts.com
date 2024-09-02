@@ -2,14 +2,13 @@
 import { useState, useEffect } from "react";
 import FormFallbackLoading from "../../components/fallback-loading";
 import Cookies from "js-cookie";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import FormDetails from "./form-details";
 import FormQuestions from "./form-questions";
-import FormDetailsDropdown from "@/components/application/form-details-menu";
-import FormResponses from "./form-responses";
 
 import { useUser } from "@/contexts/user";
 import { useForms } from "@/hooks/forms";
+import Link from "next/link";
 
 interface FormContentProps {
   uuid: string;
@@ -19,7 +18,6 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
   const [form, setForm]: any = useState(null);
   const [questions, setQuestions] = useState([]);
-  const [responses, setResponses] = useState([]);
 
   const { user }: any = useUser();
   const { getForm, getResponses } = useForms();
@@ -42,27 +40,11 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
     });
   };
 
-  // Fetch Responses
-  const fetchResponses = async () => {
-    await getResponses({ uuid, setData: setResponses });
-  };
-
-  const handleRefetchResponses = async () => {
-    try {
-      setLoading(true);
-      await fetchResponses();
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  };
-
   // Fetch Data Asynchronously
   const getData = async () => {
     try {
       setLoading(true);
       await fetchForm();
-      await fetchResponses();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -76,53 +58,39 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   }, [user]);
 
   return (
-    <main className="max-w-dashboard mt-1 w-[90%] mx-auto">
+    <main className="large:mt-[104px] mt-20 w-full max-w-[1400px] px-7 sm:px-[100px] large:px-[130px] mx-auto">
       {loading && (
         <>
           <FormFallbackLoading />
         </>
       )}
-      <Tabs defaultValue="questions" className="w-full relative">
-        <TabsList className="w-full flex justify-center bg-transparent">
-          <TabsTrigger value="questions">Questions</TabsTrigger>
-          <TabsTrigger onClick={handleRefetchResponses} value="responses">
-            Responses
-          </TabsTrigger>
-        </TabsList>
+      <div className="w-full mb-8 pt-3 flex justify-center gap-5">
+        <div className="text-sm pb-2 font-medium text-background-darkYellow border-b-2 cursor-pointer border-background-darkYellow px-2">
+          Questions
+        </div>
+        <Link
+          href={"/forms/responses/" + form?.uuid}
+          className="font-normal text-primary-boulder400 text-sm pb-2 px-2"
+        >
+          Responses
+        </Link>
+      </div>
 
-        {/* Action Menu */}
-        {form && (
-          <div className="absolute h-11 right-0 top-0 flex items-center">
-            <FormDetailsDropdown form={form} setLoading={setLoading} />
-          </div>
-        )}
-
-        <TabsContent value="questions" className="pt-5">
-          {/* Form Details */}
-          {form && (
-            <FormDetails
-              title={form.title}
-              description={form.description}
-              deadline={form.deadline}
-              multiResponse={form.multi_response}
-              timeout={form.timeout}
-              uuid={uuid}
-            />
-          )}
-
-          {/* Form Questions */}
-          {form && (
-            <FormQuestions
-              token={token || ""}
-              uuid={uuid}
-              questions={questions}
-            />
-          )}
-        </TabsContent>
-        <TabsContent value="responses">
-          <FormResponses responses={responses} formUUID={uuid} />
-        </TabsContent>
-      </Tabs>
+      {/* Form Details */}
+      {form && (
+        <FormDetails
+          title={form.title}
+          description={form.description}
+          deadline={form.deadline}
+          multiResponse={form.multi_response}
+          timeout={form.timeout}
+          uuid={uuid}
+        />
+      )}
+      {/* Form Questions */}
+      {form && (
+        <FormQuestions token={token || ""} uuid={uuid} questions={questions} />
+      )}
     </main>
   );
 };

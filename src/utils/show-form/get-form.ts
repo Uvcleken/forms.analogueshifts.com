@@ -1,4 +1,3 @@
-import { errorToast } from "../error-toast";
 import { clearUserSession } from "../clear-user-session";
 
 import { Dispatch, SetStateAction } from "react";
@@ -8,7 +7,8 @@ export async function getForm(
   setForm: Dispatch<SetStateAction<any>>,
   formUUID: string,
   setQuestions: Dispatch<SetStateAction<any[]>>,
-  setFormClosed: Dispatch<SetStateAction<boolean>>
+  setFormClosed: Dispatch<SetStateAction<boolean>>,
+  notifyUser: any
 ): Promise<void> {
   const axios = require("axios");
   const config = {
@@ -25,9 +25,13 @@ export async function getForm(
   } catch (error: any) {
     setLoading(false);
     if (error.response.data.message !== "Vet closed") {
-      errorToast(
-        "Error Fetching Vet",
-        error?.response?.data?.message || error.message || "Failed To Fetch Vet"
+      notifyUser(
+        "error",
+        error?.response?.data?.message ||
+          error?.response?.data?.data?.message ||
+          error.message ||
+          "Failed To Fetch Vet",
+        "right"
       );
     } else {
       setFormClosed(true);

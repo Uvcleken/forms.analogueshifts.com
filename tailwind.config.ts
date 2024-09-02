@@ -13,11 +13,14 @@ const config = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
     },
     extend: {
+      screens: {
+        "2xl": "1400px",
+        mobile: "500px",
+        tablet: { raw: "(max-width: 999px)" },
+        large: { raw: "(min-width: 1440px) and (min-height: 1040px)" },
+      },
       maxWidth: {
         desktop: "1200px",
         dashboard: "1050px",
@@ -44,6 +47,9 @@ const config = {
           brown: "#876307",
           lightYellow: "#D5AE35",
           white300: "#FEFEFE",
+          whisperGray: "#f8f7fa",
+          whisperWhite: "rgb(248, 247, 250)",
+          darkPurple: "rgba(30, 10, 60, 0.07)",
         },
         content: {
           subtle: "#9ca3af", // gray-400

@@ -4,8 +4,10 @@ import { useAuth } from "@/hooks/auth";
 import { useUser } from "@/contexts/user";
 
 import Cookies from "js-cookie";
-import AuthenticationNavigation from "../application/authenticated-navigation";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
+import GuestNavigation from "../application/guest-navigation";
+import LogoutConfirmation from "../application/logout-confirmation";
+import { usePathname } from "next/navigation";
 
 export default function AuthenticatedLayout({
   children,
@@ -15,27 +17,34 @@ export default function AuthenticatedLayout({
   const { user } = useUser();
   const { getUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [idiomModalDisplay, setIdiomModalDisplay] = useState(false);
+  const pathname = usePathname();
 
   const token = Cookies.get("analogueshifts");
 
   useEffect((): any => {
     // Redirect To Login if User is not Authenticated
     if (user === null && !token) {
-      window.location.pathname = "/login";
+      Cookies.set("RedirectionLink", pathname);
+      window.location.href = "https://auth.analogueshifts.app?app=main";
       return null;
     } else if (user === null && token) {
       //    Fetch User
-      getUser({ setLoading, layout: "authenticated" });
+      getUser({ setLoading, layout: "authenticated", token });
     }
   }, []);
 
   return (
-    <section
-      style={{ background: "rgb(243 244 246/1)" }}
-      className="w-full min-h-screen"
-    >
+    <section className="w-full min-h-screen">
       {loading && <FormFallbackLoading />}
-      <AuthenticationNavigation user={user} />
+      <LogoutConfirmation
+        close={() => setIdiomModalDisplay(false)}
+        open={idiomModalDisplay}
+      />
+      <GuestNavigation
+        user={user}
+        handleLogout={() => setIdiomModalDisplay(true)}
+      />
       {children}
     </section>
   );

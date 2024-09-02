@@ -45,102 +45,104 @@ export default function CreateForm() {
   };
 
   return (
-    <main className="w-containerWidth max-w-desktop mx-auto mt-5 flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-3xl">
-      {loading && (
-        <>
-          <FormFallbackLoading />
-        </>
-      )}
-      <form
-        onSubmit={handleSubmit}
-        className="w-full flex flex-wrap gap-x-5 gap-y-5"
-      >
-        {" "}
-        {/* Multi Response Switch */}
-        <div className="w-full md:w-[calc(20%-10px)] flex flex-col gap-4">
-          <p className="text-sm font-normal text-primary-boulder400">
-            MULTI RESPONSE
-          </p>
-          <div className="w-full">
-            <Switch
-              checked={multiResponseSwitch}
-              onCheckedChange={(checked) => setMultiResponseSwitch(checked)}
-            />
-          </div>
-        </div>
-        {/* Title */}
-        <div className="w-full md:w-[calc(80%-10px)] flex flex-col gap-3">
-          <p className="text-sm font-normal text-primary-boulder400">TITLE</p>
-          <input
-            required
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g “Getting to know you”"
-            className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-          />
-        </div>
-        {/* Description */}
-        <div className="w-full flex flex-col gap-3">
-          <p className="text-sm font-normal text-primary-boulder400">
-            DESCRIPTION
-          </p>
-          <div className="w-full">
-            <Textarea
-              required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="text-[13px] rounded-2xl px-5 border border-primary-boulder200 font-light placeholder:text-primary-boulder300 text-primary-boulder950"
-            />
-          </div>
-        </div>
-        {/* Option for Timeout */}
-        <div className="w-full flex flex-wrap gap-4">
-          <p className="text-sm font-normal text-primary-boulder400">
-            SET TIMEOUT & DEADLINE
-          </p>
-          <Switch
-            checked={isTimeout}
-            onCheckedChange={(checked) => setIsTimeOut(checked)}
-          />
-        </div>
-        {/* TimeOut And DeadLine */}
-        {isTimeout && (
+    <main className="large:mt-[124px] mt-24 w-full max-w-[1400px] px-7 sm:px-[100px] large:px-[130px] mx-auto">
+      {" "}
+      <div className="w-full flex flex-wrap gap-x-5 gap-y-5 bg-[#FEFEFE]  border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-3xl">
+        {loading && (
           <>
-            <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-              <p className="text-sm font-normal text-primary-boulder400">
-                TIME OUT (In Minutes)
-              </p>
-              <input
-                type="number"
-                value={timeout}
-                onChange={(e) => setTimeoutValue(e.target.value)}
-                className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-              />
-            </div>
-            <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-              <p className="text-sm font-normal text-primary-boulder400">
-                DEADLINE
-              </p>
-              <input
-                required
-                type="datetime-local"
-                value={deadline}
-                onChange={handleDateInputChange}
-                className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
-              />
-            </div>
+            <FormFallbackLoading />
           </>
         )}
-        {/* Submit Button */}
-        <div className=" flex w-full">
-          <input
-            value="Create Vet"
-            type="submit"
-            className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}
-          />
-        </div>
-      </form>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex flex-wrap gap-x-5 gap-y-5"
+        >
+          {" "}
+          {/* Multi Response Switch */}
+          <div className="w-full md:w-[calc(20%-10px)] flex flex-col gap-4">
+            <p className="text-sm font-normal text-primary-boulder400">
+              MULTI RESPONSE
+            </p>
+            <div className="w-full">
+              <Switch
+                checked={multiResponseSwitch}
+                onCheckedChange={(checked) => setMultiResponseSwitch(checked)}
+              />
+            </div>
+          </div>
+          {/* Title */}
+          <div className="w-full md:w-[calc(80%-10px)] flex flex-col gap-3">
+            <p className="text-sm font-normal text-primary-boulder400">TITLE</p>
+            <input
+              required
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g “Getting to know you”"
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
+            />
+          </div>
+          {/* Description */}
+          <div className="w-full flex flex-col gap-3">
+            <p className="text-sm font-normal text-primary-boulder400">
+              DESCRIPTION
+            </p>
+            <div className="w-full">
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="text-[13px] outline-1 outline-background-darkYellow w-full h-36 py-5 rounded-2xl px-5 border border-primary-boulder200 font-normal placeholder:text-primary-boulder300 text-primary-boulder950"
+              />
+            </div>
+          </div>
+          {/* Option for Timeout */}
+          <div className="w-full flex flex-wrap gap-4">
+            <p className="text-sm font-normal text-primary-boulder400">
+              SET TIMEOUT & DEADLINE
+            </p>
+            <Switch
+              checked={isTimeout}
+              onCheckedChange={(checked) => setIsTimeOut(checked)}
+            />
+          </div>
+          {/* TimeOut And DeadLine */}
+          {isTimeout && (
+            <>
+              <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+                <p className="text-sm font-normal text-primary-boulder400">
+                  TIME OUT (In Minutes)
+                </p>
+                <input
+                  type="number"
+                  value={timeout}
+                  onChange={(e) => setTimeoutValue(e.target.value)}
+                  className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
+                />
+              </div>
+              <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+                <p className="text-sm font-normal text-primary-boulder400">
+                  DEADLINE
+                </p>
+                <input
+                  required
+                  type="datetime-local"
+                  value={deadline}
+                  onChange={handleDateInputChange}
+                  className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
+                />
+              </div>
+            </>
+          )}
+          {/* Submit Button */}
+          <div className=" flex w-full">
+            <input
+              value="Create Vet"
+              type="submit"
+              className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-darkYellow rounded-full border-none cursor-pointer`}
+            />
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

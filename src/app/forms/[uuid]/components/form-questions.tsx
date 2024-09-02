@@ -42,7 +42,6 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     };
 
     try {
-      setLoading(true);
       // Delete Question
       await axios.request(config);
       successToast("Question Deleted", "Your question has been removed.");
@@ -51,11 +50,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
       setVetQuestions((prev: any) =>
         prev.filter((item: any) => item.uuid !== questionUUID)
       );
-
-      // Stop The Loading Process
-      setLoading(false);
     } catch (error: any) {
-      setLoading(false);
       errorToast(
         "Error Deleting Question",
         error?.response?.data?.message ||
@@ -119,18 +114,15 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
   return (
     <main className="w-full py-10">
       {loading && <FormFallbackLoading />}
-      <div
-        style={{ background: "rgb(243 244 246/1)" }}
-        className="w-full z-30 sticky top-[76px] backdrop-blur-lg mt-6 flex-wrap gap-5 flex justify-center md:justify-between items-center h-max py-5 "
-      >
-        <span className="font-medium md:text-lg text-base text-primary-boulder950">
-          Questions
+      <div className="w-full z-30 sticky top-[76px] bg-white mt-6 flex-wrap gap-5 flex justify-center md:justify-between items-center h-max py-5 ">
+        <span className="font-semibold md:text-lg text-base text-primary-boulder950">
+          QUESTIONS
         </span>
 
         <div className="flex items-center gap-3">
           <Dialog>
             <DialogTrigger>
-              <span className="py-2 min-h-10 h-max cursor-pointer rounded-full px-4 md:px-8 flex justify-center items-center gap-3 border border-background-lightYellow font-normal md:text-base text-sm bg-transparent text-background-lightYellow">
+              <span className="py-2 min-h-10 h-max cursor-pointer rounded-full px-4 md:px-8 flex justify-center items-center gap-3 border border-background-darkYellow font-normal md:text-base text-xs bg-transparent text-background-darkYellow">
                 Add question
                 <i className="fas fa-plus"></i>
               </span>
@@ -152,7 +144,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
           {vetQuestions[0] && (
             <button
               onClick={uploadQuestions}
-              className={`px-4 md:px-8 text-[#FEFEFE] text-base  font-normal flex items-center gap-2 py-2 min-h-10 h-max bg-background-lightYellow rounded-full border-none cursor-pointer`}
+              className={`px-4 md:px-8 text-[#FEFEFE] md:text-base text-xs  font-normal flex items-center gap-2 py-2 min-h-10 h-max bg-background-darkYellow rounded-full border-none cursor-pointer`}
             >
               Update Questions
             </button>

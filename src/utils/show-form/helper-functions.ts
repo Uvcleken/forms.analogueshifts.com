@@ -1,5 +1,3 @@
-import { errorToast } from "../error-toast";
-
 export function checkValidEmail(email: string) {
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return pattern.test(email);
@@ -18,18 +16,19 @@ export const handleStartTimer = (
   email: string,
   form: any,
   setTimeOutModal: any,
-  setTimeOutMinutes: any
+  setTimeOutMinutes: any,
+  notifyUser: any
 ) => {
   if (checkValidEmail(email)) {
     let timeOutMinutes = parseInt(form.timeout);
     setTimeOutModal(false);
     setTimeOutMinutes(timeOutMinutes);
   } else {
-    errorToast("Invalid Email", "Must provide a valid email");
+    notifyUser("error", "Must provide a valid email", "right");
   }
 };
 
-export function checkAllQuestionFields(questions: any, toast: any) {
+export function checkAllQuestionFields(questions: any, notifyUser: any) {
   let returnValue = true;
   questions.forEach((item: any) => {
     if (
@@ -37,7 +36,7 @@ export function checkAllQuestionFields(questions: any, toast: any) {
       (item.required === "1" && item.answer !== null && !item.answer[0])
     ) {
       returnValue = false;
-      toast("Missing Field", item.question);
+      notifyUser("error", item.question + "is Missing", "right");
     }
   });
 

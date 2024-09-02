@@ -1,8 +1,8 @@
+"use client";
 import axios from "@/lib/axios";
-
 import Cookies from "js-cookie";
 
-import { successToast, errorToast } from "@/utils/toast";
+import { useToast } from "@/contexts/toast";
 import { clearUserSession } from "@/utils/clear-user-session";
 
 interface GetFormsParams {
@@ -53,6 +53,7 @@ interface GetResponsesParams {
 
 export const useForms = () => {
   const token = Cookies.get("analogueshifts");
+  const { notifyUser }: any = useToast();
 
   const getForms = async ({
     setLoading,
@@ -75,11 +76,13 @@ export const useForms = () => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      errorToast(
-        "Uh oh! Error fetching vets.",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Vets"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To Fetch Vets",
+        "right"
       );
       if (error.response.status === 401) {
         clearUserSession();
@@ -115,13 +118,15 @@ export const useForms = () => {
         setLoading(false);
       }
 
-      successToast("Vet deleted", "Your vet has been deleted successfully");
+      notifyUser("success", "Your vet has been deleted successfully", "right");
     } catch (error: any) {
-      errorToast(
-        "Uh oh! Error deleting vet.",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To Delete Vet"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To Delete Vet",
+        "right"
       );
       setLoading(false);
       if (error.response.status === 401) {
@@ -157,18 +162,17 @@ export const useForms = () => {
         },
       });
       if (response.data.success) {
-        successToast(
-          "Form created successfully",
-          "Reirecting you to the Created Vet"
-        );
+        notifyUser("success", "Form created successfully", "right");
         router.push("/forms/" + response.data.data.form.uuid);
       }
     } catch (error: any) {
-      errorToast(
-        "Error Creating Form",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To Create Vet"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To Create Vet",
+        "right"
       );
       setLoading(false);
       if (error?.response?.status === 401) {
@@ -205,15 +209,21 @@ export const useForms = () => {
       });
       if (response.data.success) {
         setLoading(false);
-        successToast("Vet updated", "Your vet has been updated successfully");
+        notifyUser(
+          "success",
+          "Your vet has been updated successfully",
+          "right"
+        );
       }
     } catch (error: any) {
       setLoading(false);
-      errorToast(
-        "Error updating your form",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To update Vet"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To update Vet",
+        "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();
@@ -234,11 +244,13 @@ export const useForms = () => {
       setData(response);
       setLoading(false);
     } catch (error: any) {
-      errorToast(
-        "Error Fetching your Form",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Form"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To Fetch Form",
+        "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();
@@ -257,11 +269,13 @@ export const useForms = () => {
       });
       setData(response.data.data.response);
     } catch (error: any) {
-      errorToast(
-        "Error Fetching your Form Responses",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed To Fetch Form Responses"
+          error?.response?.data?.data?.message ||
+          error?.message ||
+          "Failed To Fetch Form Responses",
+        "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();

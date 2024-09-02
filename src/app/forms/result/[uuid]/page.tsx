@@ -1,11 +1,11 @@
-import ShowFormLayout from "@/components/layouts/show-form";
+import GuestLayout from "@/components/layouts/guest";
 import ShowResult from "./components/show-result";
 
 function Page({ params }: any) {
   return (
-    <ShowFormLayout>
+    <GuestLayout>
       <ShowResult resultUUID={params.uuid} />
-    </ShowFormLayout>
+    </GuestLayout>
   );
 }
 

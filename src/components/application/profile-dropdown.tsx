@@ -1,144 +1,120 @@
 "use client";
-import {
-  LifeBuoy,
-  LogOut,
-  Mail,
-  Plus,
-  User,
-  UserPlus,
-  CheckCircle,
-  Phone,
-  Share,
-  Table,
-  XCircle,
-} from "lucide-react";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import ProfileImage from "@/assets/images/profile_avatar.jpg";
-import { shareContent } from "@/utils/share-content";
+import { useState, useEffect, useRef } from "react";
 
-export default function ProfileDropdown({ user, logout }: any) {
+import { AnimatePresence, motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import Image from "next/image";
+import ChevronDown from "@/assets/images/chevron-down.svg";
+
+interface Params {
+  user: any;
+  handleLogout: () => void;
+}
+
+export default function LoggedInProfileDropdown({
+  user,
+  handleLogout,
+}: Params) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownRef: any = useRef(null);
   const router = useRouter();
 
-  const share = () => {
-    shareContent(
-      "AnalogueShifts Vetting System",
-      "Build forms and analyze results, with AnalogueShifts Form",
-      window.location.origin
-    );
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
   };
 
+  const closeDropdown = (event: any) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", closeDropdown);
+    return () => {
+      document.removeEventListener("click", closeDropdown);
+    };
+  }, []);
+
+  const RenderMenu = ({ item }: { item: any }) => (
+    <button
+      onClick={() => item.action()}
+      className="w-max flex gap-4 items-center duration-300 hover:translate-x-1"
+    >
+      <Image width={40} height={40} src={item.image} alt="" />
+      <div className="flex flex-col items-start gap-1.5">
+        <h3 className="text-black font-semibold text-base">{item.title}</h3>
+        <p className="text-primary-boulder400 font-normal text-[9.8px]">
+          {item.description}
+        </p>
+      </div>
+    </button>
+  );
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="w-10 overflow-hidden h-10 rounded-full hover:opacity-70 duration-150 cursor-pointer">
-          <Image
-            src={ProfileImage}
-            alt="Profile Avatar"
-            className="w-full h-full scale-150 rounded-full"
+    <div ref={dropdownRef} className="relative">
+      <div
+        onClick={toggleDropdown}
+        className="profile-menu hidden lg:flex gap-2 bg-gray-50 items-center cursor-pointer p-1 rounded-full"
+      >
+        <Avatar className="w-7 h-7">
+          <AvatarImage
+            className="object-cover"
+            src={
+              user?.user?.user_profile?.avatar
+                ? user.user.user_profile.avatar
+                : null
+            }
+            alt="Profile"
           />
+          <AvatarFallback className="bg-background-darkYellow text-white text-sm font-bold ">
+            {user?.user?.email?.slice(0, 1)?.toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+
+        <div className="profile-chevron duration-300">
+          <Image width={14} height={14} src={ChevronDown} alt="" />
         </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 rounded-2xl">
-        <DropdownMenuLabel className="text-primary-boulder950 py-3">
-          My Account
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2">
-            <User className="mr-2 h-4 w-4" />
-            <span>
-              {user?.first_name} {user?.last_name && " " + user.last_name}
-            </span>
-          </DropdownMenuItem>
-          {user?.tel && (
-            <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-              <Phone className="mr-2 h-4 w-4" />
-              <span>{user?.tel}</span>
-            </DropdownMenuItem>
-          )}
-          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-            <Mail className="mr-2 h-4 w-4" />
-            <span className="truncate">{user?.email}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-            {user?.email_verified_at ? (
-              <CheckCircle className="mr-2 h-4 w-4" />
-            ) : (
-              <XCircle className="mr-2 h-4 w-4" />
-            )}
-            <span>{user?.email_verified_at ? "Verified" : "Un-verified"}</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 ">
-              <UserPlus className="mr-2 h-4 w-4" />
-              <span>Invite users</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem
-                  className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
-                  onClick={share}
-                >
-                  <Share className="mr-2 h-4 w-4" />
-                  <span>Share</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem
-            onClick={() => router.push("/forms/create")}
-            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
+      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="our-apps-menu flex flex-col gap-6 large:gap-8 w-max absolute top-10 rounded-[18px] -right-10 bg-white py-9 large:py-10 large:px-14 px-12"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            <span>New Form</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push("/forms")}
-            className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
-          >
-            <Table className="mr-2 h-4 w-4" />
-            <span>My Forms</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+            <RenderMenu
+              item={{
+                title: "Manage Forms",
+                description: "Overview of your forms.",
+                image: "/profile/dashboard.svg",
+                action: () => router.push("/forms"),
+              }}
+            />
+            <RenderMenu
+              item={{
+                title: "Create Form",
+                description: "Create a new form",
+                image: "/profile/hire.svg",
+                action: () => router.push("/forms/create"),
+              }}
+            />
 
-        <DropdownMenuItem
-          className="text-primary-boulder700 focus:bg-background-lightYellow/20 py-2 "
-          onClick={() => {
-            window.location.href = "https://www.analogueshifts.com/contact";
-          }}
-        >
-          <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Contact Support</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={logout}
-          className="text-red-600 focus:text-red-600 py-2 focus:bg-background-lightYellow/20 "
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <RenderMenu
+              item={{
+                title: "Log Out",
+                description: "End your session securely",
+                image: "/profile/logout.svg",
+                action: handleLogout,
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

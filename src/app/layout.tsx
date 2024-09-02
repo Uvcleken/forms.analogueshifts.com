@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import { ToastProvider } from "@/contexts/toast";
+import ToastMessage from "@/components/application/toast";
 
 import { UserProvider } from "@/contexts/user";
 
-const roboto = Roboto({ weight: "400", subsets: ["latin"], display: "swap" });
+const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create online Forms Easily (No Coding Required) - Analogue Shifts",
@@ -35,9 +39,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(roboto.className)}>
-        <UserProvider>{children}</UserProvider>
-        <ToastContainer position="top-center" />
+      <body className={cn(plusJakartaSans.className)}>
+        <UserProvider>
+          <ToastProvider>
+            <ToastMessage />
+            {children}
+          </ToastProvider>
+        </UserProvider>
+
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-FTVY2HD14L"

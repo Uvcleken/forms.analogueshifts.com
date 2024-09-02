@@ -46,7 +46,7 @@ export default function Countdown({
 
   return (
     <>
-      <IdiomProof
+      {/* <IdiomProof
         open={timeup}
         emailValue={email}
         description={`Your Time is Up. Please Confirm Your Submition Email and Submit.`}
@@ -65,7 +65,7 @@ export default function Countdown({
         }}
         emailInput={true}
         onChangeEmailValue={(value: string) => setEmail(value)}
-      />
+      /> */}
       <p className="text-base w-full  text-primary-boulder700 mt-4">
         Time Left: <b ref={countdownRef}></b>
       </p>

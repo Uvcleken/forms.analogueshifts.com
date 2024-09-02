@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/contexts/toast";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import RenderQuestion from "./render-question";
@@ -6,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { toggleArr } from "@/utils/toggle-arr-value";
 import IdiomProof from "@/components/application/idiom-proof";
-import { errorToast } from "@/utils/toast";
 import { getForm } from "@/utils/show-form/get-form";
 import { submitResponse } from "@/utils/show-form/submit-response";
 import {
@@ -29,6 +29,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
   const [timeOutMinutes, setTimeoutMinutes]: any = useState(null);
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const { notifyUser }: any = useToast();
 
   // Update The value of the Form
   const updateAnswerValue = useCallback((number: string, newValue: string) => {
@@ -64,7 +65,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
   // Handling Form Submittion
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
-    if (checkAllQuestionFields(questions, errorToast)) {
+    if (checkAllQuestionFields(questions, notifyUser)) {
       submitResponse(questions, formUUID, email, setLoading, setFormSubmitted);
     }
   };
@@ -83,7 +84,14 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
 
   useEffect(() => {
     if (formUUID) {
-      getForm(setLoading, setForm, formUUID, setQuestions, setFormClosed);
+      getForm(
+        setLoading,
+        setForm,
+        formUUID,
+        setQuestions,
+        setFormClosed,
+        notifyUser
+      );
     }
   }, [formUUID]);
 
@@ -97,7 +105,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
   return (
     <>
       {/* Time Out Modal */}
-      <IdiomProof
+      {/* <IdiomProof
         open={timeOutModal}
         emailValue={email}
         description={`You have ${form?.timeout} minutes to fill this vet and submit it. Vet will be submitted automatically if you fail to finish on time. Enter email in the field below to proceed. Note that the email will be used to submit your vet, and It is required.`}
@@ -111,7 +119,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
         }}
         emailInput={true}
         onChangeEmailValue={(value: string) => setEmail(value)}
-      />
+      /> */}
 
       {formClosed ? (
         <div className="w-containerWidth max-w-showFormWidth mx-auto pb-7 mt-5">

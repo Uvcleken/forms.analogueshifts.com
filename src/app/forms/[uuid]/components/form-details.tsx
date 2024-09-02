@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
@@ -82,7 +81,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           value={titleValue}
           onChange={(e) => setTitleValue(e.target.value)}
           placeholder="e.g “Getting to know you”"
-          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+          className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-normal placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
         />
       </div>
 
@@ -92,10 +91,10 @@ const FormDetails: React.FC<FormDetailsProps> = ({
           DESCRIPTION
         </p>
         <div className="w-full">
-          <Textarea
+          <textarea
             value={descriptionValue}
             onChange={(e) => setDescriptionValue(e.target.value)}
-            className="text-[13px] rounded-2xl px-5 border border-primary-boulder200 font-light placeholder:text-primary-boulder300 text-primary-boulder950"
+            className="text-[13px] outline-1 outline-background-darkYellow w-full h-36 py-5 rounded-2xl px-5 border border-primary-boulder200 font-normal placeholder:text-primary-boulder300 text-primary-boulder950"
           />
         </div>
       </div>
@@ -122,7 +121,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
               type="number"
               value={timeoutValue}
               onChange={(e: any) => setTimeoutValue(e.target.value)}
-              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-normal placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
             />
           </div>
           <div className="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
@@ -134,7 +133,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
               type="datetime-local"
               value={deadlineValue}
               onChange={(e: any) => setDeadlineValue(e.target.value)}
-              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+              className="max-w-full w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-normal placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
             />
           </div>
         </>
@@ -145,7 +144,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({
         <input
           value="Save changes"
           type="submit"
-          className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-lightYellow rounded-full border-none cursor-pointer`}
+          className={`px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-darkYellow rounded-full border-none cursor-pointer`}
         />
       </div>
     </form>
