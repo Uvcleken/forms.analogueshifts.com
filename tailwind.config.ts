@@ -16,6 +16,8 @@ const config = {
     },
     extend: {
       screens: {
+        380: "380px",
+        1186: "1186px",
         "2xl": "1400px",
         mobile: "500px",
         tablet: { raw: "(max-width: 999px)" },
@@ -69,6 +71,7 @@ const config = {
           boulder300: "#B0B0B0",
           boulder400: "#7B7B7B",
           boulder500: "#6D6D6D",
+          boulder600: "#5D5D5D",
           boulder700: "#4F4F4F",
           boulder900: "#3D3D3D",
           boulder950: "#262626",

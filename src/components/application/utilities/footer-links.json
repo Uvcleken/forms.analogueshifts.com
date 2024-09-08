@@ -12,7 +12,7 @@
       },
       {
         "name": "Post a job",
-        "path": "/dashboard"
+        "path": "https://www.analogueshifts.com/dashboard"
       }
     ]
   },
@@ -46,11 +46,11 @@
     "links": [
       {
         "name": "About Us",
-        "path": "/about"
+        "path": "https://www.analogueshifts.com/about"
       },
       {
         "name": "Jobs",
-        "path": "/jobs"
+        "path": "https://www.analogueshifts.com/jobs"
       },
       {
         "name": "Blogs",
@@ -58,7 +58,7 @@
       },
       {
         "name": "Contact Us",
-        "path": "/contact"
+        "path": "https://www.analogueshifts.com/contact"
       }
     ]
   },
@@ -67,11 +67,15 @@
     "links": [
       {
         "name": "Privacy Policy",
-        "path": "/docs/privacy-policy"
+        "path": "https://www.analogueshifts.com/docs/privacy-policy"
       },
       {
         "name": "Terms & Conditions",
-        "path": "/docs/terms-and-conditions"
+        "path": "https://www.analogueshifts.com/docs/terms-and-conditions"
+      },
+      {
+        "name": "Partnership",
+        "path": "https://www.analogueshifts.com/contact"
       }
     ]
   }

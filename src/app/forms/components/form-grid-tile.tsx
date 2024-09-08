@@ -30,7 +30,7 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
   };
 
   return (
-    <div className="form-card mobile:w-max w-full relative  max-w-full bg-[#FEFEFE] h-64 rounded-lg border flex flex-col overflow-hidden hover:border-background-darkYellow">
+    <div className="form-card mobile:w-[250px] w-full relative  max-w-full bg-[#FEFEFE] h-64 rounded-lg border flex flex-col overflow-hidden hover:border-background-darkYellow">
       <Image
         src={FormTemplateImage}
         alt="Form Background"
@@ -55,7 +55,7 @@ const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
                 />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-max  py-4 px-2 rounded-xl">
+            <DropdownMenuContent className="w-max  py-2 px-2 rounded-xl">
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   onClick={() => router.push(`/forms/${item.uuid}`)}
