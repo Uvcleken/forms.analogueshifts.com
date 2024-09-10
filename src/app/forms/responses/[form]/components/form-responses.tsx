@@ -52,45 +52,54 @@ const FormResponses: React.FC<FormResponsesInterface> = ({ formUUID }) => {
             {responses.length} responses
           </h3>
           <table className="w-full min-w-[800px] ">
-            <tr className="w-full h-11">
-              <th className="text-[15px] pl-6 text-primary-boulder900 w-2/5 font-normal text-start ">
-                Email
-              </th>
-              <th className="text-[15px] text-primary-boulder900 w-[35%] font-normal text-start">
-                Date
-              </th>
-              <th className="text-[15px] text-primary-boulder900 w-[15%] font-normal text-start">
-                Score
-              </th>
-              <th className="text-[15px] pr-6 text-primary-boulder900 w-[10%] font-normal text-center">
-                Action
-              </th>
-            </tr>
-            {responses.map((item: any, index: number) => {
-              return (
-                <tr
-                  key={item.created_at}
-                  className={`w-full h-11 ${
-                    index % 2 === 0 ? "bg-primary-boulder300/10" : ""
-                  }`}
-                >
-                  <td className="text-sm pl-6 text-primary-boulder900 w-2/5 font-normal text-start ">
-                    {item.email}
-                  </td>
-                  <td className="text-sm text-primary-boulder900 w-[35%] font-normal text-start">
-                    {item.created_at}
-                  </td>
-                  <td className="text-sm text-primary-boulder900 w-[15%] font-normal text-start">
-                    {item.score || "Not scored"}
-                  </td>
-                  <td className="text-sm text-primary-boulder900 w-[10%] font-normal text-center">
-                    <Link href={"/forms/responses/view/" + item.uuid}>
-                      Open
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            <thead>
+              <tr className="w-full h-11">
+                <th className="text-[15px] pl-6 text-primary-boulder900 w-2/5 font-normal text-start ">
+                  Email
+                </th>
+                <th className="text-[15px] text-primary-boulder900 w-[35%] font-normal text-start">
+                  Date
+                </th>
+                <th className="text-[15px] text-primary-boulder900 w-[15%] font-normal text-start">
+                  Score
+                </th>
+                <th className="text-[15px] pr-6 text-primary-boulder900 w-[10%] font-normal text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {responses.map((item: any, index: number) => {
+                return (
+                  <tr
+                    key={item.created_at}
+                    className={`w-full h-11 ${
+                      index % 2 === 0 ? "bg-primary-boulder300/10" : ""
+                    }`}
+                  >
+                    <td className="text-sm pl-6 text-primary-boulder900 w-2/5 font-normal text-start ">
+                      {item.email}
+                    </td>
+                    <td className="text-sm text-primary-boulder900 w-[35%] font-normal text-start">
+                      {new Date(item.created_at).getFullYear()} -{" "}
+                      {new Date(item.created_at).getMonth() + 1} -{" "}
+                      {new Date(item.created_at).getDate()}
+                    </td>
+                    <td className="text-sm text-primary-boulder900 w-[15%] font-normal text-start">
+                      {item.score || "Not scored"}
+                    </td>
+                    <td className="text-sm text-primary-boulder900 w-[10%] font-normal text-center">
+                      <Link
+                        href={"/forms/responses/view/" + item.uuid}
+                        target="_blank"
+                      >
+                        Open
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         </div>
       </section>
