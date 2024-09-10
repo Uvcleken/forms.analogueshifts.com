@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -56,7 +55,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
 
   // Upload File
   const uploadFile = async (file: any) => {
-    const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/upload/" + formUUID;
+    const url = process.env.NEXT_PUBLIC_FILE_UPLOAD_URL + "/upload/" + formUUID;
     const axios = require("axios");
     const formData = new FormData();
     formData.append("upload", file);
@@ -98,7 +97,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
       className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl"
     >
       <div className="px-3 md:px-6 py-3 md:py-4">
-        <h3 className="text-base text-primary-boulder900 font-medium">
+        <h3 className="text-[15px] tablet:text-xs text-primary-boulder900 font-medium">
           {item.question}{" "}
           {item.required === "1" && (
             <span className="text-red-600">{" *"}</span>
@@ -114,17 +113,17 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
             value={inputValue}
             onChange={handleChange}
             placeholder="e.g “Enter answer”"
-            className="max-w-full w-full  h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+            className="max-w-full w-full  h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
           />
         )}
         {item.type === "long_text" && (
-          <Textarea
+          <textarea
             onBlur={handleFocusOut}
             required={item.required === "1" ? true : false}
             value={inputValue}
             onChange={handleChange}
             placeholder="e.g “I am a software engineer”"
-            className="text-[13px] rounded-2xl px-5 border border-primary-boulder200 font-light placeholder:text-primary-boulder300 text-primary-boulder950"
+            className="text-[13px] w-full h-32 py-5 rounded-2xl px-5 border border-primary-boulder200 font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
           />
         )}
         {item.type === "checkbox" && (
@@ -174,7 +173,7 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
         {(item.type === "image" || item.type === "file") && (
           <div className="relative w-full h-max overflow-hidden rounded-3xl">
             {fileUploading && (
-              <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-primary-boulder200/10">
+              <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white border-dashed border rounded-3xl">
                 {" "}
                 <div className="lds-ellipsis">
                   <div></div>

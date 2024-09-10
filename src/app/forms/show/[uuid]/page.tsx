@@ -1,10 +1,17 @@
 import ShowForm from "./components/show-form";
 import GuestLayout from "@/components/layouts/guest";
+import { getForm } from "@/utils/show-form/get-form";
 
-function Page({ params }: any) {
+async function Page({ params }: any) {
+  const form = await getForm(params.uuid);
+
+  if (form) {
+    console.log(form);
+  }
+
   return (
     <GuestLayout>
-      <ShowForm formUUID={params.uuid} />
+      <ShowForm vet={form} formUUID={params.uuid} />
     </GuestLayout>
   );
 }

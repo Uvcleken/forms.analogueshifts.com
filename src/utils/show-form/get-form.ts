@@ -1,43 +1,26 @@
-import { clearUserSession } from "../clear-user-session";
-
-import { Dispatch, SetStateAction } from "react";
-
-export async function getForm(
-  setLoading: Dispatch<SetStateAction<boolean>>,
-  setForm: Dispatch<SetStateAction<any>>,
-  formUUID: string,
-  setQuestions: Dispatch<SetStateAction<any[]>>,
-  setFormClosed: Dispatch<SetStateAction<boolean>>,
-  notifyUser: any
-): Promise<void> {
-  const axios = require("axios");
-  const config = {
-    method: "GET",
-    url: process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/form/" + formUUID,
-  };
-
+export const getForm = async (formUUID: string) => {
   try {
-    setLoading(true);
-    let response = await axios.request(config);
-    setForm(response.data.data.form);
-    setQuestions(response.data.data.questions);
-    setLoading(false);
-  } catch (error: any) {
-    setLoading(false);
-    if (error.response.data.message !== "Vet closed") {
-      notifyUser(
-        "error",
-        error?.response?.data?.message ||
-          error?.response?.data?.data?.message ||
-          error.message ||
-          "Failed To Fetch Vet",
-        "right"
-      );
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form/form/${formUUID}`;
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const contentType = res.headers.get("Content-Type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Invalid response type");
+    }
+
+    if (res.ok) {
+      const data = await res.json();
+      return data.data;
     } else {
-      setFormClosed(true);
+      throw new Error(`Failed to fetch form: ${res.status} ${res.statusText}`);
     }
-    if (error?.response?.status === 401) {
-      clearUserSession();
+  } catch (error: any) {
+    if (error.message === "Failed to fetch form: 419 status code 419") {
+      return { formClosed: true };
     }
+    return { form: null };
   }
-}
+};

@@ -13,19 +13,13 @@ export const formatTime = (s: any) => {
 };
 
 export const handleStartTimer = (
-  email: string,
   form: any,
   setTimeOutModal: any,
-  setTimeOutMinutes: any,
-  notifyUser: any
+  setTimeOutMinutes: any
 ) => {
-  if (checkValidEmail(email)) {
-    let timeOutMinutes = parseInt(form.timeout);
-    setTimeOutModal(false);
-    setTimeOutMinutes(timeOutMinutes);
-  } else {
-    notifyUser("error", "Must provide a valid email", "right");
-  }
+  let timeOutMinutes = parseInt(form.timeout);
+  setTimeOutModal(false);
+  setTimeOutMinutes(timeOutMinutes);
 };
 
 export function checkAllQuestionFields(questions: any, notifyUser: any) {
@@ -36,7 +30,9 @@ export function checkAllQuestionFields(questions: any, notifyUser: any) {
       (item.required === "1" && item.answer !== null && !item.answer[0])
     ) {
       returnValue = false;
-      notifyUser("error", item.question + "is Missing", "right");
+    }
+    if (!returnValue) {
+      notifyUser("error", "Missing Required Fields", "right");
     }
   });
 

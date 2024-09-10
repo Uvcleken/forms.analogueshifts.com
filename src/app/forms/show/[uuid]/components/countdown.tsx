@@ -1,11 +1,7 @@
 "use client";
-import {
-  formatTime,
-  checkValidEmail,
-} from "@/utils/show-form/helper-functions";
+import { formatTime } from "@/utils/show-form/helper-functions";
 import { useEffect, useRef, useState } from "react";
-import { errorToast } from "@/utils/toast";
-import IdiomProof from "@/components/application/idiom-proof";
+import SubmitModal from "./submit-modal";
 
 export default function Countdown({
   durationInMinutes,
@@ -13,12 +9,14 @@ export default function Countdown({
   setEmail,
   router,
   email,
+  loading,
 }: {
   durationInMinutes: number;
   submitForm: any;
   setEmail: any;
   router: any;
   email: string;
+  loading: boolean;
 }) {
   const countdownRef: any = useRef(null);
   const [timeup, setTimeUp] = useState(false);
@@ -46,28 +44,16 @@ export default function Countdown({
 
   return (
     <>
-      {/* <IdiomProof
+      <SubmitModal
+        submit={submitForm}
+        email={email}
+        setEmail={setEmail}
+        loading={loading}
         open={timeup}
-        emailValue={email}
-        description={`Your Time is Up. Please Confirm Your Submition Email and Submit.`}
-        title="TimeUp"
-        label="Submit Response"
-        action={() => {
-          if (checkValidEmail(email)) {
-            submitForm();
-            setTimeUp(false);
-          } else {
-            errorToast("Invalid Email", "Must provide a valid email");
-          }
-        }}
-        close={() => {
-          router.back();
-        }}
-        emailInput={true}
-        onChangeEmailValue={(value: string) => setEmail(value)}
-      /> */}
-      <p className="text-base w-full  text-primary-boulder700 mt-4">
-        Time Left: <b ref={countdownRef}></b>
+      />
+
+      <p className="text-[15px] font-medium tablet:text-xs w-full  text-primary-boulder700 tablet:mt-2.5 mt-4">
+        Time left: <b ref={countdownRef}></b>
       </p>
     </>
   );

@@ -68,15 +68,15 @@ const ResponseDetails: React.FC<FormDetailsProps> = ({
 
   return (
     <div className="w-full flex justify-between flex-wrap gap-3 bg-[#FEFEFE] border border-[#E7E7E7] px-4 lg:px-10 py-7 rounded-xl h-max  border-t-8 border-t-background-darkYellow">
-      <h1 className="text-4xl tablet:text-2xl w-full mt-1.5 mb-3  text-primary-boulder950 font-semibold">
-        Form Response
+      <h1 className="text-3xl tablet:text-2xl w-full mt-1.5 mb-3  text-primary-boulder950 font-semibold">
+        <b> Form Response</b>
       </h1>
       <div className="w-full border-b border-dotted"></div>
-      <span className="text-base  truncate text-primary-boulder700">
+      <span className="text-[15px] font-medium tablet:text-xs  truncate text-primary-boulder700">
         Email: <small>{details.email}</small>
       </span>
       <div className="  flex items-center gap-1">
-        <span className="text-base text-primary-boulder700">
+        <span className="text-[15px] font-medium text-primary-boulder700">
           Score:{" "}
           {details.score ? (
             <small>

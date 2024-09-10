@@ -10,10 +10,7 @@ import React, {
 } from "react";
 
 interface User {
-  // Define your user properties here
-  id: string;
-  name: string;
-  email: string;
+  user: any;
 }
 
 interface UserContextType {

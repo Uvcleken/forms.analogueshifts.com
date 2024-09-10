@@ -1,13 +1,11 @@
 "use client";
 import { useToast } from "@/contexts/toast";
+import { useUser } from "@/contexts/user";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import RenderQuestion from "./render-question";
-import { Button } from "@/components/ui/button";
-import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { toggleArr } from "@/utils/toggle-arr-value";
 import IdiomProof from "@/components/application/idiom-proof";
-import { getForm } from "@/utils/show-form/get-form";
 import { submitResponse } from "@/utils/show-form/submit-response";
 import {
   handleStartTimer,
@@ -16,14 +14,16 @@ import {
 import Countdown from "./countdown";
 
 interface ShowFormProps {
+  vet: any;
   formUUID: string;
 }
 
-const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
-  const [form, setForm]: any = useState(null);
-  const [questions, setQuestions]: any = useState(null);
+const ShowForm: React.FC<ShowFormProps> = ({ formUUID, vet }) => {
+  const { user } = useUser();
+  const [form, setForm]: any = useState(vet?.form || null);
+  const [questions, setQuestions]: any = useState(vet?.questions || null);
   const [loading, setLoading] = useState(false);
-  const [formClosed, setFormClosed] = useState(false);
+  const [formClosed, setFormClosed] = useState(vet?.formClosed ? true : false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [timeOutModal, setTimeOutModal] = useState(false);
   const [timeOutMinutes, setTimeoutMinutes]: any = useState(null);
@@ -53,15 +53,6 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
     );
   }, []);
 
-  // Handle Clear Form
-  const clearForm = () => {
-    setQuestions((prev: any) =>
-      prev.map((item: any) => {
-        return { ...item, answer: null };
-      })
-    );
-  };
-
   // Handling Form Submittion
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
@@ -82,19 +73,6 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
     }
   };
 
-  useEffect(() => {
-    if (formUUID) {
-      getForm(
-        setLoading,
-        setForm,
-        formUUID,
-        setQuestions,
-        setFormClosed,
-        notifyUser
-      );
-    }
-  }, [formUUID]);
-
   // Check if there is a timeout
   useEffect((): any => {
     if (form?.timeout !== null && parseInt(form?.timeout)) {
@@ -102,34 +80,37 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
     }
   }, [form]);
 
+  useEffect(() => {
+    if (user) {
+      setEmail(user?.user?.email);
+    }
+  }, [user]);
+
   return (
     <>
       {/* Time Out Modal */}
-      {/* <IdiomProof
+      <IdiomProof
         open={timeOutModal}
-        emailValue={email}
-        description={`You have ${form?.timeout} minutes to fill this vet and submit it. Vet will be submitted automatically if you fail to finish on time. Enter email in the field below to proceed. Note that the email will be used to submit your vet, and It is required.`}
+        description={`You have ${form?.timeout} minutes to fill this form and submit it. Form will be submitted automatically if you fail to finish on time.`}
         title="Instruction"
-        label="Proceed"
+        buttonLabel="Start"
         action={() =>
-          handleStartTimer(email, form, setTimeOutModal, setTimeoutMinutes)
+          handleStartTimer(form, setTimeOutModal, setTimeoutMinutes)
         }
         close={() => {
           router.back();
         }}
-        emailInput={true}
-        onChangeEmailValue={(value: string) => setEmail(value)}
-      /> */}
+      />
 
       {formClosed ? (
-        <div className="w-containerWidth max-w-showFormWidth mx-auto pb-7 mt-5">
-          <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-lightYellow mb-4">
+        <div className="large:mt-[124px] mt-24 w-full max-w-[1200px] px-7 sm:px-[100px] large:px-[130px] mx-auto">
+          <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-darkYellow mb-4">
             <div className="px-3 md:px-6 py-3 md:pt-6">
-              <h1 className="text-4xl w-full mt-1.5 mb-5  text-primary-boulder950 font-semibold">
-                Vet Closed
+              <h1 className="text-3xl tablet:text-2xl w-full mt-1.5 mb-5 tablet:mb-2.5  text-primary-boulder950 font-semibold">
+                <b> Vet Closed</b>
               </h1>
-              <div className="w-full border-b border-dotted mb-4"></div>
-              <span className="text-base w-full  text-primary-boulder700">
+              <div className="w-full border-b border-dotted mb-4 tablet:mb-1.5"></div>
+              <span className="text-base tablet:text-xs w-full  text-primary-boulder700">
                 This Vet Is Closed
               </span>
             </div>
@@ -139,18 +120,16 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
         <form
           onKeyDown={handleKeyDown}
           onSubmit={handleFormSubmit}
-          className="w-containerWidth max-w-showFormWidth mx-auto pb-7 mt-5"
+          className="large:mt-[124px] mt-24 w-full max-w-[1200px] px-7 sm:px-[100px] large:px-[130px] mx-auto"
         >
-          {loading && <FormFallbackLoading />}
-
           {form && !formSubmitted && (
-            <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-lightYellow mb-4">
+            <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-darkYellow mb-4">
               <div className="px-3 md:px-6 py-3 md:pt-6">
-                <h1 className="text-4xl w-full mt-1.5 mb-5  text-primary-boulder950 font-semibold">
-                  {form.title}
+                <h1 className="text-3xl tablet:text-2xl w-full mt-1.5 mb-5 tablet:mb-2.5  text-primary-boulder950 font-semibold">
+                  <b> {form.title}</b>
                 </h1>
-                <div className="w-full border-b border-dotted mb-4"></div>
-                <span className="text-base w-full  text-primary-boulder700">
+                <div className="w-full border-b border-dotted mb-4 tablet:mb-1.5"></div>
+                <span className="text-[15px] font-medium tablet:text-xs w-full  text-primary-boulder700">
                   {form.description}
                 </span>
 
@@ -158,6 +137,7 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
                   <Countdown
                     email={email}
                     router={router}
+                    loading={loading}
                     setEmail={setEmail}
                     durationInMinutes={timeOutMinutes}
                     submitForm={handleAutoSubmission}
@@ -168,20 +148,20 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
                   type="email"
                   value={email}
                   onChange={(e: any) => setEmail(e.target.value)}
-                  placeholder="“Enter Email”"
-                  className="max-w-full mt-4 w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-lightYellow"
+                  placeholder="Enter submission email"
+                  className="max-w-full mt-4 w-full h-14 rounded-2xl  px-5 border border-primary-boulder200 text-[13px] font-light placeholder:text-primary-boulder300 text-primary-boulder950 outline-1 outline-background-darkYellow"
                 />
               </div>
             </div>
           )}
           {form && formSubmitted && (
-            <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-lightYellow mb-4">
+            <div className="w-full mt-3 flex flex-col bg-white pb-5  border border-[#E7E7E7] h-max  rounded-xl border-t-8 border-t-background-darkYellow mb-4">
               <div className="px-3 md:px-6 py-3 md:pt-6">
-                <h1 className="text-4xl w-full mt-1.5 mb-5  text-primary-boulder950 font-semibold">
-                  {form.title}
+                <h1 className="text-3xl tablet:text-2xl w-full mt-1.5 mb-5 tablet:mb-2.5  text-primary-boulder950 font-semibold">
+                  <b> {form.title}</b>
                 </h1>
-                <div className="w-full border-b border-dotted mb-4"></div>
-                <span className="text-base w-full  text-primary-boulder700">
+                <div className="w-full border-b border-dotted mb-4 tablet:mb-1.5"></div>
+                <span className="text-[15px] font-medium tablet:text-xs w-full  text-primary-boulder700">
                   Your response has been recorded!
                 </span>
               </div>
@@ -199,21 +179,15 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID }) => {
                   />
                 );
               })}
-              <div className="w-full flex justify-between items-center">
-                <Button
-                  type="button"
-                  onClick={clearForm}
-                  className="bg-transparent hover:bg-transparent text-background-lightYellow hover:text-background-lightYellow/80"
-                >
-                  Clear form
-                </Button>
-                <Button
-                  onClick={() => console.log(questions)}
+              <div className="w-full flex justify-end items-center">
+                <button
+                  disabled={loading}
+                  onClick={handleFormSubmit}
                   type="submit"
-                  className="bg-background-lightYellow hover:bg-background-lightYellow/80 w-28"
+                  className="px-10 text-[#FEFEFE] text-base duration-300 hover:scale-105 font-normal flex items-center gap-2 h-12 bg-background-darkYellow rounded-full border-none cursor-pointer"
                 >
-                  Submit
-                </Button>
+                  {loading ? "Submiting..." : "    Submit"}
+                </button>
               </div>
             </div>
           )}

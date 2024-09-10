@@ -60,7 +60,7 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
   }, [user]);
 
   return (
-    <section className="large:mt-[124px] mt-24 w-full max-w-[1400px] px-7 sm:px-[100px] large:px-[130px] mx-auto">
+    <section className="large:mt-[124px] mt-24 w-full max-w-[1200px] px-7 sm:px-[100px] large:px-[130px] mx-auto">
       {loading && <FormFallbackLoading />}
       {response && (
         <ResponseDetails

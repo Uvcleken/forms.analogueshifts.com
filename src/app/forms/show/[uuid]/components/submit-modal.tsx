@@ -1,30 +1,30 @@
 "use client";
 import { Fragment, useRef } from "react";
+import { useToast } from "@/contexts/toast";
+import { checkValidEmail } from "@/utils/show-form/helper-functions";
 import { Transition, Dialog } from "@headlessui/react";
 
 import Image from "next/image";
 import Spinner from "@/assets/images/spinner.svg";
+import { Input } from "@/components/ui/input";
 
 interface IdiomProps {
-  title: string;
-  description: string;
   open: boolean;
-  close: () => void;
-  action: () => void;
-  buttonLabel: string;
-  loading?: boolean;
+  loading: boolean;
+  email: string;
+  setEmail: any;
+  submit: any;
 }
 
-const IdiomProof: React.FC<IdiomProps> = ({
-  title,
-  description,
+const SubmitModal: React.FC<IdiomProps> = ({
   open,
-  action,
-  close,
-  buttonLabel,
+  email,
+  setEmail,
   loading,
+  submit,
 }) => {
   const cancelButtonRef = useRef(null);
+  const { notifyUser }: any = useToast();
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -57,28 +57,43 @@ const IdiomProof: React.FC<IdiomProps> = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <div className="bg-white w-full px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                  <div className="sm:flex w-full sm:items-start">
+                    <div className="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        {title}
+                        Timeout
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="mt-2 w-full flex flex-col">
                         <p className="text-sm text-primary-boulder400">
-                          {description}
+                          Please Confirm Your Submition Email and Submit.
                         </p>
+                        <Input
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="email"
+                          className="mt-5 w-full rounded-xl h-12 text-sm font-normal placeholder:text-primary-boulder300 text-primary-boulder500"
+                          placeholder="Enter submission email"
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className=" px-4 pb-6 pt-4 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
+                    disabled={loading}
                     type="button"
                     className={`inline-flex items-center gap-1.5 w-full justify-center rounded-xl  h-10  text-xs font-semibold text-primary-boulder50  sm:ml-3 sm:w-auto px-10 bg-background-darkYellow`}
-                    onClick={action}
+                    onClick={() => {
+                      if (checkValidEmail(email)) {
+                        submit();
+                      } else {
+                        notifyUser("error", "Invalid Email", "right");
+                      }
+                    }}
                   >
                     {loading ? (
                       <Image
@@ -87,16 +102,8 @@ const IdiomProof: React.FC<IdiomProps> = ({
                         className="w-6 animate-spin"
                       />
                     ) : (
-                      buttonLabel || title
+                      "Submit"
                     )}
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex border border-primary-boulder200/50 outline-none w-full items-center h-10 px-8 rounded-xl justify-center py-2 text-xs font-semibold text-primary-boulder400 sm:mt-0 sm:w-auto outline-transparent"
-                    onClick={close}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
                   </button>
                 </div>
               </Dialog.Panel>
@@ -108,4 +115,4 @@ const IdiomProof: React.FC<IdiomProps> = ({
   );
 };
 
-export default IdiomProof;
+export default SubmitModal;
