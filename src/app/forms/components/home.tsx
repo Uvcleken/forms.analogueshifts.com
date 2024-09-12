@@ -90,7 +90,7 @@ export default function FormsDashboard() {
         loading={deleting}
       />
 
-      <div className="fixed z-50 bottom-0 left-0 w-screen h-20 px-6 sm:px-20 large:px-[112px] flex justify-center  bg-white backdrop-blur-lg bg-opacity-30">
+      <div className="fixed z-50 bottom-0 left-0 w-screen h-20 px-6 sm:px-20 large:px-[112px] flex justify-center  bg-white backdrop-blur-lg">
         <div className="w-full max-w-[1650px] flex items-center tablet:justify-center justify-between h-full">
           <div className="w-full tablet:hidden">
             {" "}
