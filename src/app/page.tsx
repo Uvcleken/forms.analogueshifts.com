@@ -1,4 +1,3 @@
-"use client";
 import GuestLayout from "@/components/layouts/guest";
 
 import Landing from "@/components/application/home/landing";

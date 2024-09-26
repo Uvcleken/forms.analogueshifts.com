@@ -10,9 +10,9 @@ export default function DownloadApp() {
       style={{
         backgroundImage: "url(/lines-bg.png)",
       }}
-      className={`w-full items-start md:items-end flex md:flex-row flex-col gap-[55px] relative bg-no-repeat bg-cover overflow-hidden tablet:pt-14  pt-24 large:pt-[168px] tablet:px-6 px-20 large:px-[112px] bg-background-darkYellow`}
+      className={`w-full max-w-[1650px] mx-auto items-start md:items-end flex md:flex-row flex-col gap-[55px] relative bg-no-repeat bg-cover overflow-hidden tablet:pt-14  pt-24 large:pt-[168px] tablet:px-6 px-20 large:px-[112px] bg-background-darkYellow`}
     >
-      <div className="flex tablet:pb-14 pb-24 large:pb-168 flex-col max-w-full w-max">
+      <div className="flex tablet:pb-14 pb-24 large:pb-[168px] flex-col max-w-full w-max">
         <h3
           className={` font-semibold tablet:text-2xl tablet:leading-8 text-[28px] large:text-[32px] leading-64 mb-3 text-primary-boulder950`}
         >
@@ -34,12 +34,12 @@ export default function DownloadApp() {
         <Image
           src={PreviewOne}
           alt=""
-          className="z-20  large:translate-x-[74px] translate-x-[50px] xl:max-w-[40%] max-w-[25%] large:max-w-[50%]  h-max large:max-h-none max-h-full"
+          className="z-20  large:translate-x-[74px] translate-x-[50px] xl:max-w-[38%] max-w-[25%] large:max-w-[50%]  h-max large:max-h-none max-h-full"
         />
         <Image
           src={PreviewTwo}
           alt=""
-          className="-translate-x-[51px] z-10 large:max-h-none xl:max-w-[40%] max-w-[25%] large:max-w-[50%]  h-max max-h-full"
+          className="-translate-x-[51px] z-10 large:max-h-none xl:max-w-[38%] max-w-[25%] large:max-w-[50%]  h-max max-h-full"
         />
       </div>
     </section>

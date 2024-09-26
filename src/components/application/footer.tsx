@@ -8,7 +8,7 @@ import DownloadAppBtn from "./download-app-btn";
 
 function Footer() {
   return (
-    <footer className="z-20 sticky bg-white tablet:pt-20 pt-[168px] pb-9 tablet:px-6 px-20 large:px-[112px] flex flex-col">
+    <footer className="z-20 max-w-[1650px] mx-auto sticky bg-white tablet:pt-20 pt-[168px] pb-9 tablet:px-6 px-20 large:px-[112px] flex flex-col">
       <div className="w-full flex 1186:gap-5 flex-col 1186:flex-row gap-10 justify-between">
         <div className="380:min-w-[320px] min-w-0 tablet:max-w-full max-w-[320px] flex flex-col">
           <Link href="/" className="max-w-full h-max tablet:mb-8 mb-12">
