@@ -1,9 +1,8 @@
-import { errorToast } from "./error-toast";
-
 export const shareContent = async (
   title: string,
   text: string,
-  url: string
+  url: string,
+  notifyUser: any
 ) => {
   if (navigator.share) {
     try {
@@ -13,15 +12,9 @@ export const shareContent = async (
         url: url,
       });
     } catch (error) {
-      errorToast(
-        "Error sharing content",
-        "There was a problem with your request."
-      );
+      notifyUser("error", "There was a problem with your request.", "right");
     }
   } else {
-    errorToast(
-      "Sharing not supported on this device.",
-      "There was a problem with your request."
-    );
+    notifyUser("error", "Sharing not supported on this device.", "right");
   }
 };

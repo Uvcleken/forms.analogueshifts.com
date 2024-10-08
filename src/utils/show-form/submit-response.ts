@@ -1,5 +1,4 @@
 import { clearUserSession } from "../clear-user-session";
-import { errorToast } from "../error-toast";
 import { Dispatch, SetStateAction } from "react";
 
 export const submitResponse = async (
@@ -7,7 +6,8 @@ export const submitResponse = async (
   formUUID: string,
   email: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setFormSubmitted: Dispatch<SetStateAction<boolean>>
+  setFormSubmitted: Dispatch<SetStateAction<boolean>>,
+  notifyUser: any
 ) => {
   let answers: any[] = [];
 
@@ -38,11 +38,11 @@ export const submitResponse = async (
     setLoading(false);
     setFormSubmitted(true);
   } catch (error: any) {
-    errorToast(
-      "Error submiting response",
-      error?.response?.data?.message ||
-        error.message ||
-        "Failed To Submit Response"
+    notifyUser(
+      "error",
+      error?.response?.data?.message,
+      error?.response?.data?.data?.message || error.message,
+      "right"
     );
     setLoading(false);
     if (error?.response?.status === 401) {

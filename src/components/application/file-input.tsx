@@ -1,6 +1,6 @@
 "use client";
-import { errorToast } from "@/utils/toast";
-import React, { useState, useRef, useEffect, Ref } from "react";
+import { useToast } from "@/contexts/toast";
+import React, { useState, useRef, useEffect } from "react";
 
 interface FileInputProps {
   value?: any;
@@ -9,6 +9,7 @@ interface FileInputProps {
 }
 
 const FileInput: React.FC<FileInputProps> = ({ value, setValue, fileType }) => {
+  const { notifyUser }: any = useToast();
   const [uploadState, setUploadState] = useState(value ? "Success" : "");
   const fileRef: any = useRef();
 
@@ -16,10 +17,7 @@ const FileInput: React.FC<FileInputProps> = ({ value, setValue, fileType }) => {
     const maxFileSize = 5 * 1024 * 1024;
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.size > maxFileSize) {
-      errorToast(
-        "File size exceeds the limit (5 MB)",
-        "File Size Must not exceed the Limit"
-      );
+      notifyUser("error", "File size exceeds the limit (5 MB)", "right");
       return;
     }
     if (selectedFile) {

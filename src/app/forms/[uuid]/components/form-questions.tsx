@@ -12,8 +12,7 @@ import {
 import AddQuestionForm from "./add-question-form";
 import FormFallbackLoading from "../../components/fallback-loading";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { successToast } from "@/utils/toast";
-import { errorToast } from "@/utils/toast";
+import { useToast } from "@/contexts/toast";
 
 interface FormQuestionsProps {
   uuid: string;
@@ -28,6 +27,8 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
 }) => {
   const [vetQuestions, setVetQuestions]: any = useState(questions);
   const [loading, setLoading] = useState(false);
+
+  const { notifyUser }: any = useToast();
 
   // Delete A question From the Database
   const handleDeleteQuestion = async (questionUUID: string) => {
@@ -44,18 +45,19 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     try {
       // Delete Question
       await axios.request(config);
-      successToast("Question Deleted", "Your question has been removed.");
+      notifyUser("success", "Your question has been removed.", "right");
 
       // Reset The state that holds our Questions
       setVetQuestions((prev: any) =>
         prev.filter((item: any) => item.uuid !== questionUUID)
       );
     } catch (error: any) {
-      errorToast(
-        "Error Deleting Question",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
+          error?.response?.data?.data?.message ||
           error.message ||
-          "Failed To delete Question"
+          "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();
@@ -95,15 +97,16 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     try {
       await axois.request(config);
       setLoading(false);
-      successToast("Vet Updated", "Your Vet questions has been Updated");
+      notifyUser("success", "Your Vet questions has been Updated", "right");
       setVetQuestions(reOrderedQuestions);
     } catch (error: any) {
       setLoading(false);
-      errorToast(
-        "An error occured",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
+          error?.response?.data?.data?.message ||
           error.message ||
-          "Failed To update Form"
+          "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();

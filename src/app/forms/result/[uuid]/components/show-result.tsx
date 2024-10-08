@@ -5,7 +5,7 @@ import QuestionAndAnswer from "./question-and-answer";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 
 import { clearUserSession } from "@/utils/clear-user-session";
-import { errorToast } from "@/utils/toast";
+import { useToast } from "@/contexts/toast";
 
 interface ShowResultProps {
   resultUUID: string;
@@ -14,6 +14,7 @@ interface ShowResultProps {
 const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse]: any = useState(null);
+  const { notifyUser }: any = useToast();
 
   async function getResult() {
     const axios = require("axios");
@@ -34,11 +35,12 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      errorToast(
-        "Error Fetching Result",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
+          error?.response?.data?.data?.message ||
           error.message ||
-          "Failed To Fetch Result"
+          "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();

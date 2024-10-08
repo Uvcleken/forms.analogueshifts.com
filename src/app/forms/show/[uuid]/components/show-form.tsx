@@ -57,13 +57,27 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID, vet }) => {
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
     if (checkAllQuestionFields(questions, notifyUser)) {
-      submitResponse(questions, formUUID, email, setLoading, setFormSubmitted);
+      submitResponse(
+        questions,
+        formUUID,
+        email,
+        setLoading,
+        setFormSubmitted,
+        notifyUser
+      );
     }
   };
 
   // Handle Auto Subimission
   const handleAutoSubmission = () => {
-    submitResponse(questions, formUUID, email, setLoading, setFormSubmitted);
+    submitResponse(
+      questions,
+      formUUID,
+      email,
+      setLoading,
+      setFormSubmitted,
+      notifyUser
+    );
   };
 
   // Handle Form Keydown

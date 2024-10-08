@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/contexts/toast";
 import Image from "next/image";
 import FormTemplateImage from "@/assets/images/form-template.jpg";
 import { Share2, Eye, EllipsisVertical, Trash, BookOpen } from "lucide-react";
@@ -20,12 +21,14 @@ interface FormGridTileProps {
 
 const FormGridTile: React.FC<FormGridTileProps> = ({ item, deleteForm }) => {
   const router = useRouter();
+  const { notifyUser }: any = useToast();
 
   const handleShare = async () => {
     shareContent(
       item.title || "",
       "",
-      window.location.href + "/show/" + item.uuid
+      window.location.href + "/show/" + item.uuid,
+      notifyUser
     );
   };
 

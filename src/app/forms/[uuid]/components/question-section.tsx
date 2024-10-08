@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import EditQuestionForm from "./edit-question-form";
 import { useState } from "react";
-import { successToast } from "@/utils/toast";
+import { useToast } from "@/contexts/toast";
 import IdiomProof from "@/components/application/idiom-proof";
 
 interface QuestionSectionProps {
@@ -31,6 +31,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
   const controls = useDragControls();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { notifyUser }: any = useToast();
 
   // Removing a vet question
   const removeVetQuestion = async () => {
@@ -38,7 +39,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
       setFormQuestions((prev: any) =>
         prev.filter((item: any) => item.number !== data.number)
       );
-      successToast("Question Deleted", "Your question has been removed.");
+      notifyUser("success", "Your question has been removed.", "right");
       setShowModal(false);
     } else {
       try {

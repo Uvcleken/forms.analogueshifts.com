@@ -5,8 +5,8 @@ import Cookies from "js-cookie";
 import ResponseDetails from "./response-details";
 import AnswerSection from "./answer-section";
 import { clearUserSession } from "@/utils/clear-user-session";
-import { errorToast } from "@/utils/toast";
 import { useUser } from "@/contexts/user";
+import { useToast } from "@/contexts/toast";
 
 interface ResponseContentProps {
   uuid: string;
@@ -15,6 +15,7 @@ interface ResponseContentProps {
 const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
   const { user }: any = useUser();
+  const { notifyUser }: any = useToast();
   const axios = require("axios");
   const [response, setResponse] = useState(null);
   const [answers, setAnswers] = useState([]);
@@ -41,11 +42,13 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
       setAnswers(res.data.data.answers);
     } catch (error: any) {
       setLoading(false);
-      errorToast(
-        "Error fetching your Response",
+      notifyUser(
+        "error",
         error?.response?.data?.message ||
+          error?.response?.data?.data?.message ||
           error.message ||
-          "Failed To fetch Response"
+          "Failed To fetch Response",
+        "right"
       );
       if (error?.response?.status === 401) {
         clearUserSession();
