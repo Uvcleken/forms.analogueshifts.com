@@ -22,11 +22,13 @@ export default function AuthenticatedLayout({
 
   const token = Cookies.get("analogueshifts");
 
+  const app = process.env.NEXT_PUBLIC_SITE_BUILD_UUID;
+
   useEffect((): any => {
     // Redirect To Login if User is not Authenticated
     if (user === null && !token) {
       Cookies.set("RedirectionLink", pathname);
-      window.location.href = "https://auth.analogueshifts.app?app=forms";
+      window.location.href = `https://auth.analogueshifts.app?app=${app}`;
       return null;
     } else if (user === null && token) {
       //    Fetch User

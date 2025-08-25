@@ -17,6 +17,8 @@ const GuestNavigation = ({ user, handleLogout }: any) => {
 
   const [open, setOpen] = useState(false);
 
+  const app = process.env.NEXT_PUBLIC_SITE_BUILD_UUID;
+
   //Close the Nav bar whenever the pathname changes
   useEffect(() => {
     if (open) {
@@ -74,13 +76,13 @@ const GuestNavigation = ({ user, handleLogout }: any) => {
           <div className="hidden lg:flex lg:items-center gap-6">
             <NavLink
               active={false}
-              href="https://auth.analogueshifts.app?app=forms"
+              href={`https://auth.analogueshifts.app?app=${app}`}
             >
               Login
             </NavLink>
             <Link
               className="text-[13px] large:text-base font-medium h-11 large:h-14 px-10  large:px-12 duration-200 rounded-2xl bg-background-darkYellow text-white hover:bg-transparent hover:text-background-darkYellow hover:ring-1 ring-background-darkYellow flex items-center justify-center"
-              href="https://auth.analogueshifts.app?app=forms"
+              href={`https://auth.analogueshifts.app?app=${app}`}
             >
               Sign Up
             </Link>
