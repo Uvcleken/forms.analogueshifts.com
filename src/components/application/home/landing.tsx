@@ -9,6 +9,7 @@ import BackgroundImages from "./bg-images";
 export default function Landing() {
   const { user } = useUser();
 
+  const authLink = process.env.NEXT_PUBLIC_AUTH_URL;
   const app = process.env.NEXT_PUBLIC_SITE_BUILD_UUID;
 
   return (
@@ -38,7 +39,7 @@ export default function Landing() {
         </p>
         <div className="tablet:w-[90%] w-max max-w-full tablet:mb-5 mb-10 tablet:grid grid-cols-2 flex large:flex items-center large:h-14 h-14 tablet:h-max  gap-3">
           <Link
-            href={`https://auth.analogueshifts.app?app=${app}`}
+            href={`${authLink}?app=${app}`}
             className="rounded-2xl tablet:h-12  h-full bg-background-darkYellow flex justify-center items-center text-primary-boulder50 tablet:text-sm text-sm large:text-base font-semibold tablet:px-5 px-12"
           >
             Get started now
@@ -47,7 +48,7 @@ export default function Landing() {
             href={
               user
                 ? "/forms/create"
-                : `https://auth.analogueshifts.app?app=${app}`
+                : `${authLink}?app=${app}`
             }
             className="rounded-2xl tablet:h-12  h-full bg-transparent flex justify-center items-center text-background-darkYellow tablet:text-sm text-sm large:text-base font-semibold tablet:px-5 px-12 border border-background-darkYellow"
           >
