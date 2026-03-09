@@ -20,7 +20,7 @@ const FormContent: React.FC<FormContentProps> = ({ uuid }) => {
   const [questions, setQuestions] = useState([]);
 
   const { user }: any = useUser();
-  const { getForm, getResponses } = useForms();
+  const { getForm } = useForms();
 
   const token = Cookies.get("analogueshifts");
 

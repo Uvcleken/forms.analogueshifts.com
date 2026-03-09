@@ -7,14 +7,12 @@ export default function Countdown({
   durationInMinutes,
   submitForm,
   setEmail,
-  router,
   email,
   loading,
 }: {
   durationInMinutes: number;
   submitForm: any;
   setEmail: any;
-  router: any;
   email: string;
   loading: boolean;
 }) {

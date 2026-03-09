@@ -20,10 +20,10 @@ interface ShowFormProps {
 
 const ShowForm: React.FC<ShowFormProps> = ({ formUUID, vet }) => {
   const { user } = useUser();
-  const [form, setForm]: any = useState(vet?.form || null);
+  const [form]: any = useState(vet?.form || null);
   const [questions, setQuestions]: any = useState(vet?.questions || null);
   const [loading, setLoading] = useState(false);
-  const [formClosed, setFormClosed] = useState(vet?.formClosed ? true : false);
+  const [formClosed] = useState(vet?.formClosed ? true : false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [timeOutModal, setTimeOutModal] = useState(false);
   const [timeOutMinutes, setTimeoutMinutes]: any = useState(null);
@@ -150,7 +150,6 @@ const ShowForm: React.FC<ShowFormProps> = ({ formUUID, vet }) => {
                 {timeOutMinutes !== null && (
                   <Countdown
                     email={email}
-                    router={router}
                     loading={loading}
                     setEmail={setEmail}
                     durationInMinutes={timeOutMinutes}

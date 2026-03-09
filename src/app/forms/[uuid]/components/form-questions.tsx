@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import axios from "axios";
 import { Reorder } from "framer-motion";
 import QuestionSection from "./question-section";
 import {
@@ -32,7 +33,6 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
 
   // Delete A question From the Database
   const handleDeleteQuestion = async (questionUUID: string) => {
-    const axios = require("axios");
     const config = {
       method: "DELETE",
       url:
@@ -67,9 +67,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
 
   // This Function Uploads all the Question to the Database
   const uploadQuestions = async () => {
-    const axois = require("axios");
-
-    let reOrderedQuestions: any = [];
+    const reOrderedQuestions: any = [];
     // Update the Questions Order
     if (vetQuestions[0]) {
       vetQuestions.forEach((item: any, index: number) => {
@@ -95,7 +93,7 @@ const FormQuestions: React.FC<FormQuestionsProps> = ({
     setLoading(true);
 
     try {
-      await axois.request(config);
+      await axios.request(config);
       setLoading(false);
       notifyUser("success", "Your Vet questions has been Updated", "right");
       setVetQuestions(reOrderedQuestions);

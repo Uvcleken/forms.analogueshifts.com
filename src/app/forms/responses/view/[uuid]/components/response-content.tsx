@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import FormFallbackLoading from "@/app/forms/components/fallback-loading";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
@@ -16,7 +17,6 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
   const [loading, setLoading] = useState(false);
   const { user }: any = useUser();
   const { notifyUser }: any = useToast();
-  const axios = require("axios");
   const [response, setResponse] = useState(null);
   const [answers, setAnswers] = useState([]);
 
@@ -24,7 +24,7 @@ const ResponseContent: React.FC<ResponseContentProps> = ({ uuid }) => {
 
   // Fetch Response
   const getResponse = async () => {
-    let config = {
+    const config = {
       method: "GET",
       url: process.env.NEXT_PUBLIC_BACKEND_URL + "/tools/form/response/" + uuid,
       headers: {

@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 import QuestionAndAnswer from "./question-and-answer";
@@ -17,7 +18,6 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
   const { notifyUser }: any = useToast();
 
   async function getResult() {
-    const axios = require("axios");
     const config = {
       method: "GET",
       url:
@@ -28,7 +28,7 @@ const ShowResult: React.FC<ShowResultProps> = ({ resultUUID }) => {
 
     try {
       setLoading(true);
-      let response = await axios.request(config);
+      const response = await axios.request(config);
       if (response.data.success) {
         setResponse(response.data.data.response);
       }
