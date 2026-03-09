@@ -1,10 +1,11 @@
 import GuestLayout from "@/components/layouts/guest";
 import ShowResult from "./components/show-result";
 
-function Page({ params }: any) {
+async function Page({ params }: { params: Promise<{ uuid: string }> }) {
+  const { uuid } = await params;
   return (
     <GuestLayout>
-      <ShowResult resultUUID={params.uuid} />
+      <ShowResult resultUUID={uuid} />
     </GuestLayout>
   );
 }

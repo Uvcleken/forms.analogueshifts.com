@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useForms } from "@/hooks/forms";
 
@@ -12,7 +11,6 @@ interface FormResponsesInterface {
 }
 
 const FormResponses: React.FC<FormResponsesInterface> = ({ formUUID }) => {
-  const router = useRouter();
   const { getResponses } = useForms();
 
   const [responses, setResponses] = useState([]);

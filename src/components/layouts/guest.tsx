@@ -20,7 +20,7 @@ export default function GuestLayout({
   useEffect(() => {
     const token = Cookies.get("analogueshifts");
     if (token) {
-      getUser({ setLoading: (loading) => {}, layout: "guest", token });
+      getUser({ setLoading: () => {}, layout: "guest", token });
     }
   }, []);
 

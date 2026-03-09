@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Cookies from "js-cookie";
+import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import FormGridTile from "./form-grid-tile";
 import IdiomProof from "@/components/application/idiom-proof";
@@ -27,8 +26,6 @@ export default function FormsDashboard() {
   const getVetsUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/tools/form${
     pageQuery.length ? `?page=${pageQuery[0]}` : ""
   }`;
-
-  const token: any = Cookies.get("analogueshifts");
 
   //Fetch Vets
   const fetchVets = () => {

@@ -15,7 +15,7 @@ export default function Validate() {
     if (token) {
       validateApp({ appToken: token });
     } else {
-      let RedirectionLink = Cookies.get("RedirectionLink");
+      const RedirectionLink = Cookies.get("RedirectionLink");
       router.push(RedirectionLink || "/");
     }
   }, []);

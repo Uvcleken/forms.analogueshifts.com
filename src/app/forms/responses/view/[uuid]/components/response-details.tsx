@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { Edit } from "lucide-react";
 import { useState } from "react";
 import {
@@ -30,7 +31,6 @@ const ResponseDetails: React.FC<FormDetailsProps> = ({
 }) => {
   const { notifyUser }: any = useToast();
   const [score, setScore] = useState(details.score || "");
-  const axios = require("axios");
 
   const updateScore = async () => {
     const config = {

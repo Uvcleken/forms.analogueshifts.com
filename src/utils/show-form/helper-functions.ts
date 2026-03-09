@@ -17,7 +17,7 @@ export const handleStartTimer = (
   setTimeOutModal: any,
   setTimeOutMinutes: any
 ) => {
-  let timeOutMinutes = parseInt(form.timeout);
+  const timeOutMinutes = parseInt(form.timeout);
   setTimeOutModal(false);
   setTimeOutMinutes(timeOutMinutes);
 };

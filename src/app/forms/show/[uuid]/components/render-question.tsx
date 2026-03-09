@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -57,12 +58,11 @@ const RenderQuestion: React.FC<RenderQuestionProps> = ({
   // Upload File
   const uploadFile = async (file: any) => {
     const url = process.env.NEXT_PUBLIC_FILE_UPLOAD_URL + "/upload/" + formUUID;
-    const axios = require("axios");
     const formData = new FormData();
     formData.append("upload", file);
     formData.append("type", item.type);
 
-    let config = {
+    const config = {
       method: "POST",
       url: url,
       headers: {

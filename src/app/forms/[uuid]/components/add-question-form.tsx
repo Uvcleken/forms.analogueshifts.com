@@ -68,7 +68,7 @@ const AddQuestionForm: React.FC<AddQuestionFormProps> = ({
 
   // This function checks if all required field has been entered
   const validate = () => {
-    let checkType =
+    const checkType =
       type === "radio" && answer.trim().length === 0 ? false : true;
     if (question.trim().length > 0 && checkType) {
       return true;

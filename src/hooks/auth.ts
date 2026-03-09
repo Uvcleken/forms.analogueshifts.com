@@ -23,7 +23,7 @@ export const useAuth = () => {
   const { notifyUser }: any = useToast();
 
   const validateApp = async ({ appToken }: { appToken: string }) => {
-    let RedirectionLink = Cookies.get("RedirectionLink");
+    const RedirectionLink = Cookies.get("RedirectionLink");
     try {
       const response = await axios.request({
         url: "/app/callback/" + appToken,
@@ -65,7 +65,7 @@ export const useAuth = () => {
     }
   };
 
-  const logout = async ({ setLoading }: LogoutParams) => {
+  const logout = async ({ setLoading: _setLoading }: LogoutParams) => {
     Cookies.remove("analogueshifts");
     router.push("/");
   };

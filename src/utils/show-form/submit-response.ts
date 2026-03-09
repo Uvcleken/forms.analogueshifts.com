@@ -1,4 +1,5 @@
 import { clearUserSession } from "../clear-user-session";
+import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 
 export const submitResponse = async (
@@ -9,7 +10,7 @@ export const submitResponse = async (
   setFormSubmitted: Dispatch<SetStateAction<boolean>>,
   notifyUser: any
 ) => {
-  let answers: any[] = [];
+  const answers: any[] = [];
 
   questions?.forEach((item: any) => {
     answers.push({
@@ -18,7 +19,6 @@ export const submitResponse = async (
     });
   });
 
-  const axios = require("axios");
   const config = {
     method: "POST",
     url:
